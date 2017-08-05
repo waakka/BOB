@@ -779,7 +779,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 //						("打开 强度为：" + ptStatus.getStatusYueLiaoIntensity() + "频率为：" + ptStatus.getStatusYueLiaoFrequency()):"关闭"));
 				tvType.setText(getString(R.string.unit_yueliao));
 				tvIntensity.setText(ptStatus.getStatusYueLiaoIntensity()+"");
-				llFrequency.setVisibility(View.VISIBLE);
+//				llFrequency.setVisibility(View.VISIBLE);
+				llFrequency.setVisibility(View.GONE);
 				curFrequency = ptStatus.getStatusYueLiaoFrequency();
 				tvFrequency.setText(curFrequency+"HZ");
 				if(ptStatus.isStatusYueLiaoIsOpen()){

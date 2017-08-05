@@ -47,10 +47,10 @@
     <string name="intensity">强度设置</string>
     <string name="frequency">频率设置</string>
     <string name="clock">定时设置</string>
-    <string name="rb_zhenjiu">针灸</string>
-    <string name="rb_anmo">按摩</string>
-    <string name="rb_liliao">理疗</string>
-    <string name="rb_yueliao">乐疗</string>
+    <string name="rb_zhenjiu">推压</string>
+    <string name="rb_anmo">叩击</string>
+    <string name="rb_liliao">自动</string>
+    <string name="rb_yueliao">搓揉</string>
     <string name="intensity_max">已经是最高强度了</string>
     <string name="intensity_min">已经是最低强度了</string>
     <string name="hz_max">已经是最高频率了</string>

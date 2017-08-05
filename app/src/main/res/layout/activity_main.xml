@@ -28,12 +28,13 @@
         <RadioButton
             android:id="@+id/rb_search"
             style="@style/radioButtonBottom"
+            android:checked="true"
             android:text="@string/rb_search" />
 
         <RadioButton
             android:id="@+id/rb_bob"
             style="@style/radioButtonBottom"
-            android:drawableTop="@mipmap/icon_bob" />
+            android:drawableTop="@drawable/icon_bob_sel" />
 
         <RadioButton
             android:id="@+id/rb_setting"
