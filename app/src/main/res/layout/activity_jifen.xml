@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_frag"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/green" >
+
+        <LinearLayout
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical" >
+
+            <ImageButton
+                android:id="@+id/ib_back"
+                android:src="@mipmap/btn_back"
+                android:background="@color/tran"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:padding="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/integral"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt_title" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="32dp"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+               style="@style/TxtSubTitle"
+                android:textSize="20sp"
+                android:textColor="#111111"
+                android:text="@string/Current_integral"/>
+            <TextView
+                android:id="@+id/tv_integral"
+                style="@style/TxtSubTitle"
+                android:textSize="22sp"
+                android:textColor="#e60012"
+                android:text="0"/>
+            <TextView
+                style="@style/TxtSubTitle"
+                android:textSize="20sp"
+                android:textColor="#111111"
+                android:text="分"/>
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/ib_cou"
+            android:layout_width="180dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="20dp"
+            android:background="@mipmap/icon_integral"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_gray"/>
+    <RelativeLayout
+        android:id="@+id/rl_role"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/TxtSubTitle"
+            android:textSize="20sp"
+            android:textColor="#111111"
+            android:layout_marginLeft="16dp"
+            android:text="@string/Integral_rule"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/arr_right"
+            android:layout_marginRight="16dp"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_gray"/>
+    <RelativeLayout
+        android:id="@+id/rl_role_data"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/TxtSubTitle"
+            android:textSize="20sp"
+            android:textColor="#111111"
+            android:layout_marginLeft="16dp"
+            android:text="@string/Integral_detail"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/arr_right"
+            android:layout_marginRight="16dp"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_gray"/>
+</LinearLayout>

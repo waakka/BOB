@@ -1,0 +1,63 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="TxtTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/txt_title</item>
+        <item name="android:textColor">@color/txt_black</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TxtSubTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/txt_subtitle</item>
+        <item name="android:textColor">@color/txt_black</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TxtBody">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/txt_body</item>
+        <item name="android:textColor">@color/txt_black</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TxtCaption">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/txt_caption</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="divline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/divider_gray</item>
+    </style>
+
+    <style name="radioButtonBottom">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/txt_white2gray_sel</item>
+        <item name="android:textSize">@dimen/txt_caption</item>
+        <item name="android:drawableTop">@drawable/icon_search_sel</item>
+
+        <item name="android:background">@color/bg_bottom</item>
+    </style>
+
+</resources>

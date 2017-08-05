@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "com.zhongzhiyijian.eyan"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        manifestPlaceholders = [
+                GETUI_APP_ID : "LWGUDuO3E87DQlFYacdrV2",
+                GETUI_APP_KEY : "z2IsCWLNeM9sAaMCUrsWaA",
+                GETUI_APP_SECRET : "8uOJ1nhU8G7SgYEd12OMc4"
+        ]
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86_64"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'org.xutils:xutils:3.3.40'
+    compile 'cn.qqtheme.framework:WheelPicker:1.1.2'
+    compile 'cn.qqtheme.framework:FilePicker:1.1.2'
+    compile 'com.orhanobut:logger:1.15'
+    compile 'com.android.support:design:23.0.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.alibaba:fastjson:1.1.54.android'
+    compile files('libs/libammsdk.jar')
+    compile project(':libzxing')
+    compile 'com.github.lecho:hellocharts-android:v1.5.8'
+    compile 'com.getui:sdk:2.9.5.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+}

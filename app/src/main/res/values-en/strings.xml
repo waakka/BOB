@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">e眼按摩师</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    
+    <!-- DeviceDetailActivity -->
+    <string name="unit_pt">physiotherapy unit</string>
+    <string name="unit_music">music</string>
+    
+    <string name="dialog_title_device_no_connect">disconnection</string>
+    <string name="dialog_msg_device_no_connect">The bluetooth device has been disconnected,please reconnet!</string>
+
+    <!-- MainActivity -->
+    <string name="rb_search">search</string>
+    <string name="rb_setting">me</string>
+    
+    <!-- MusicDetailActivity -->
+    <string name="no_lrc">No lyrics</string>
+    <string name="show_lrc">show lyrics</string>
+    <string name="hide_lrc">hide lyrics</string>
+    <string name="play_single">single cycle</string>
+    <string name="play_random">random broadcast</string>
+    <string name="play_ciecle">order broadcast</string>
+    
+    <!-- BOBAdapter -->
+    <string name="del">del</string>
+    <string name="connected">connected</string>
+    <string name="no_connected">not connected</string>
+    <string name="dialog_title_device_delete">remove device</string>
+    <string name="dialog_msg_device_delete">Hello, the link relationship will be released after the deletion.</string>
+    <string name="dialog_done_device_delete">sure</string>
+    <string name="dialog_cancle_device_delete">cancle</string>
+    
+    <!-- FragBOB -->
+    <string name="connecting">connecting</string>
+    <string name="is_connect_success">Connect successfully</string>
+    <string name="is_connect_failed">The connection failed,please keep the device in the effective range.</string>
+    
+    <!-- FragPt -->
+    <string name="unit_zhenjiu">acupuncture unit</string>
+    <string name="unit_anmo">massage unit</string>
+    <string name="unit_liliao">physiotherapy unit</string>
+    <string name="unit_yueliao">musictherapy unit</string>
+    <string name="intensity">intensity setting</string>
+    <string name="frequency">frequency setting</string>
+    <string name="clock">time set</string>
+    <string name="rb_zhenjiu">acupuncture</string>
+    <string name="rb_anmo">massage</string>
+    <string name="rb_liliao">physiotherapy</string>
+    <string name="rb_yueliao">musictherapy</string>
+    <string name="intensity_max">max intensity</string>
+    <string name="intensity_min">min intensity</string>
+    <string name="hz_max">max frequency</string>
+    <string name="hz_min">min frequency</string>
+    <string name="btn_open">ON</string>
+    <string name="btn_close">OFF</string>
+
+    <!-- FragSearch -->
+    <string name="search_device">search device</string>
+    <string name="search">search</string>
+    
+    <!-- SettingActivity -->
+    <string name="setting">setting</string>
+    <string name="bluetooth">bluetooth</string>
+    <string name="USB_CONNECTION_AUTO">USB auto-connect</string>
+    <string name="style">style</string>
+    <string name="languages">languages</string>
+    <string name="text_size">text size</string>
+    <string name="connect_type">connection type</string>
+    <string name="version">version</string>
+    <string name="about">about</string>
+    
+    <string name="auto_on">auto on</string>
+    <string name="auto_off">auto off</string>
+    <string name="search_empy">You have not added your device</string>
+    <string name="add_search_device">Please click on the search button on the top left corner to add the device.</string>
+    <string name="personal_center">personal center</string>
+    <string name="login">login</string>
+    <string name="register">register</string>
+    <string name="integral">integral</string>
+    <string name="coupon">coupon</string>
+    <string name="sign">sign</string>
+    <string name="signed">signed</string>
+    <string name="basic_information">basic information</string>
+    <string name="invite_friends">invite friends</string>
+    <string name="device_use_record">device use record</string>
+    <string name="current_operating_device_power">current operating device power</string>
+    <string name="security_management">security management</string>
+    <string name="bluetooth_auto_connect">bluetooth auto-connect</string>
+    <string name="clear_cache">clear cache</string>
+    <string name="log_out">log out</string>
+    <string name="log_in">log in</string>
+    <string name="account">account</string>
+    <string name="password">password</string>
+    <string name="forget_password">forget password?</string>
+    <string name="Please_enter_your_registered_mobile_number">Please enter your registered mobile number</string>
+    <string name="Please_enter_your_password">Please enter your password</string>
+    <string name="Please_enter_your_mobile_number">Please enter your mobile number</string>
+    <string name="verification_code">verification code</string>
+    <string name="Please_enter_the_verification_code_in_your_message">Please enter the verification code in your message</string>
+    <string name="Please_enter_the_Invitation_code_optional_fields">Please enter the Invitation code（optional fields）</string>
+    <string name="Warm_Reminder">Warm Reminder:</string>
+    <string name="detail_warmming">fill in the invitation code,you and your friends can get 88 integral which can be converted into coupon , our integral and coupon will bring a continuous celebration.</string>
+    <string name="agree">Registration means that you agree to the</string>
+    <string name="bob">user registration protocol</string>
+    <string name="Next">Next</string>
+    <string name="setpwd">Please enter 6-16 characters of combination of letters and digits.</string>
+    <string name="repeat_password">repeat password</string>
+    <string name="set_password">set password</string>
+    <string name="avatar">avatar</string>
+    <string name="name">name</string>
+    <string name="enter_name">enter your name</string>
+    <string name="gender">gender</string>
+    <string name="male">man</string>
+    <string name="female">woman</string>
+    <string name="birthday">birthday</string>
+    <string name="choose_birthday">Please choose your birthday</string>
+    <string name="blood_group">blood group</string>
+    <string name="choose_blood">Please choose you blood group</string>
+    <string name="region">region</string>
+    <string name="choose_region">choose your region or click on the positioning button</string>
+    <string name="divices">divice</string>
+    <string name="submit">submit</string>
+    <string name="take_photo">take photo</string>
+    <string name="gallary">gallary</string>
+    <string name="occupation">occupation</string>
+    <string name="choose_occupation">choose your occupation</string>
+    <string name="o1">computer/internet/communication</string>
+    <string name="o2">production/technology/manufacture</string>
+    <string name="o3">medical treatment/nursing/ pharmacy</string>
+    <string name="o4">finance/bank/investment/ insurance</string>
+    <string name="o5">commerce/ service/ self-employment</string>
+    <string name="o6">culture/advertisement/media</string>
+    <string name="o7">entertainment/art/performance</string>
+    <string name="o8">lawyer/ justice</string>
+    <string name="o9">education/training</string>
+    <string name="o10">civil service/ administration/ institution</string>
+    <string name="o11">student</string>
+    <string name="o12">others</string>
+    <string name="set_security_mailbox">set security mailbox</string>
+    <string name="mailwarmming">Warm Reminder：Setting the security mailbox,you have another way to get back password.</string>
+    <string name="enter_email">Please enter your email</string>
+    <string name="email_code">Please enter the the verification code in your email.</string>
+    <string name="binding">binding</string>
+    <string name="inquire_history">inquire history</string>
+    <string name="security">security</string>
+    <string name="reset_password">reset password</string>
+    <string name="change_mobile_number">change mobile number</string>
+    <string name="security_mailbox">security mailbox</string>
+    <string name="enter_old_password">enter the old password</string>
+    <string name="changepwdmsg">Please enter a new password combined of 6-16 letters and digits.</string>
+    <string name="repeat_new_password">repeat the new password</string>
+    <string name="sure">sure</string>
+    <string name="Current_integral">Current integral</string>
+    <string name="Integral_rule">Integral rule</string>
+    <string name="Integral_detail">Integral detail</string>
+    <string name="feed">feed</string>
+    <string name="Verification">Verification</string>
+    <string name="unlogin">You have not logged in. Please login first</string>
+    <string name="Already_sign_in">Already sign in</string>
+    <string name="Simplified_Chinese">Simplified Chinese</string>
+    <string name="Traditional_Chinese">Traditional Chinese</string>
+    <string name="English">English</string>
+    <string name="done">done</string>
+    <string name="open">open</string>
+    <string name="un_connect_device">unConnected</string>
+    <string name="bob_no_device1">Hi，You have not added your device</string>
+    <string name="bob_no_device2">go add your device in search page</string>
+    <string name="placeholder">input num</string>
+    <string name="loc">loc</string>
+    <string name="add">add</string>
+    <string name="searchingdevice">searching device...</string>
+    <string name="s">s</string>
+    <string name="min">min</string>
+    <string name="hour">hour</string>
+    <string name="device">device</string>
+    <string name="check">check</string>
+    <string name="record1">Congratulation on your use when you grow over</string>
+    <string name="record2">users，</string>
+    <string name="record3">Continuous use for</string>
+    <string name="record4">days,Cumulative number of days</string>
+    <string name="record5">Cumulative length of use</string>
+    <string name="record6">,Average length of use</string>
+    <string name="record7">days，</string>
+    <string name="jifen1">Yout have </string>
+    <string name="jifen2"> integral</string>
+    <string name="duihuan1">coupon:</string>
+    <string name="duihuan2">exchange</string>
+    <string name="duihuan3">yuan</string>
+    <string name="duihuan4">Terms of use: single order reaches</string>
+    <string name="duihuan6">integral</string>
+    <string name="duihuan7">Period of validity: from the date of exchange</string>
+    <string name="duihuan8">Effective within days</string>
+    <string name="noCoupon">go to exchange</string>
+    <string name="notused">not used</string>
+    <string name="guoqi">Expired</string>
+    <string name="used">used</string>
+    <string name="over">over</string>
+    <string name="nomber">NO：</string>
+    <string name="youhuiq1">yuan can use，Can not be superimposed use, can not enjoy other concessions, a coupon can only be used once.</string>
+    <string name="youhui2">Useful life：</string>
+    <string name="youhui3">element</string>
+    <string name="closeclock">close clock</string>
+    <string name="startclock">start clock，</string>
+    <string name="clockend">will close</string>
+
+
+</resources>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DeviceDetailActivity -->
+    <string name="unit_pt">理療單元</string>
+    <string name="unit_music">音樂</string>
+
+    <string name="dialog_title_device_no_connect">連接斷開</string>
+    <string name="dialog_msg_device_no_connect">當前藍牙設備已斷開，請重新連接！</string>
+
+    <!-- MainActivity -->
+    <string name="rb_search">搜索</string>
+    <string name="rb_setting">我的</string>
+
+    <!-- MusicDetailActivity -->
+    <string name="no_lrc">暫無歌詞</string>
+    <string name="show_lrc">顯示歌詞</string>
+    <string name="hide_lrc">隱藏歌詞</string>
+    <string name="play_single">單曲循環</string>
+    <string name="play_random">隨機播放</string>
+    <string name="play_ciecle">順序播放</string>
+
+    <!-- BOBAdapter -->
+    <string name="del">刪除</string>
+    <string name="connected">已連接</string>
+    <string name="no_connected">未連接</string>
+    <string name="dialog_title_device_delete">刪除設備</string>
+    <string name="dialog_msg_device_delete">您好，刪除之後將解除鏈接關系</string>
+    <string name="dialog_done_device_delete">確定</string>
+    <string name="dialog_cancle_device_delete">取消</string>
+
+    <!-- FragBOB -->
+    <string name="connecting">正在連接設備</string>
+    <string name="is_connect_success">連接成功！</string>
+    <string name="is_connect_failed">連接失敗，請保持設備在有效範圍後重新連接</string>
+
+    <!-- FragPt -->
+    <string name="unit_zhenjiu">針灸單元</string>
+    <string name="unit_anmo">按摩單元</string>
+    <string name="unit_liliao">理療單元</string>
+    <string name="unit_yueliao">樂療單元</string>
+    <string name="intensity">強度設置</string>
+    <string name="frequency">頻率設置</string>
+    <string name="clock">定時設置</string>
+    <string name="rb_zhenjiu">針灸</string>
+    <string name="rb_anmo">按摩</string>
+    <string name="rb_liliao">理療</string>
+    <string name="rb_yueliao">樂療</string>
+    <string name="intensity_max">已經是最高強度了</string>
+    <string name="intensity_min">已經是最低強度了</string>
+    <string name="hz_max">已經是最高頻率了</string>
+    <string name="hz_min">已經是最低頻率了</string>
+    <string name="btn_open">打開</string>
+    <string name="btn_close">關閉</string>
+
+    <!-- FragSearch -->
+    <string name="search_device">搜索設備</string>
+    <string name="search">搜索</string>
+
+    <!-- SettingActivity -->
+    <string name="setting">設置</string>
+    <string name="bluetooth">藍牙</string>
+    <string name="USB_CONNECTION_AUTO">USB產品自動連接</string>
+    <string name="style">風格</string>
+    <string name="languages">多語言</string>
+    <string name="text_size">字體大小</string>
+    <string name="connect_type">連接方式</string>
+    <string name="version">版本更新</string>
+    <string name="about">關於我們</string>
+
+    <string name="auto_on">自動</string>
+    <string name="auto_off">手動</string>
+    <string name="search_empy">您尚未添加設備</string>
+    <string name="add_search_device">請點擊左上角按鈕搜索</string>
+    <string name="personal_center">個人中心</string>
+    <string name="login">登錄</string>
+    <string name="register">註冊</string>
+    <string name="integral">積分</string>
+    <string name="coupon">優惠券</string>
+    <string name="sign">簽到</string>
+    <string name="signed">已簽到</string>
+    <string name="basic_information">基本信息</string>
+    <string name="invite_friends">邀請好友</string>
+    <string name="device_use_record">設備使用記錄</string>
+    <string name="current_operating_device_power">當前設備電量</string>
+    <string name="security_management">安全管理</string>
+    <string name="bluetooth_auto_connect">藍牙設備自動連接</string>
+    <string name="clear_cache">清除緩存</string>
+    <string name="log_out">退出登錄</string>
+    <string name="log_in">登錄</string>
+    <string name="account">賬號</string>
+    <string name="password">密碼</string>
+    <string name="forget_password">忘記密碼?</string>
+    <string name="Please_enter_your_registered_mobile_number">請輸入註冊的手機號碼</string>
+    <string name="Please_enter_your_password">請輸入密碼</string>
+    <string name="Please_enter_your_mobile_number">請輸入您的手機號碼</string>
+    <string name="verification_code">獲取驗證碼</string>
+    <string name="Please_enter_the_verification_code_in_your_message">請輸入收到的短信驗證碼</string>
+    <string name="Please_enter_the_Invitation_code_optional_fields">請輸入您朋友的邀請碼(選填)</string>
+    <string name="Warm_Reminder">溫馨提示:</string>
+    <string name="detail_warmming">填寫邀請碼，您和您的朋友均可獲得我們BOB的88積分，積分可兌換優惠券，我們的積分和優惠券會讓您驚喜不斷哦！</string>
+    <string name="agree">註冊表示同意</string>
+    <string name="bob">BOB用戶註冊協議</string>
+    <string name="Next">下壹步</string>
+    <string name="setpwd">請輸入6-16位字母和數組組合的密碼</string>
+    <string name="repeat_password">再次輸入密碼</string>
+    <string name="set_password">設置密碼</string>
+    <string name="avatar">頭像</string>
+    <string name="name">昵稱</string>
+    <string name="enter_name">請輸入昵稱</string>
+    <string name="gender">性別</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="birthday">生日</string>
+    <string name="choose_birthday">請選擇您的出生日期</string>
+    <string name="blood_group">血型</string>
+    <string name="choose_blood">請選擇您的血型</string>
+    <string name="region">地區</string>
+    <string name="choose_region">點擊選擇地址或定位</string>
+    <string name="divices">設備</string>
+    <string name="submit">提交</string>
+    <string name="take_photo">拍照</string>
+    <string name="gallary">相冊</string>
+    <string name="occupation">職業類型</string>
+    <string name="choose_occupation">點擊選擇</string>
+    <string name="o1">計算機/互聯網/通信</string>
+    <string name="o2">生產/工藝/制造</string>
+    <string name="o3">醫療/護理/制藥</string>
+    <string name="o4">金融/銀行/投資/保險</string>
+    <string name="o5">商業/服務業/個體經營</string>
+    <string name="o6">文化/廣告/傳媒</string>
+    <string name="o7">娛樂/藝術/表演</string>
+    <string name="o8">律師/法務</string>
+    <string name="o9">教育/培訓</string>
+    <string name="o10">公務員/行政/事業單位</string>
+    <string name="o11">學生</string>
+    <string name="o12">其他</string>
+    <string name="set_security_mailbox">設置密保郵箱</string>
+    <string name="mailwarmming">溫馨提示：綁定郵箱以便於您多壹個找回密碼的途徑</string>
+    <string name="enter_email">請輸入您的常用郵箱</string>
+    <string name="email_code">請輸入郵件中收到的驗證碼</string>
+    <string name="binding">綁定</string>
+    <string name="inquire_history">查詢歷史記錄</string>
+    <string name="security">安全管理</string>
+    <string name="reset_password">修改密碼</string>
+    <string name="change_mobile_number">更換手機號碼</string>
+    <string name="security_mailbox">密保郵箱</string>
+    <string name="enter_old_password">請輸入舊密碼</string>
+    <string name="changepwdmsg">請輸入6-16位字母跟數字組合的新密碼</string>
+    <string name="repeat_new_password">請再次輸入新密碼</string>
+    <string name="sure">確定</string>
+    <string name="Current_integral">當前積分</string>
+    <string name="Integral_rule">積分規則</string>
+    <string name="Integral_detail">積分明細</string>
+    <string name="feed">給我評論</string>
+    <string name="Verification">驗證</string>
+    <string name="unlogin">您尚未登錄。請先登錄</string>
+    <string name="Already_sign_in">今日已簽到</string>
+    <string name="Simplified_Chinese">簡體中文</string>
+    <string name="Traditional_Chinese">繁體中文</string>
+    <string name="English">英文</string>
+    <string name="done">完成</string>
+    <string name="open">打开</string>
+    <string name="un_connect_device">未連接設備</string>
+    <string name="bob_no_device1">親，您尚未添加設備</string>
+    <string name="bob_no_device2">速去搜索頁添加吧</string>
+    <string name="placeholder">輸入設備號</string>
+    <string name="loc">定位</string>
+    <string name="add">添加</string>
+    <string name="searchingdevice">正在寻找新的设备...</string>
+    <string name="s">秒</string>
+    <string name="min">分鐘</string>
+    <string name="hour">小時</string>
+    <string name="device">設備</string>
+
+    <string name="check">當月統計記錄</string>
+    <string name="record1">恭喜您的使用時長超過</string>
+    <string name="record2">的用戶，</string>
+    <string name="record3">連續使用天數</string>
+    <string name="record4">天，累計使用天數</string>
+    <string name="record5">累計使用時長</string>
+    <string name="record6">日平均使用時長</string>
+    <string name="record7">天，</string>
+    <string name="jifen1">您當前積分</string>
+    <string name="jifen2">積分</string>
+    <string name="duihuan1">優惠券 50 元</string>
+    <string name="duihuan2">兌換</string>
+    <string name="duihuan3">元</string>
+    <string name="duihuan4">使用條件：單筆訂單達</string>
+    <string name="duihuan6">積分</string>
+    <string name="duihuan7">有效期：自兌換之日起</string>
+    <string name="duihuan8">天内有效</string>
+    <string name="noCoupon">您當前沒有優惠券，快用積分兌換吧！</string>
+    <string name="notused">未使用</string>
+    <string name="guoqi">已過期</string>
+    <string name="used">已使用</string>
+    <string name="over">滿</string>
+    <string name="nomber">編碼：</string>
+    <string name="youhuiq1">元可使用，不可疊加使用，不可以享受別的優惠，壹張券只能使用壹次。</string>
+    <string name="youhui2">有效使用期：</string>
+    <string name="youhui3">元</string>
+    <string name="closeclock">关闭定时</string>
+    <string name="startclock">开始定时，</string>
+    <string name="clockend">后关闭</string>
+</resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/green"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/btn_back" />
+            <TextView 
+                android:id="@+id/tv_name"
+                style="@style/TxtCaption"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:text="@string/device"
+                />
+        </LinearLayout>
+
+        <LinearLayout 
+            android:layout_width="146dp"
+            android:layout_height="34dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:background="@drawable/topbar_shape"
+            >
+            <Button 
+                android:id="@+id/btn_pt"
+                android:layout_width="72dp"
+                android:layout_height="32dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_caption"
+                android:background="@drawable/topbar_shape_green"
+                android:text="@string/unit_pt"
+                />
+            <Button 
+                android:id="@+id/btn_music"
+                android:layout_width="72dp"
+                android:layout_height="32dp"
+                android:textColor="@color/green"
+                android:textSize="@dimen/txt_caption"
+                android:background="@drawable/topbar_shape"
+                android:text="@string/unit_music"
+                />
+        </LinearLayout>
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_alignParentRight="true"
+            >
+            <ImageButton 
+                android:id="@+id/ib_music_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/mucis_list_pic"
+                android:background="@color/tran"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+<FrameLayout 
+    android:id="@+id/fl_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    ></FrameLayout>
+</LinearLayout>

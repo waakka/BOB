@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">e眼按摩师</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!-- DeviceDetailActivity -->
+    <string name="unit_pt">理疗单元</string>
+    <string name="unit_music">音乐</string>
+
+    <string name="dialog_title_device_no_connect">连接断开</string>
+    <string name="dialog_msg_device_no_connect">当前蓝牙设备已断开，请重新连接！</string>
+
+    <!-- MainActivity -->
+    <string name="rb_search">搜索</string>
+    <string name="rb_setting">我的</string>
+
+    <!-- MusicDetailActivity -->
+    <string name="no_lrc">暂无歌词</string>
+    <string name="show_lrc">显示歌词</string>
+    <string name="hide_lrc">隐藏歌词</string>
+    <string name="play_single">单曲循环</string>
+    <string name="play_random">随机播放</string>
+    <string name="play_ciecle">顺序播放</string>
+
+    <!-- BOBAdapter -->
+    <string name="del">删除</string>
+    <string name="connected">已连接</string>
+    <string name="no_connected">未连接</string>
+    <string name="dialog_title_device_delete">删除设备</string>
+    <string name="dialog_msg_device_delete">您好，删除之后将解除链接关系</string>
+    <string name="dialog_done_device_delete">确定</string>
+    <string name="dialog_cancle_device_delete">取消</string>
+
+    <!-- FragBOB -->
+    <string name="connecting">正在连接设备</string>
+    <string name="is_connect_success">连接成功！</string>
+    <string name="is_connect_failed">连接失败，请保持设备在有效范围后重新连接</string>
+
+    <!-- FragPt -->
+    <string name="unit_zhenjiu">针灸单元</string>
+    <string name="unit_anmo">按摩单元</string>
+    <string name="unit_liliao">理疗单元</string>
+    <string name="unit_yueliao">乐疗单元</string>
+    <string name="intensity">强度设置</string>
+    <string name="frequency">频率设置</string>
+    <string name="clock">定时设置</string>
+    <string name="rb_zhenjiu">针灸</string>
+    <string name="rb_anmo">按摩</string>
+    <string name="rb_liliao">理疗</string>
+    <string name="rb_yueliao">乐疗</string>
+    <string name="intensity_max">已经是最高强度了</string>
+    <string name="intensity_min">已经是最低强度了</string>
+    <string name="hz_max">已经是最高频率了</string>
+    <string name="hz_min">已经是最低频率了</string>
+    <string name="btn_open">打开</string>
+    <string name="btn_close">关闭</string>
+
+    <!-- FragSearch -->
+    <string name="search_device">搜索设备</string>
+    <string name="search">搜索</string>
+
+    <!-- SettingActivity -->
+    <string name="setting">设置</string>
+    <string name="bluetooth">蓝牙</string>
+    <string name="USB_CONNECTION_AUTO">USB产品自动连接</string>
+    <string name="style">风格</string>
+    <string name="languages">多语言</string>
+    <string name="text_size">更大字体</string>
+    <string name="connect_type">连接方式</string>
+    <string name="version">版本更新</string>
+    <string name="about">关于我们</string>
+
+    <string name="auto_on">自动</string>
+    <string name="auto_off">手动</string>
+    <string name="search_empy">您尚未添加设备</string>
+    <string name="add_search_device">请点击左上角的搜索按钮进行搜索</string>
+    <string name="personal_center">个人中心</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="integral">积分</string>
+    <string name="coupon">优惠券</string>
+    <string name="sign">签到</string>
+    <string name="signed">已签到</string>
+    <string name="basic_information">基本信息</string>
+    <string name="invite_friends">邀请好友</string>
+    <string name="device_use_record">设备使用记录</string>
+    <string name="current_operating_device_power">当前设备电量</string>
+    <string name="security_management">安全管理</string>
+    <string name="bluetooth_auto_connect">蓝牙设备自动连接</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="log_out">退出登录</string>
+    <string name="log_in">立即登录</string>
+    <string name="account">账号</string>
+    <string name="password">密码</string>
+    <string name="forget_password">忘记密码?</string>
+    <string name="Please_enter_your_registered_mobile_number">请输入注册的手机号码</string>
+    <string name="Please_enter_your_password">请输入密码</string>
+    <string name="Please_enter_your_mobile_number">请输入您的手机号码</string>
+    <string name="verification_code">获取验证码</string>
+    <string name="Please_enter_the_verification_code_in_your_message">请输入收到的短信验证码</string>
+    <string name="Please_enter_the_Invitation_code_optional_fields">请输入您朋友的邀请码(选填)</string>
+    <string name="Warm_Reminder">温馨提示:</string>
+    <string name="detail_warmming">填写邀请码，您可获得30元优惠券，您的朋友也可获得200积分，积分可兑换优惠券，我们的积分和优惠券会让您惊喜不断哦！</string>
+    <string name="agree">注册表示同意</string>
+    <string name="bob">用户注册协议</string>
+    <string name="Next">下一步</string>
+    <string name="setpwd">请输入6-16位字母和数组组合的密码</string>
+    <string name="repeat_password">重复输入以上密码</string>
+    <string name="set_password">设置密码</string>
+    <string name="avatar">头像</string>
+    <string name="name">昵称</string>
+    <string name="enter_name">请输入昵称</string>
+    <string name="gender">性别</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="birthday">生日</string>
+    <string name="choose_birthday">请选择您的出生日期</string>
+    <string name="blood_group">血型</string>
+    <string name="choose_blood">请选择您的血型</string>
+    <string name="region">地区</string>
+    <string name="choose_region">点击选择地址或定位</string>
+    <string name="divices">设备</string>
+    <string name="submit">提交</string>
+    <string name="take_photo">拍照</string>
+    <string name="gallary">相册</string>
+    <string name="occupation">职业类型</string>
+    <string name="choose_occupation">点击选择</string>
+    <string name="o1">计算机/互联网/通信</string>
+    <string name="o2">生产/工艺/制造</string>
+    <string name="o3">医疗/护理/制药</string>
+    <string name="o4">金融/银行/投资/保险</string>
+    <string name="o5">商业/服务业/个体经营</string>
+    <string name="o6">文化/广告/传媒</string>
+    <string name="o7">娱乐/艺术/表演</string>
+    <string name="o8">律师/法务</string>
+    <string name="o9">教育/培训</string>
+    <string name="o10">公务员/行政/事业单位</string>
+    <string name="o11">学生</string>
+    <string name="o12">其他</string>
+    <string name="set_security_mailbox">设置密保邮箱</string>
+    <string name="mailwarmming">温馨提示：您尚未设置密保邮箱，设置后可多一个找回密码的途径</string>
+    <string name="enter_email">请输入您的常用邮箱</string>
+    <string name="email_code">请输入邮件中收到的验证码</string>
+    <string name="binding">绑定</string>
+    <string name="inquire_history">使用记录</string>
+    <string name="security">安全管理</string>
+    <string name="reset_password">修改密码</string>
+    <string name="change_mobile_number">更换手机号码</string>
+    <string name="security_mailbox">密保邮箱</string>
+    <string name="enter_old_password">请输入旧密码</string>
+    <string name="changepwdmsg">请输入6-16位字母跟数字组合的新密码</string>
+    <string name="repeat_new_password">请再次输入新密码</string>
+    <string name="sure">确定</string>
+    <string name="Current_integral">当前积分</string>
+    <string name="Integral_rule">积分规则</string>
+    <string name="Integral_detail">积分明细</string>
+    <string name="feed">意见反馈</string>
+    <string name="Verification">验证</string>
+    <string name="unlogin">您尚未登录。请先登录</string>
+    <string name="Already_sign_in">今日已签到</string>
+    <string name="Simplified_Chinese">简体中文</string>
+    <string name="Traditional_Chinese">繁体中文</string>
+    <string name="English">英文</string>
+    <string name="done">完成</string>
+    <string name="open">打开</string>
+    <string name="un_connect_device">未连接设备</string>
+    <string name="bob_no_device1">亲，您尚未添加设备</string>
+    <string name="bob_no_device2">速去搜索页添加吧</string>
+
+
+    <!-- AboutActivity -->
+
+
+
+
+
+
+
+
+</resources>
