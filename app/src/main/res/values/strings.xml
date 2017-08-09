@@ -40,17 +40,17 @@
     <string name="is_connect_failed">连接失败，请保持设备在有效范围后重新连接</string>
 
     <!-- FragPt -->
-    <string name="unit_zhenjiu">针灸单元</string>
-    <string name="unit_anmo">按摩单元</string>
-    <string name="unit_liliao">理疗单元</string>
-    <string name="unit_yueliao">乐疗单元</string>
+    <string name="unit_zhenjiu">搓揉单元</string>
+    <string name="unit_anmo">推压单元</string>
+    <string name="unit_liliao">叩击单元</string>
+    <string name="unit_yueliao">自动单元</string>
     <string name="intensity">强度设置</string>
     <string name="frequency">频率设置</string>
     <string name="clock">定时设置</string>
-    <string name="rb_zhenjiu">针灸</string>
-    <string name="rb_anmo">按摩</string>
-    <string name="rb_liliao">理疗</string>
-    <string name="rb_yueliao">乐疗</string>
+    <string name="rb_zhenjiu">搓揉</string>
+    <string name="rb_anmo">推压</string>
+    <string name="rb_liliao">叩击</string>
+    <string name="rb_yueliao">自动</string>
     <string name="intensity_max">已经是最高强度了</string>
     <string name="intensity_min">已经是最低强度了</string>
     <string name="hz_max">已经是最高频率了</string>
@@ -141,7 +141,7 @@
     <string name="o11">学生</string>
     <string name="o12">其他</string>
     <string name="set_security_mailbox">设置密保邮箱</string>
-    <string name="mailwarmming">温馨提示：您尚未设置密保邮箱，设置后可多一个找回密码的途径</string>
+    <string name="mailwarmming">您尚未设置密保邮箱，设置后可多一个找回密码的途径</string>
     <string name="enter_email">请输入您的常用邮箱</string>
     <string name="email_code">请输入邮件中收到的验证码</string>
     <string name="binding">绑定</string>
@@ -163,12 +163,49 @@
     <string name="Already_sign_in">今日已签到</string>
     <string name="Simplified_Chinese">简体中文</string>
     <string name="Traditional_Chinese">繁体中文</string>
-    <string name="English">英文</string>
+    <string name="English">English</string>
     <string name="done">完成</string>
     <string name="open">打开</string>
     <string name="un_connect_device">未连接设备</string>
     <string name="bob_no_device1">亲，您尚未添加设备</string>
     <string name="bob_no_device2">速去搜索页添加吧</string>
+    <string name="placeholder">输入设备号</string>
+    <string name="loc">定位</string>
+    <string name="add">添加</string>
+    <string name="searchingdevice">正在寻找新的设备...</string>
+    <string name="s">秒</string>
+    <string name="min">分钟</string>
+    <string name="hour">小时</string>
+    <string name="device">设备</string>
+    <string name="check">当月统计记录</string>
+    <string name="record1">恭喜您的使用时长超过</string>
+    <string name="record2">的用户，</string>
+    <string name="record3">连续使用天数</string>
+    <string name="record4">天，累计使用天数</string>
+    <string name="record5">累计使用时长</string>
+    <string name="record6">，日平均使用时长</string>
+    <string name="record7">天，</string>
+    <string name="jifen1">您当前积分</string>
+    <string name="jifen2"> 积分</string>
+    <string name="duihuan1">优惠券：</string>
+    <string name="duihuan2">兑换</string>
+    <string name="duihuan3">元</string>
+    <string name="duihuan4">使用条件：单笔订单达</string>
+    <string name="duihuan6">积分</string>
+    <string name="duihuan7">有效期：自兑换之日起</string>
+    <string name="duihuan8">天内有效</string>
+    <string name="noCoupon">您当前没有优惠券，快用积分兑换吧！</string>
+    <string name="notused">未使用</string>
+    <string name="guoqi">已过期</string>
+    <string name="used">已使用</string>
+    <string name="over">满</string>
+    <string name="nomber">编码：</string>
+    <string name="youhuiq1">元可使用，不可叠加使用，不可以享受别的优惠，一张券只能使用一次。</string>
+    <string name="youhui2">有效使用期：</string>
+    <string name="youhui3">元</string>
+    <string name="closeclock">关闭定时</string>
+    <string name="startclock">开始定时，</string>
+    <string name="clockend">后关闭</string>
 
 
     <!-- AboutActivity -->

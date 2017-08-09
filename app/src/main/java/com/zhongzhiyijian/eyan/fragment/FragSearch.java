@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -224,13 +225,15 @@ public class FragSearch extends BaseFragment {
 		@Override
 		public void onFound(BluetoothDevice device) {
 			showLog("发现新设备===" + device.getName());
-			if (findDevice(device) == null){
-				String name = device.getName();
-				name = name.toLowerCase();
-				if(!name.contains("BLE")){
-					MyDevice myDevice = new MyDevice(device.getName(),device.getAddress(), BluzDeviceFactory.ConnectionState.A2DP_DISCONNECTED);
-					devices.add(myDevice);
-					mAdapter.notifyDataSetChanged();
+			if(!TextUtils.isEmpty(device.getName())){
+				if (findDevice(device) == null){
+					String name = device.getName();
+					name = name.toLowerCase();
+					if(!name.contains("BLE")){
+						MyDevice myDevice = new MyDevice(device.getName(),device.getAddress(), BluzDeviceFactory.ConnectionState.A2DP_DISCONNECTED);
+						devices.add(myDevice);
+						mAdapter.notifyDataSetChanged();
+					}
 				}
 			}
 		}

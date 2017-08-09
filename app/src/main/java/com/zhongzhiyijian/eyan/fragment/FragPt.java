@@ -31,6 +31,8 @@ import com.zhongzhiyijian.eyan.util.MsgUtil;
 import com.zhongzhiyijian.eyan.util.TimeUtil;
 import com.zhongzhiyijian.eyan.widget.KnobView;
 
+import java.util.Arrays;
+
 import static com.baidu.location.h.a.i;
 
 
@@ -77,56 +79,19 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 	private int yueliaoTime;
 
 	private ImageButton ibS1;
-	private ImageButton ibS2;
 	private ImageButton ibS3;
-	private ImageButton ibS4;
 	private ImageButton ibS5;
-	private ImageButton ibS6;
 	private ImageButton ibS7;
-	private ImageButton ibS8;
 	private ImageButton ibS9;
-	private ImageButton ibS10;
 	private ImageButton ibS11;
 	private LinearLayout llS1;
-	private LinearLayout llS2;
 	private LinearLayout llS3;
-	private LinearLayout llS4;
 	private LinearLayout llS5;
-	private LinearLayout llS6;
 	private LinearLayout llS7;
-	private LinearLayout llS8;
 	private LinearLayout llS9;
-	private LinearLayout llS10;
 	private LinearLayout llS11;
 
-	private ImageButton ibP1;
-	private ImageButton ibP2;
-	private ImageButton ibP3;
-	private ImageButton ibP4;
-	private ImageButton ibP5;
-	private ImageButton ibP6;
-	private ImageButton ibP7;
-	private ImageButton ibP8;
-	private ImageButton ibP9;
-	private ImageButton ibP10;
-	private ImageButton ibP11;
-	private LinearLayout llP1;
-	private LinearLayout llP2;
-	private LinearLayout llP3;
-	private LinearLayout llP4;
-	private LinearLayout llP5;
-	private LinearLayout llP6;
-	private LinearLayout llP7;
-	private LinearLayout llP8;
-	private LinearLayout llP9;
-	private LinearLayout llP10;
-	private LinearLayout llP11;
 
-	private LinearLayout llFrequency;
-	private TextView tvFrequency;
-	private ImageButton ibSubtractF;
-	private ImageButton ibPlusF;
-	private int curFrequency;
 
 	private ZhenjiuThread zhenjiuThread;
 	private boolean zhenjiuIsRun = false;
@@ -202,26 +167,26 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 	private Handler firstHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
-			byte[] bytes = MsgUtil.zhenjiuMode();
+//			byte[] bytes = MsgUtil.zhenjiuMode();
 			curType = TYPE_ZHENJIU;
 			if (ptStatus.isStatusZhenJiuIsOpen()){
 				curType = TYPE_ZHENJIU;
-				bytes = MsgUtil.zhenjiuMode();
+//				bytes = MsgUtil.zhenjiuMode();
 				rbZhenjiu.performClick();
 			}
 			if (ptStatus.isStatusAnMoIsOpen()){
 				curType = TYPE_ANMO;
-				bytes = MsgUtil.anmoMode();
+//				bytes = MsgUtil.anmoMode();
 				rbAnmo.performClick();
 			}
 			if (ptStatus.isStatusLiLiaoIsOpen()){
 				curType = TYPE_LILIAO;
-				bytes = MsgUtil.liliaoMode();
+//				bytes = MsgUtil.liliaoMode();
 				rbLiliao.performClick();
 			}
 			if (ptStatus.isStatusYueLiaoIsOpen()){
 				curType = TYPE_YUELIAO;
-				bytes = MsgUtil.yueliaoMode();
+//				bytes = MsgUtil.yueliaoMode();
 				rbYueliao.performClick();
 			}
 			ptStatus.setStatusZhenJiuIsOpen(false);
@@ -236,21 +201,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 
 			reSetLayout(curType);
 
-
+			//TODO 获取设备ID
 			sengMsgToDevice(MsgUtil.getId());
-			final byte[] finalBytes = bytes;
-			new Thread(){
-				@Override
-				public void run() {
-					try {
-						sleep(500);
-						//初始化为针灸模式 默认打开上次模式
-						sengMsgToDevice(finalBytes);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}.start();
 
 
 			if(pd.isShowing()){
@@ -291,63 +243,23 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		ibSubtract = (ImageButton) view.findViewById(R.id.ib_subtract);
 
 		ibS1 = (ImageButton) view.findViewById(R.id.ib_s1);
-		ibS2 = (ImageButton) view.findViewById(R.id.ib_s2);
 		ibS3 = (ImageButton) view.findViewById(R.id.ib_s3);
-		ibS4 = (ImageButton) view.findViewById(R.id.ib_s4);
 		ibS5 = (ImageButton) view.findViewById(R.id.ib_s5);
-		ibS6 = (ImageButton) view.findViewById(R.id.ib_s6);
 		ibS7 = (ImageButton) view.findViewById(R.id.ib_s7);
-		ibS8 = (ImageButton) view.findViewById(R.id.ib_s8);
 		ibS9 = (ImageButton) view.findViewById(R.id.ib_s9);
-		ibS10 = (ImageButton) view.findViewById(R.id.ib_s10);
 		ibS11 = (ImageButton) view.findViewById(R.id.ib_s11);
 
 		llS1 = (LinearLayout) view.findViewById(R.id.ll_s1);
-		llS2 = (LinearLayout) view.findViewById(R.id.ll_s2);
 		llS3 = (LinearLayout) view.findViewById(R.id.ll_s3);
-		llS4 = (LinearLayout) view.findViewById(R.id.ll_s4);
 		llS5 = (LinearLayout) view.findViewById(R.id.ll_s5);
-		llS6 = (LinearLayout) view.findViewById(R.id.ll_s6);
 		llS7 = (LinearLayout) view.findViewById(R.id.ll_s7);
-		llS8 = (LinearLayout) view.findViewById(R.id.ll_s8);
 		llS9 = (LinearLayout) view.findViewById(R.id.ll_s9);
-		llS10 = (LinearLayout) view.findViewById(R.id.ll_s10);
 		llS11 = (LinearLayout) view.findViewById(R.id.ll_s11);
-
-		ibP1 = (ImageButton) view.findViewById(R.id.ib_p1);
-		ibP2 = (ImageButton) view.findViewById(R.id.ib_p2);
-		ibP3 = (ImageButton) view.findViewById(R.id.ib_p3);
-		ibP4 = (ImageButton) view.findViewById(R.id.ib_p4);
-		ibP5 = (ImageButton) view.findViewById(R.id.ib_p5);
-		ibP6 = (ImageButton) view.findViewById(R.id.ib_p6);
-		ibP7 = (ImageButton) view.findViewById(R.id.ib_p7);
-		ibP8 = (ImageButton) view.findViewById(R.id.ib_p8);
-		ibP9 = (ImageButton) view.findViewById(R.id.ib_p9);
-		ibP10 = (ImageButton) view.findViewById(R.id.ib_p10);
-		ibP11 = (ImageButton) view.findViewById(R.id.ib_p11);
-
-		llP1 = (LinearLayout) view.findViewById(R.id.ll_p1);
-		llP2 = (LinearLayout) view.findViewById(R.id.ll_p2);
-		llP3 = (LinearLayout) view.findViewById(R.id.ll_p3);
-		llP4 = (LinearLayout) view.findViewById(R.id.ll_p4);
-		llP5 = (LinearLayout) view.findViewById(R.id.ll_p5);
-		llP6 = (LinearLayout) view.findViewById(R.id.ll_p6);
-		llP7 = (LinearLayout) view.findViewById(R.id.ll_p7);
-		llP8 = (LinearLayout) view.findViewById(R.id.ll_p8);
-		llP9 = (LinearLayout) view.findViewById(R.id.ll_p9);
-		llP10 = (LinearLayout) view.findViewById(R.id.ll_p10);
-		llP11 = (LinearLayout) view.findViewById(R.id.ll_p11);
-
-		llFrequency = (LinearLayout) view.findViewById(R.id.ll_frequency);
-		tvFrequency = (TextView) view.findViewById(R.id.tv_frequency);
-
-		ibPlusF = (ImageButton) view.findViewById(R.id.ib_plus_f);
-		ibSubtractF = (ImageButton) view.findViewById(R.id.ib_subtract_f);
 
 		btnClock = (Button) view.findViewById(R.id.btn_clock);
 		tvTime = (TextView) view.findViewById(R.id.tv_time);
 		knobView = (KnobView) view.findViewById(R.id.knobview);
-		knobView.setMax(1800);
+		knobView.setMax(15*60+1);
 		knobView.setProgress(0);
 
 		tvClockStr = (TextView) view.findViewById(R.id.tv_clock_str);
@@ -360,36 +272,27 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		ibSubtract.setOnClickListener(this);
 
 		llS1.setOnClickListener(this);
-		llS2.setOnClickListener(this);
 		llS3.setOnClickListener(this);
-		llS4.setOnClickListener(this);
 		llS5.setOnClickListener(this);
-		llS6.setOnClickListener(this);
 		llS7.setOnClickListener(this);
-		llS8.setOnClickListener(this);
 		llS9.setOnClickListener(this);
-		llS10.setOnClickListener(this);
 		llS11.setOnClickListener(this);
-
-		llP1.setOnClickListener(this);
-		llP2.setOnClickListener(this);
-		llP3.setOnClickListener(this);
-		llP4.setOnClickListener(this);
-		llP5.setOnClickListener(this);
-		llP6.setOnClickListener(this);
-		llP7.setOnClickListener(this);
-		llP8.setOnClickListener(this);
-		llP9.setOnClickListener(this);
-		llP10.setOnClickListener(this);
-		llP11.setOnClickListener(this);
 
 		btnClock.setOnClickListener(this);
 
 		knobView.setProgressChangeListener(new KnobView.OnProgressChangeListener() {
 			@Override
 			public void onProgressChanged(boolean fromUser, int progress) {
+				tvTime.setText(progress/60 + getString(R.string.min));
+			}
+			@Override
+			public void onStartTrackingTouch(KnobView view, int progress) {
+			}
+			@Override
+			public void onStopTrackingTouch(KnobView view, int progress) {
 				time = progress;
-				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+//				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+				tvTime.setText(time/60 + getString(R.string.min));
 				switch (curType){
 					case TYPE_ZHENJIU:
 						ptStatus.setStatusZhenJiuClockTime(time);
@@ -406,17 +309,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				}
 				statusUtil.setPTStatus(mContext,ptStatus);
 			}
-			@Override
-			public void onStartTrackingTouch(KnobView view, int progress) {
-			}
-			@Override
-			public void onStopTrackingTouch(KnobView view, int progress) {
-
-			}
 		});
 
-		ibPlusF.setOnClickListener(this);
-		ibSubtractF.setOnClickListener(this);
 	}
 
 	/**
@@ -436,103 +330,70 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		switch (type) {
 			case TYPE_ZHENJIU:
 				tvType.setText(getString(R.string.unit_zhenjiu));
-				tvIntensity.setText(ptStatus.getStatusZhenJiuIntensity()+"");
-				llFrequency.setVisibility(View.GONE);
+				tvIntensity.setText(ptStatus.getStatusZhenJiuIntensity()+"  级");
 				if(ptStatus.isStatusZhenJiuIsOpen()){
 					ibTypeStatus.setImageResource(R.mipmap.tb_on);
 					ibPlus.setImageResource(R.mipmap.btn_jia_checked);
 					ibSubtract.setImageResource(R.mipmap.btn_jian_checked);
+					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
 					knobView.setTouchable(true);
 					btnClock.setClickable(true);
 				}else{
 					ibTypeStatus.setImageResource(R.mipmap.tb_off);
 					ibPlus.setImageResource(R.mipmap.btn_jia_nomal);
 					ibSubtract.setImageResource(R.mipmap.btn_jian_nomal);
+					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 					knobView.setTouchable(false);
 					btnClock.setClickable(false);
 				}
 				time = ptStatus.getStatusZhenJiuClockTime();
-				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+//				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+				tvTime.setText(time/60 + getString(R.string.min));
 				knobView.setProgress(time);
 				if(ptStatus.isStatusZhenJiuIsClock()){
 					btnClock.setText(getString(R.string.btn_close));
-					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
+//					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
 				}else{
 					btnClock.setText(getString(R.string.btn_open));
-					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
+//					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 				}
 				switch (ptStatus.getStatusZhenJiuIntensity()) {
-					case 0:
+					case 1:
 						if(ptStatus.isStatusZhenJiuIsOpen()){
 							ibS1.setImageResource(R.mipmap.y1);
 						}else{
 							ibS1.setImageResource(R.mipmap.l1);
 						}
 						break;
-					case 10:
-						if(ptStatus.isStatusZhenJiuIsOpen()){
-							ibS2.setImageResource(R.mipmap.y2);
-						}else{
-							ibS2.setImageResource(R.mipmap.l2);
-						}
-						break;
-					case 20:
+					case 2:
 						if(ptStatus.isStatusZhenJiuIsOpen()){
 							ibS3.setImageResource(R.mipmap.y3);
 						}else{
 							ibS3.setImageResource(R.mipmap.l3);
 						}
 						break;
-					case 30:
-						if(ptStatus.isStatusZhenJiuIsOpen()){
-							ibS4.setImageResource(R.mipmap.y4);
-						}else{
-							ibS4.setImageResource(R.mipmap.l4);
-						}
-						break;
-					case 40:
+					case 3:
 						if(ptStatus.isStatusZhenJiuIsOpen()){
 							ibS5.setImageResource(R.mipmap.y5);
 						}else{
 							ibS5.setImageResource(R.mipmap.l5);
 						}
 						break;
-					case 50:
-						if(ptStatus.isStatusZhenJiuIsOpen()){
-							ibS6.setImageResource(R.mipmap.y6);
-						}else{
-							ibS6.setImageResource(R.mipmap.l6);
-						}
-						break;
-					case 60:
+					case 4:
 						if(ptStatus.isStatusZhenJiuIsOpen()){
 							ibS7.setImageResource(R.mipmap.y7);
 						}else{
 							ibS7.setImageResource(R.mipmap.l7);
 						}
 						break;
-					case 70:
-						if(ptStatus.isStatusZhenJiuIsOpen()){
-							ibS8.setImageResource(R.mipmap.y8);
-						}else{
-							ibS8.setImageResource(R.mipmap.l8);
-						}
-						break;
-					case 80:
+					case 5:
 						if(ptStatus.isStatusZhenJiuIsOpen()){
 							ibS9.setImageResource(R.mipmap.y9);
 						}else{
 							ibS9.setImageResource(R.mipmap.l9);
 						}
 						break;
-					case 90:
-						if(ptStatus.isStatusZhenJiuIsOpen()){
-							ibS10.setImageResource(R.mipmap.y10);
-						}else{
-							ibS10.setImageResource(R.mipmap.l10);
-						}
-						break;
-					case 100:
+					case 6:
 						if(ptStatus.isStatusZhenJiuIsOpen()){
 							ibS11.setImageResource(R.mipmap.y11);
 						}else{
@@ -550,103 +411,70 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 //				showLog("当前状态：按摩" + (ptStatus.isStatusAnMoIsOpen() ?
 //						("打开 强度为：" + ptStatus.getStatusAnMoIntensity()):"关闭"));
 				tvType.setText(getString(R.string.unit_anmo));
-				tvIntensity.setText(ptStatus.getStatusAnMoIntensity()+"");
-				llFrequency.setVisibility(View.GONE);
+				tvIntensity.setText(ptStatus.getStatusAnMoIntensity()+"  级");
 				if(ptStatus.isStatusAnMoIsOpen()){
 					ibTypeStatus.setImageResource(R.mipmap.tb_on);
 					ibPlus.setImageResource(R.mipmap.btn_jia_checked);
 					ibSubtract.setImageResource(R.mipmap.btn_jian_checked);
+					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
 					knobView.setTouchable(true);
 					btnClock.setClickable(true);
 				}else{
 					ibTypeStatus.setImageResource(R.mipmap.tb_off);
 					ibPlus.setImageResource(R.mipmap.btn_jia_nomal);
 					ibSubtract.setImageResource(R.mipmap.btn_jian_nomal);
+					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 					knobView.setTouchable(false);
 					btnClock.setClickable(false);
 				}
 				time = ptStatus.getStatusAnMoClockTime();
-				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+//				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+				tvTime.setText(time/60 + getString(R.string.min));
 				knobView.setProgress(time);
 				if(ptStatus.isStatusAnMoIsClock()){
 					btnClock.setText(getString(R.string.btn_close));
-					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
+//					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
 				}else{
 					btnClock.setText(getString(R.string.btn_open));
-					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
+//					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 				}
 				switch (ptStatus.getStatusAnMoIntensity()) {
-					case 0:
+					case 1:
 						if(ptStatus.isStatusAnMoIsOpen()){
 							ibS1.setImageResource(R.mipmap.y1);
 						}else{
 							ibS1.setImageResource(R.mipmap.l1);
 						}
 						break;
-					case 10:
-						if(ptStatus.isStatusAnMoIsOpen()){
-							ibS2.setImageResource(R.mipmap.y2);
-						}else{
-							ibS2.setImageResource(R.mipmap.l2);
-						}
-						break;
-					case 20:
+					case 2:
 						if(ptStatus.isStatusAnMoIsOpen()){
 							ibS3.setImageResource(R.mipmap.y3);
 						}else{
 							ibS3.setImageResource(R.mipmap.l3);
 						}
 						break;
-					case 30:
-						if(ptStatus.isStatusAnMoIsOpen()){
-							ibS4.setImageResource(R.mipmap.y4);
-						}else{
-							ibS4.setImageResource(R.mipmap.l4);
-						}
-						break;
-					case 40:
+					case 3:
 						if(ptStatus.isStatusAnMoIsOpen()){
 							ibS5.setImageResource(R.mipmap.y5);
 						}else{
 							ibS5.setImageResource(R.mipmap.l5);
 						}
 						break;
-					case 50:
-						if(ptStatus.isStatusAnMoIsOpen()){
-							ibS6.setImageResource(R.mipmap.y6);
-						}else{
-							ibS6.setImageResource(R.mipmap.l6);
-						}
-						break;
-					case 60:
+					case 4:
 						if(ptStatus.isStatusAnMoIsOpen()){
 							ibS7.setImageResource(R.mipmap.y7);
 						}else{
 							ibS7.setImageResource(R.mipmap.l7);
 						}
 						break;
-					case 70:
-						if(ptStatus.isStatusAnMoIsOpen()){
-							ibS8.setImageResource(R.mipmap.y8);
-						}else{
-							ibS8.setImageResource(R.mipmap.l8);
-						}
-						break;
-					case 80:
+					case 5:
 						if(ptStatus.isStatusAnMoIsOpen()){
 							ibS9.setImageResource(R.mipmap.y9);
 						}else{
 							ibS9.setImageResource(R.mipmap.l9);
 						}
 						break;
-					case 90:
-						if(ptStatus.isStatusAnMoIsOpen()){
-							ibS10.setImageResource(R.mipmap.y10);
-						}else{
-							ibS10.setImageResource(R.mipmap.l10);
-						}
-						break;
-					case 100:
+					case 6:
 						if(ptStatus.isStatusAnMoIsOpen()){
 							ibS11.setImageResource(R.mipmap.y11);
 						}else{
@@ -664,103 +492,70 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 //				showLog("当前状态：理疗" + (ptStatus.isStatusLiLiaoIsOpen() ?
 //						("打开 强度为：" + ptStatus.getStatusLiLiaoIntensity()):"关闭"));
 				tvType.setText(getString(R.string.unit_liliao));
-				tvIntensity.setText(ptStatus.getStatusLiLiaoIntensity()+"");
-				llFrequency.setVisibility(View.GONE);
+				tvIntensity.setText(ptStatus.getStatusLiLiaoIntensity()+"  级");
 				if(ptStatus.isStatusLiLiaoIsOpen()){
 					ibTypeStatus.setImageResource(R.mipmap.tb_on);
 					ibPlus.setImageResource(R.mipmap.btn_jia_checked);
 					ibSubtract.setImageResource(R.mipmap.btn_jian_checked);
+					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
 					knobView.setTouchable(true);
 					btnClock.setClickable(true);
 				}else{
 					ibTypeStatus.setImageResource(R.mipmap.tb_off);
 					ibPlus.setImageResource(R.mipmap.btn_jia_nomal);
 					ibSubtract.setImageResource(R.mipmap.btn_jian_nomal);
+					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 					knobView.setTouchable(false);
 					btnClock.setClickable(false);
 				}
 				time = ptStatus.getStatusLiLiaoClockTime();
-				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+//				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+				tvTime.setText(time/60 + getString(R.string.min));
 				knobView.setProgress(time);
 				if(ptStatus.isStatusLiLiaoIsClock()){
 					btnClock.setText(getString(R.string.btn_close));
-					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
+//					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
 				}else{
 					btnClock.setText(getString(R.string.btn_open));
-					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
+//					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 				}
 				switch (ptStatus.getStatusLiLiaoIntensity()) {
-					case 0:
+					case 1:
 						if(ptStatus.isStatusLiLiaoIsOpen()){
 							ibS1.setImageResource(R.mipmap.y1);
 						}else{
 							ibS1.setImageResource(R.mipmap.l1);
 						}
 						break;
-					case 10:
-						if(ptStatus.isStatusLiLiaoIsOpen()){
-							ibS2.setImageResource(R.mipmap.y2);
-						}else{
-							ibS2.setImageResource(R.mipmap.l2);
-						}
-						break;
-					case 20:
+					case 2:
 						if(ptStatus.isStatusLiLiaoIsOpen()){
 							ibS3.setImageResource(R.mipmap.y3);
 						}else{
 							ibS3.setImageResource(R.mipmap.l3);
 						}
 						break;
-					case 30:
-						if(ptStatus.isStatusLiLiaoIsOpen()){
-							ibS4.setImageResource(R.mipmap.y4);
-						}else{
-							ibS4.setImageResource(R.mipmap.l4);
-						}
-						break;
-					case 40:
+					case 3:
 						if(ptStatus.isStatusLiLiaoIsOpen()){
 							ibS5.setImageResource(R.mipmap.y5);
 						}else{
 							ibS5.setImageResource(R.mipmap.l5);
 						}
 						break;
-					case 50:
-						if(ptStatus.isStatusLiLiaoIsOpen()){
-							ibS6.setImageResource(R.mipmap.y6);
-						}else{
-							ibS6.setImageResource(R.mipmap.l6);
-						}
-						break;
-					case 60:
+					case 4:
 						if(ptStatus.isStatusLiLiaoIsOpen()){
 							ibS7.setImageResource(R.mipmap.y7);
 						}else{
 							ibS7.setImageResource(R.mipmap.l7);
 						}
 						break;
-					case 70:
-						if(ptStatus.isStatusLiLiaoIsOpen()){
-							ibS8.setImageResource(R.mipmap.y8);
-						}else{
-							ibS8.setImageResource(R.mipmap.l8);
-						}
-						break;
-					case 80:
+					case 5:
 						if(ptStatus.isStatusLiLiaoIsOpen()){
 							ibS9.setImageResource(R.mipmap.y9);
 						}else{
 							ibS9.setImageResource(R.mipmap.l9);
 						}
 						break;
-					case 90:
-						if(ptStatus.isStatusLiLiaoIsOpen()){
-							ibS10.setImageResource(R.mipmap.y10);
-						}else{
-							ibS10.setImageResource(R.mipmap.l10);
-						}
-						break;
-					case 100:
+					case 6:
 						if(ptStatus.isStatusLiLiaoIsOpen()){
 							ibS11.setImageResource(R.mipmap.y11);
 						}else{
@@ -778,204 +573,75 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 //				showLog("当前状态：乐疗" + (ptStatus.isStatusYueLiaoIsOpen() ?
 //						("打开 强度为：" + ptStatus.getStatusYueLiaoIntensity() + "频率为：" + ptStatus.getStatusYueLiaoFrequency()):"关闭"));
 				tvType.setText(getString(R.string.unit_yueliao));
-				tvIntensity.setText(ptStatus.getStatusYueLiaoIntensity()+"");
-//				llFrequency.setVisibility(View.VISIBLE);
-				llFrequency.setVisibility(View.GONE);
-				curFrequency = ptStatus.getStatusYueLiaoFrequency();
-				tvFrequency.setText(curFrequency+"HZ");
+				tvIntensity.setText(ptStatus.getStatusYueLiaoIntensity()+"  级");
 				if(ptStatus.isStatusYueLiaoIsOpen()){
 					ibTypeStatus.setImageResource(R.mipmap.tb_on);
-
 					ibPlus.setImageResource(R.mipmap.btn_jia_checked);
 					ibSubtract.setImageResource(R.mipmap.btn_jian_checked);
-
-					ibPlusF.setImageResource(R.mipmap.btn_jia_checked);
-					ibSubtractF.setImageResource(R.mipmap.btn_jian_checked);
-
+					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
 					knobView.setTouchable(true);
 					btnClock.setClickable(true);
 				}else{
 					ibTypeStatus.setImageResource(R.mipmap.tb_off);
-
 					ibPlus.setImageResource(R.mipmap.btn_jia_nomal);
 					ibSubtract.setImageResource(R.mipmap.btn_jian_nomal);
-
-					ibPlusF.setImageResource(R.mipmap.btn_jia_nomal);
-					ibSubtractF.setImageResource(R.mipmap.btn_jian_nomal);
-
+					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 					knobView.setTouchable(false);
 					btnClock.setClickable(false);
 				}
 				time = ptStatus.getStatusYueLiaoClockTime();
-				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+//				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+				tvTime.setText(time/60 + getString(R.string.min));
 				knobView.setProgress(time);
 				if(ptStatus.isStatusYueLiaoIsClock()){
 					btnClock.setText(getString(R.string.btn_close));
-					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
+//					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
 				}else{
 					btnClock.setText(getString(R.string.btn_open));
-					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
+//					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 				}
 				//判断强度并高亮当前频率
 				switch (ptStatus.getStatusYueLiaoIntensity()) {
-					case 0:
+					case 1:
 						if(ptStatus.isStatusYueLiaoIsOpen()){
 							ibS1.setImageResource(R.mipmap.y1);
 						}else{
 							ibS1.setImageResource(R.mipmap.l1);
 						}
 						break;
-					case 10:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibS2.setImageResource(R.mipmap.y2);
-						}else{
-							ibS2.setImageResource(R.mipmap.l2);
-						}
-						break;
-					case 20:
+					case 2:
 						if(ptStatus.isStatusYueLiaoIsOpen()){
 							ibS3.setImageResource(R.mipmap.y3);
 						}else{
 							ibS3.setImageResource(R.mipmap.l3);
 						}
 						break;
-					case 30:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibS4.setImageResource(R.mipmap.y4);
-						}else{
-							ibS4.setImageResource(R.mipmap.l4);
-						}
-						break;
-					case 40:
+					case 3:
 						if(ptStatus.isStatusYueLiaoIsOpen()){
 							ibS5.setImageResource(R.mipmap.y5);
 						}else{
 							ibS5.setImageResource(R.mipmap.l5);
 						}
 						break;
-					case 50:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibS6.setImageResource(R.mipmap.y6);
-						}else{
-							ibS6.setImageResource(R.mipmap.l6);
-						}
-						break;
-					case 60:
+					case 4:
 						if(ptStatus.isStatusYueLiaoIsOpen()){
 							ibS7.setImageResource(R.mipmap.y7);
 						}else{
 							ibS7.setImageResource(R.mipmap.l7);
 						}
 						break;
-					case 70:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibS8.setImageResource(R.mipmap.y8);
-						}else{
-							ibS8.setImageResource(R.mipmap.l8);
-						}
-						break;
-					case 80:
+					case 5:
 						if(ptStatus.isStatusYueLiaoIsOpen()){
 							ibS9.setImageResource(R.mipmap.y9);
 						}else{
 							ibS9.setImageResource(R.mipmap.l9);
 						}
 						break;
-					case 90:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibS10.setImageResource(R.mipmap.y10);
-						}else{
-							ibS10.setImageResource(R.mipmap.l10);
-						}
-						break;
-					case 100:
+					case 6:
 						if(ptStatus.isStatusYueLiaoIsOpen()){
 							ibS11.setImageResource(R.mipmap.y11);
 						}else{
 							ibS11.setImageResource(R.mipmap.l11);
-						}
-						break;
-
-					default:
-						break;
-				}
-				//判断频率并高亮当前频率
-				switch (ptStatus.getStatusYueLiaoFrequency()) {
-					case 0:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP1.setImageResource(R.mipmap.y1);
-						}else{
-							ibP1.setImageResource(R.mipmap.l1);
-						}
-						break;
-					case 100:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP2.setImageResource(R.mipmap.y2);
-						}else{
-							ibP2.setImageResource(R.mipmap.l2);
-						}
-						break;
-					case 200:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP3.setImageResource(R.mipmap.y3);
-						}else{
-							ibP3.setImageResource(R.mipmap.l3);
-						}
-						break;
-					case 300:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP4.setImageResource(R.mipmap.y4);
-						}else{
-							ibP4.setImageResource(R.mipmap.l4);
-						}
-						break;
-					case 400:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP5.setImageResource(R.mipmap.y5);
-						}else{
-							ibP5.setImageResource(R.mipmap.l5);
-						}
-						break;
-					case 500:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP6.setImageResource(R.mipmap.y6);
-						}else{
-							ibP6.setImageResource(R.mipmap.l6);
-						}
-						break;
-					case 600:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP7.setImageResource(R.mipmap.y7);
-						}else{
-							ibP7.setImageResource(R.mipmap.l7);
-						}
-						break;
-					case 700:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP8.setImageResource(R.mipmap.y8);
-						}else{
-							ibP8.setImageResource(R.mipmap.l8);
-						}
-						break;
-					case 800:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP9.setImageResource(R.mipmap.y9);
-						}else{
-							ibP9.setImageResource(R.mipmap.l9);
-						}
-						break;
-					case 900:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP10.setImageResource(R.mipmap.y10);
-						}else{
-							ibP10.setImageResource(R.mipmap.l10);
-						}
-						break;
-					case 1000:
-						if(ptStatus.isStatusYueLiaoIsOpen()){
-							ibP11.setImageResource(R.mipmap.y11);
-						}else{
-							ibP11.setImageResource(R.mipmap.l11);
 						}
 						break;
 
@@ -994,28 +660,12 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 	 */
 		private void reSetIntensity() {
 		ibS1.setImageResource(R.mipmap.g1);
-		ibS2.setImageResource(R.mipmap.g2);
 		ibS3.setImageResource(R.mipmap.g3);
-		ibS4.setImageResource(R.mipmap.g4);
 		ibS5.setImageResource(R.mipmap.g5);
-		ibS6.setImageResource(R.mipmap.g6);
 		ibS7.setImageResource(R.mipmap.g7);
-		ibS8.setImageResource(R.mipmap.g8);
 		ibS9.setImageResource(R.mipmap.g9);
-		ibS10.setImageResource(R.mipmap.g10);
 		ibS11.setImageResource(R.mipmap.g11);
 
-		ibP1.setImageResource(R.mipmap.g1);
-		ibP2.setImageResource(R.mipmap.g2);
-		ibP3.setImageResource(R.mipmap.g3);
-		ibP4.setImageResource(R.mipmap.g4);
-		ibP5.setImageResource(R.mipmap.g5);
-		ibP6.setImageResource(R.mipmap.g6);
-		ibP7.setImageResource(R.mipmap.g7);
-		ibP8.setImageResource(R.mipmap.g8);
-		ibP9.setImageResource(R.mipmap.g9);
-		ibP10.setImageResource(R.mipmap.g10);
-		ibP11.setImageResource(R.mipmap.g11);
 	}
 
 
@@ -1055,83 +705,25 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				subtratIntensity();
 				break;
 
-			case R.id.ib_plus_f:
-
-				plusHz();
-				break;
-
-			case R.id.ib_subtract_f:
-
-				subtratHz();
-				break;
-
 			case R.id.ll_s1:
-				setIntensity(0);
-				break;
-			case R.id.ll_s2:
-				setIntensity(10);
+				setIntensity(1);
 				break;
 			case R.id.ll_s3:
-				setIntensity(20);
-				break;
-			case R.id.ll_s4:
-				setIntensity(30);
+				setIntensity(2);
 				break;
 			case R.id.ll_s5:
-				setIntensity(40);
-				break;
-			case R.id.ll_s6:
-				setIntensity(50);
+				setIntensity(3);
 				break;
 			case R.id.ll_s7:
-				setIntensity(60);
-				break;
-			case R.id.ll_s8:
-				setIntensity(70);
+				setIntensity(4);
 				break;
 			case R.id.ll_s9:
-				setIntensity(80);
-				break;
-			case R.id.ll_s10:
-				setIntensity(90);
+				setIntensity(5);
 				break;
 			case R.id.ll_s11:
-				setIntensity(100);
+				setIntensity(6);
 				break;
 
-			case R.id.ll_p1:
-				setHz(0);
-				break;
-			case R.id.ll_p2:
-				setHz(100);
-				break;
-			case R.id.ll_p3:
-				setHz(200);
-				break;
-			case R.id.ll_p4:
-				setHz(300);
-				break;
-			case R.id.ll_p5:
-				setHz(400);
-				break;
-			case R.id.ll_p6:
-				setHz(500);
-				break;
-			case R.id.ll_p7:
-				setHz(600);
-				break;
-			case R.id.ll_p8:
-				setHz(700);
-				break;
-			case R.id.ll_p9:
-				setHz(800);
-				break;
-			case R.id.ll_p10:
-				setHz(900);
-				break;
-			case R.id.ll_p11:
-				setHz(1000);
-				break;
 
 
 
@@ -1161,6 +753,10 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					if (!zhenjiuThread.isInterrupted()){
 						zhenjiuIsRun = false;
 					}
+					sengMsgToDevice(MsgUtil.closeWork("01",1));
+					Logger.e("close clock");
+					dataUtil.stopData();
+					knobView.setTouchable(true);
 				}else{
 					btnClock.setText(getString(R.string.btn_close));
 					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
@@ -1171,6 +767,11 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					zhenjiuThread = new ZhenjiuThread();
 					zhenjiuThread.start();
 					zhenjiuTime = time+1;
+					sengMsgToDevice(MsgUtil.openWork(
+							"01",ptStatus.getStatusZhenJiuIntensity(),time,MsgUtil.TYPE_ZHENJIU));
+					knobView.setTouchable(false);
+					//开始本地数据库记录数据
+					dataUtil.startData("1",ptStatus.getStatusZhenJiuIntensity(),user.getToken(),user.getSid(),"-1");
 				}
 				break;
 			case TYPE_ANMO:
@@ -1182,6 +783,10 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					if (!anmoThread.isInterrupted()){
 						anmoIsRun = false;
 					}
+					sengMsgToDevice(MsgUtil.closeWork("02",2));
+					Logger.e("close clock");
+					dataUtil.stopData();
+					knobView.setTouchable(true);
 				}else{
 					btnClock.setText(getString(R.string.btn_close));
 					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
@@ -1192,6 +797,11 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					anmoThread = new AnmoThread();
 					anmoThread.start();
 					anmoTime = time+1;
+					sengMsgToDevice(MsgUtil.openWork(
+							"02",ptStatus.getStatusAnMoIntensity(),time,MsgUtil.TYPE_ANMO));
+					knobView.setTouchable(false);
+					//开始本地数据库记录数据
+					dataUtil.startData("2",ptStatus.getStatusAnMoIntensity(),user.getToken(),user.getSid(),"-1");
 				}
 				break;
 			case TYPE_LILIAO:
@@ -1203,6 +813,10 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					if (!liliaoThread.isInterrupted()){
 						liliaoIsRun = false;
 					}
+					sengMsgToDevice(MsgUtil.closeWork("03",3));
+					Logger.e("close clock");
+					dataUtil.stopData();
+					knobView.setTouchable(true);
 				}else{
 					btnClock.setText(getString(R.string.btn_close));
 					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
@@ -1213,6 +827,11 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					liliaoThread = new LiliaoThread();
 					liliaoThread.start();
 					liliaoTime = time+1;
+					sengMsgToDevice(MsgUtil.openWork(
+							"03",ptStatus.getStatusLiLiaoIntensity(),time,MsgUtil.TYPE_LILIAO));
+					knobView.setTouchable(false);
+					//开始本地数据库记录数据
+					dataUtil.startData("3",ptStatus.getStatusLiLiaoIntensity(),user.getToken(),user.getSid(),"-1");
 				}
 				break;
 			case TYPE_YUELIAO:
@@ -1224,6 +843,10 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					if (!yueliaoThread.isInterrupted()){
 						yueliaoIsRun = false;
 					}
+					sengMsgToDevice(MsgUtil.closeWork("04",4));
+					Logger.e("close clock");
+					dataUtil.stopData();
+					knobView.setTouchable(true);
 				}else{
 					btnClock.setText(getString(R.string.btn_close));
 					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
@@ -1234,6 +857,11 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					yueliaoThread = new YueliaoThread();
 					yueliaoThread.start();
 					yueliaoTime = time+1;
+					sengMsgToDevice(MsgUtil.openWork(
+							"04",ptStatus.getStatusYueLiaoIntensity(),time,MsgUtil.TYPE_YUELIAO));
+					knobView.setTouchable(false);
+					//开始本地数据库记录数据
+					dataUtil.startData("4",ptStatus.getStatusYueLiaoIntensity(),user.getToken(),user.getSid(),"-1");
 				}
 				break;
 		}
@@ -1252,8 +880,10 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				if(ptStatus.isStatusZhenJiuIsOpen()){
 					ptStatus.setStatusZhenJiuIntensity(intensity);
 					statusUtil.setPTStatus(mContext, ptStatus);
-					sengMsgToDevice(MsgUtil.setIntensity(intensity));
-					dataUtil.changeStrength(intensity);
+					if (ptStatus.isStatusZhenJiuIsClock()){
+						sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+						dataUtil.changeStrength(intensity);
+					}
 					reSetLayout(TYPE_ZHENJIU);
 				}
 				break;
@@ -1261,8 +891,10 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				if(ptStatus.isStatusAnMoIsOpen()){
 					ptStatus.setStatusAnMoIntensity(intensity);
 					statusUtil.setPTStatus(mContext, ptStatus);
-					sengMsgToDevice(MsgUtil.setIntensity(intensity));
-					dataUtil.changeStrength(intensity);
+					if (ptStatus.isStatusAnMoIsClock()){
+						sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+						dataUtil.changeStrength(intensity);
+					}
 					reSetLayout(TYPE_ANMO);
 				}
 				break;
@@ -1270,8 +902,10 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				if(ptStatus.isStatusLiLiaoIsOpen()){
 					ptStatus.setStatusLiLiaoIntensity(intensity);
 					statusUtil.setPTStatus(mContext, ptStatus);
-					sengMsgToDevice(MsgUtil.setIntensity(intensity));
-					dataUtil.changeStrength(intensity);
+					if (ptStatus.isStatusLiLiaoIsClock()){
+						sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+						dataUtil.changeStrength(intensity);
+					}
 					reSetLayout(TYPE_LILIAO);
 				}
 				break;
@@ -1279,8 +913,10 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				if(ptStatus.isStatusYueLiaoIsOpen()){
 					ptStatus.setStatusYueLiaoIntensity(intensity);
 					statusUtil.setPTStatus(mContext, ptStatus);
-					sengMsgToDevice(MsgUtil.setIntensity(intensity));
-					dataUtil.changeStrength(intensity);
+					if (ptStatus.isStatusYueLiaoIsClock()){
+						sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+						dataUtil.changeStrength(intensity);
+					}
 					reSetLayout(TYPE_YUELIAO);
 				}
 				break;
@@ -1290,19 +926,6 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		}
 	}
 
-	/**
-	 * 设置频率
-	 * @param hz
-	 */
-	private void setHz(int hz){
-		if(ptStatus.isStatusYueLiaoIsOpen()){
-			ptStatus.setStatusYueLiaoFrequency(hz);
-			statusUtil.setPTStatus(mContext, ptStatus);
-			//设置当前频率为
-			sengMsgToDevice(MsgUtil.setFrequency(i));
-			reSetLayout(TYPE_YUELIAO);
-		}
-	}
 
 	/**
 	 * 减少强度并刷新页面
@@ -1313,14 +936,16 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 			case TYPE_ZHENJIU:
 				if(ptStatus.isStatusZhenJiuIsOpen()){
 					i = ptStatus.getStatusZhenJiuIntensity();
-					if(i == 0){
+					if(i == 1){
 						showToast(mContext.getResources().getString(R.string.intensity_min));
 					}else{
-						i -=10;
+						i -= 1;
 						ptStatus.setStatusZhenJiuIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						sengMsgToDevice(MsgUtil.setIntensity(i));
-						dataUtil.changeStrength(i);
+						if (ptStatus.isStatusZhenJiuIsClock()){
+							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+							dataUtil.changeStrength(i);
+						}
 					}
 					reSetLayout(TYPE_ZHENJIU);
 				}
@@ -1328,14 +953,16 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 			case TYPE_ANMO:
 				if(ptStatus.isStatusAnMoIsOpen()){
 					i = ptStatus.getStatusAnMoIntensity();
-					if(i == 0){
+					if(i == 1){
 						showToast(mContext.getResources().getString(R.string.intensity_min));
 					}else{
-						i -=10;
+						i -= 1;
 						ptStatus.setStatusAnMoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						sengMsgToDevice(MsgUtil.setIntensity(i));
-						dataUtil.changeStrength(i);
+						if (ptStatus.isStatusAnMoIsClock()){
+							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+							dataUtil.changeStrength(i);
+						}
 					}
 					reSetLayout(TYPE_ANMO);
 				}
@@ -1343,14 +970,16 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 			case TYPE_LILIAO:
 				if(ptStatus.isStatusLiLiaoIsOpen()){
 					i = ptStatus.getStatusLiLiaoIntensity();
-					if(i == 0){
+					if(i == 1){
 						showToast(mContext.getResources().getString(R.string.intensity_min));
 					}else{
-						i -=10;
+						i -= 1;
 						ptStatus.setStatusLiLiaoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						sengMsgToDevice(MsgUtil.setIntensity(i));
-						dataUtil.changeStrength(i);
+						if (ptStatus.isStatusLiLiaoIsClock()){
+							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+							dataUtil.changeStrength(i);
+						}
 					}
 					reSetLayout(TYPE_LILIAO);
 				}
@@ -1358,14 +987,16 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 			case TYPE_YUELIAO:
 				if(ptStatus.isStatusYueLiaoIsOpen()){
 					i = ptStatus.getStatusYueLiaoIntensity();
-					if(i == 0){
+					if(i == 1){
 						showToast(mContext.getResources().getString(R.string.intensity_min));
 					}else{
-						i -=10;
+						i -= 1;
 						ptStatus.setStatusYueLiaoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						sengMsgToDevice(MsgUtil.setIntensity(i));
-						dataUtil.changeStrength(i);
+						if (ptStatus.isStatusYueLiaoIsClock()){
+							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+							dataUtil.changeStrength(i);
+						}
 					}
 					reSetLayout(TYPE_YUELIAO);
 				}
@@ -1387,14 +1018,16 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 
 
 					i = ptStatus.getStatusZhenJiuIntensity();
-					if(i == 100){
+					if(i == 6){
 						showToast(mContext.getResources().getString(R.string.intensity_max));
 					}else{
-						i +=10;
+						i += 1;
 						ptStatus.setStatusZhenJiuIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						sengMsgToDevice(MsgUtil.setIntensity(i));
-						dataUtil.changeStrength(i);
+						if (ptStatus.isStatusZhenJiuIsClock()){
+							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+							dataUtil.changeStrength(i);
+						}
 					}
 					reSetLayout(TYPE_ZHENJIU);
 				}
@@ -1402,14 +1035,16 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 			case TYPE_ANMO:
 				if(ptStatus.isStatusAnMoIsOpen()){
 					i = ptStatus.getStatusAnMoIntensity();
-					if(i == 100){
+					if(i == 6){
 						showToast(mContext.getResources().getString(R.string.intensity_max));
 					}else{
-						i +=10;
+						i += 1;
 						ptStatus.setStatusAnMoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						sengMsgToDevice(MsgUtil.setIntensity(i));
-						dataUtil.changeStrength(i);
+						if (ptStatus.isStatusAnMoIsClock()){
+							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+							dataUtil.changeStrength(i);
+						}
 					}
 					reSetLayout(TYPE_ANMO);
 				}
@@ -1417,14 +1052,16 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 			case TYPE_LILIAO:
 				if(ptStatus.isStatusLiLiaoIsOpen()){
 					i = ptStatus.getStatusLiLiaoIntensity();
-					if(i == 100){
+					if(i == 6){
 						showToast(mContext.getResources().getString(R.string.intensity_max));
 					}else{
-						i +=10;
+						i += 1;
 						ptStatus.setStatusLiLiaoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						sengMsgToDevice(MsgUtil.setIntensity(i));
-						dataUtil.changeStrength(i);
+						if (ptStatus.isStatusLiLiaoIsClock()){
+							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+							dataUtil.changeStrength(i);
+						}
 					}
 					reSetLayout(TYPE_LILIAO);
 				}
@@ -1432,14 +1069,16 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 			case TYPE_YUELIAO:
 				if(ptStatus.isStatusYueLiaoIsOpen()){
 					i = ptStatus.getStatusYueLiaoIntensity();
-					if(i == 100){
+					if(i == 6){
 						showToast(mContext.getResources().getString(R.string.intensity_max));
 					}else{
-						i +=10;
+						i += 1;
 						ptStatus.setStatusYueLiaoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						sengMsgToDevice(MsgUtil.setIntensity(i));
-						dataUtil.changeStrength(i);
+						if (ptStatus.isStatusYueLiaoIsClock()){
+							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+							dataUtil.changeStrength(i);
+						}
 					}
 					reSetLayout(TYPE_YUELIAO);
 				}
@@ -1450,45 +1089,6 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		}
 	}
 
-	/**
-	 * 增加频率并刷新页面
-	 */
-	private void plusHz() {
-		int i ;
-		if(ptStatus.isStatusYueLiaoIsOpen()){
-			i = ptStatus.getStatusYueLiaoFrequency();
-			if(i == 1000){
-				showToast(mContext.getResources().getString(R.string.hz_max));
-			}else{
-				i +=100;
-				ptStatus.setStatusYueLiaoFrequency(i);
-				statusUtil.setPTStatus(mContext, ptStatus);
-				sengMsgToDevice(MsgUtil.setFrequency(i));
-			}
-			reSetLayout(TYPE_YUELIAO);
-		}
-
-	}
-
-	/**
-	 * 减少频率并刷新页面
-	 */
-	private void subtratHz() {
-		int i ;
-		if(ptStatus.isStatusYueLiaoIsOpen()){
-			i = ptStatus.getStatusYueLiaoFrequency();
-			if(i == 0){
-				showToast(mContext.getResources().getString(R.string.hz_min));
-			}else{
-				i -=100;
-				ptStatus.setStatusYueLiaoFrequency(i);
-				statusUtil.setPTStatus(mContext, ptStatus);
-				sengMsgToDevice(MsgUtil.setFrequency(i));
-			}
-			reSetLayout(TYPE_YUELIAO);
-		}
-
-	}
 
 
 	/**
@@ -1501,40 +1101,23 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					ibTypeStatus.setImageResource(R.mipmap.tb_off);
 					//关闭当前单元及定时
 					ptStatus.setStatusZhenJiuIsOpen(false);
-					ptStatus.setStatusZhenJiuIsClock(false);
-
 					btnClock.setText(getString(R.string.btn_open));
 					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 					//发送指令关闭当前单元
-					sengMsgToDevice(MsgUtil.closeMode());
-					Logger.e("close");
-					//关闭当前定时线程
-					if (!zhenjiuThread.isInterrupted()){
-						zhenjiuIsRun = false;
+					if(ptStatus.isStatusZhenJiuIsClock()){
+						ptStatus.setStatusZhenJiuIsClock(false);
+						sengMsgToDevice(MsgUtil.closeWork("01",1));
+						Logger.e("close");
+						//关闭当前定时线程
+						if (!zhenjiuThread.isInterrupted()){
+							zhenjiuIsRun = false;
+						}
+						dataUtil.stopData();
 					}
-					dataUtil.stopData();
 				}else{
 					ibTypeStatus.setImageResource(R.mipmap.tb_on);
-					//选中单元非当前单元时，关闭并切换为当前单元
-					if (curOnType != curType){
-						openZhenJiu();
-						curOnType = curType;
-					}else{
-						new Thread(){
-							@Override
-							public void run() {
-								try {
-									sengMsgToDevice(MsgUtil.openMode());
-									showLog("打开针灸");
-									sleep(500);
-									sengMsgToDevice(MsgUtil.setIntensity(ptStatus.getStatusZhenJiuIntensity()));
-									showLog("设置针灸强度为"+ptStatus.getStatusZhenJiuIntensity());
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-						}.start();
-					}
+					//选中单元非当前单元时，关闭其他单元
+					closeOtherMode(1);
 					//设置其他单元状态为未打开
 					ptStatus.setStatusZhenJiuIsOpen(true);
 					ptStatus.setStatusAnMoIsOpen(false);
@@ -1554,45 +1137,29 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					if (!yueliaoThread.isInterrupted()){
 						yueliaoIsRun = false;
 					}
-					dataUtil.startData("1",ptStatus.getStatusZhenJiuIntensity(),user.getToken(),user.getSid(),"-1");
 				}
-				reSetLayout(TYPE_ZHENJIU);
 				statusUtil.setPTStatus(mContext, ptStatus);
+				reSetLayout(TYPE_ZHENJIU);
 				break;
 			case TYPE_ANMO:
 				if(ptStatus.isStatusAnMoIsOpen()){
 					ibTypeStatus.setImageResource(R.mipmap.tb_off);
 					ptStatus.setStatusAnMoIsOpen(false);
-					ptStatus.setStatusAnMoIsClock(false);
 					btnClock.setText(getString(R.string.btn_open));
-					sengMsgToDevice(MsgUtil.closeMode());
-					Logger.e("close");
-					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
-					if (!anmoThread.isInterrupted()){
-						anmoIsRun = false;
+					if(ptStatus.isStatusAnMoIsClock()){
+						ptStatus.setStatusAnMoIsClock(false);
+						sengMsgToDevice(MsgUtil.closeWork("02",2));
+						Logger.e("close");
+						btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
+						if (!anmoThread.isInterrupted()){
+							anmoIsRun = false;
+						}
+						dataUtil.stopData();
 					}
-					dataUtil.stopData();
 				}else{
 					ibTypeStatus.setImageResource(R.mipmap.tb_on);
-					if (curOnType != curType){
-						openAnMo();
-						curOnType = curType;
-					}else{
-						new Thread(){
-							@Override
-							public void run() {
-								try {
-									sengMsgToDevice(MsgUtil.openMode());
-									showLog("打开按摩");
-									sleep(500);
-									sengMsgToDevice(MsgUtil.setIntensity(ptStatus.getStatusAnMoIntensity()));
-									showLog("设置按摩强度为"+ptStatus.getStatusAnMoIntensity());
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-						}.start();
-					}
+					//选中单元非当前单元时，关闭其他单元
+					closeOtherMode(2);
 					ptStatus.setStatusZhenJiuIsOpen(false);
 					ptStatus.setStatusAnMoIsOpen(true);
 					ptStatus.setStatusLiLiaoIsOpen(false);
@@ -1611,45 +1178,29 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					if (!yueliaoThread.isInterrupted()){
 						yueliaoIsRun = false;
 					}
-					dataUtil.startData("2",ptStatus.getStatusAnMoIntensity(),user.getToken(),user.getSid(),"-1");
 				}
-				reSetLayout(TYPE_ANMO);
 				statusUtil.setPTStatus(mContext, ptStatus);
+				reSetLayout(TYPE_ANMO);
 				break;
 			case TYPE_LILIAO:
 				if(ptStatus.isStatusLiLiaoIsOpen()){
 					ibTypeStatus.setImageResource(R.mipmap.tb_off);
 					ptStatus.setStatusLiLiaoIsOpen(false);
-					ptStatus.setStatusLiLiaoIsClock(false);
 					btnClock.setText(getString(R.string.btn_open));
-					sengMsgToDevice(MsgUtil.closeMode());
-					Logger.e("close");
-					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
-					if (!liliaoThread.isInterrupted()){
-						liliaoIsRun = false;
+					if(ptStatus.isStatusLiLiaoIsClock()){
+						ptStatus.setStatusLiLiaoIsClock(false);
+						sengMsgToDevice(MsgUtil.closeWork("03",3));
+						Logger.e("close");
+						btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
+						if (!liliaoThread.isInterrupted()){
+							liliaoIsRun = false;
+						}
+						dataUtil.stopData();
 					}
-					dataUtil.stopData();
 				}else{
 					ibTypeStatus.setImageResource(R.mipmap.tb_on);
-					if (curOnType != curType){
-						openLiLiao();
-						curOnType = curType;
-					}else{
-						new Thread(){
-							@Override
-							public void run() {
-								try {
-									sengMsgToDevice(MsgUtil.openMode());
-									showLog("打开理疗");
-									sleep(500);
-									sengMsgToDevice(MsgUtil.setIntensity(ptStatus.getStatusLiLiaoIntensity()));
-									showLog("设置理疗强度为"+ptStatus.getStatusLiLiaoIntensity());
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-						}.start();
-					}
+					//选中单元非当前单元时，关闭其他单元
+					closeOtherMode(3);
 					ptStatus.setStatusZhenJiuIsOpen(false);
 					ptStatus.setStatusAnMoIsOpen(false);
 					ptStatus.setStatusLiLiaoIsOpen(true);
@@ -1668,48 +1219,29 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					if (!yueliaoThread.isInterrupted()){
 						yueliaoIsRun = false;
 					}
-					dataUtil.startData("3",ptStatus.getStatusAnMoIntensity(),user.getToken(),user.getSid(),"-1");
 				}
-				reSetLayout(TYPE_LILIAO);
 				statusUtil.setPTStatus(mContext, ptStatus);
+				reSetLayout(TYPE_LILIAO);
 				break;
 			case TYPE_YUELIAO:
 				if(ptStatus.isStatusYueLiaoIsOpen()){
 					ibTypeStatus.setImageResource(R.mipmap.tb_off);
 					ptStatus.setStatusYueLiaoIsOpen(false);
-					ptStatus.setStatusYueLiaoIsClock(false);
 					btnClock.setText(getString(R.string.btn_open));
-					sengMsgToDevice(MsgUtil.closeMode());
-					Logger.e("close");
-					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
-					if (!yueliaoThread.isInterrupted()){
-						yueliaoIsRun = false;
+					if(ptStatus.isStatusYueLiaoIsClock()){
+						ptStatus.setStatusYueLiaoIsClock(false);
+						sengMsgToDevice(MsgUtil.closeWork("04",4));
+						Logger.e("close");
+						btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
+						if (!yueliaoThread.isInterrupted()){
+							yueliaoIsRun = false;
+						}
+						dataUtil.stopData();
 					}
-					dataUtil.stopData();
 				}else{
 					ibTypeStatus.setImageResource(R.mipmap.tb_on);
-					if (curOnType != curType){
-						openYueLiao();
-						curOnType = curType;
-					}else{
-						new Thread(){
-							@Override
-							public void run() {
-								try {
-									sengMsgToDevice(MsgUtil.openMode());
-									showLog("打开乐疗");
-									sleep(500);
-									sengMsgToDevice(MsgUtil.setIntensity(ptStatus.getStatusYueLiaoIntensity()));
-									showLog("设置乐疗强度为"+ptStatus.getStatusYueLiaoIntensity());
-									sleep(500);
-									sengMsgToDevice(MsgUtil.setFrequency(ptStatus.getStatusYueLiaoFrequency()));
-									showLog("设置乐疗频率为"+ptStatus.getStatusYueLiaoFrequency());
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-						}.start();
-					}
+					//选中单元非当前单元时，关闭其他单元
+					closeOtherMode(1);
 					ptStatus.setStatusZhenJiuIsOpen(false);
 					ptStatus.setStatusAnMoIsOpen(false);
 					ptStatus.setStatusLiLiaoIsOpen(false);
@@ -1728,10 +1260,9 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					if (!zhenjiuThread.isInterrupted()){
 						zhenjiuIsRun = false;
 					}
-					dataUtil.startData("4",ptStatus.getStatusAnMoIntensity(),user.getToken(),user.getSid(),"-1");
 				}
-				reSetLayout(TYPE_YUELIAO);
 				statusUtil.setPTStatus(mContext, ptStatus);
+				reSetLayout(TYPE_YUELIAO);
 				break;
 
 			default:
@@ -1774,13 +1305,15 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				knobView.setProgress(zhenjiuTime);
 				statusUtil.setPTStatus(mContext,ptStatus);
 				showToast("计时结束，停止针灸");
-				tvTime.setText("0" + getString(R.string.s));
-				sengMsgToDevice(MsgUtil.closeMode());
+				tvTime.setText("0" + getString(R.string.min));
+				sengMsgToDevice(MsgUtil.closeWork("1",1));
 				dataUtil.stopData();
 			}else{
-				ptStatus.setStatusZhenJiuClockTime(t - 1);
+				t -= 1;
+				ptStatus.setStatusZhenJiuClockTime(t);
 				statusUtil.setPTStatus(mContext,ptStatus);
-				showLog("当前时间为：" + t + "，具体为：" + TimeUtil.getStrFromInt(mContext,t));
+//				showLog("当前时间为：" + t + "，具体为：" + TimeUtil.getStrFromInt(mContext,t));
+				showLog("当前时间为：" + t + "，具体为：" + t/60 + "分钟");
 			}
 			if(curType == TYPE_ZHENJIU){
 				reSetLayout(TYPE_ZHENJIU);
@@ -1821,8 +1354,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				knobView.setProgress(anmoTime);
 				statusUtil.setPTStatus(mContext,ptStatus);
 				showToast("计时结束，停止按摩");
-				tvTime.setText("0" + getString(R.string.s));
-				sengMsgToDevice(MsgUtil.closeMode());
+				tvTime.setText("0" + getString(R.string.min));
+				sengMsgToDevice(MsgUtil.closeWork("2",2));
 				dataUtil.stopData();
 			}else{
 				ptStatus.setStatusAnMoClockTime(t - 1);
@@ -1868,8 +1401,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				knobView.setProgress(liliaoTime);
 				statusUtil.setPTStatus(mContext,ptStatus);
 				showToast("计时结束，停止理疗");
-				tvTime.setText("0" + getString(R.string.s));
-				sengMsgToDevice(MsgUtil.closeMode());
+				tvTime.setText("0" + getString(R.string.min));
+				sengMsgToDevice(MsgUtil.closeWork("3",3));
 				dataUtil.stopData();
 			}else{
 				ptStatus.setStatusLiLiaoClockTime(t - 1);
@@ -1915,8 +1448,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				knobView.setProgress(yueliaoTime);
 				statusUtil.setPTStatus(mContext,ptStatus);
 				showToast("计时结束，停止乐疗");
-				tvTime.setText("0" + getString(R.string.s));
-				sengMsgToDevice(MsgUtil.closeMode());
+				tvTime.setText("0" + getString(R.string.min));
+				sengMsgToDevice(MsgUtil.closeWork("4",4));
 				dataUtil.stopData();
 			}else{
 				ptStatus.setStatusYueLiaoClockTime(t - 1);
@@ -1932,82 +1465,6 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 	private void sengMsgToDevice(byte[] bs){
 		bluzManager.sendCustomCommand(keySend, 0, 0, bs);
 	}
-
-	private void openZhenJiu(){
-		new Thread(){
-			@Override
-			public void run() {
-				try {
-					sengMsgToDevice(MsgUtil.closeMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.zhenjiuMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.openMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.setIntensity(ptStatus.getStatusZhenJiuIntensity()));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();;
-	}
-	private void openAnMo(){
-		new Thread(){
-			@Override
-			public void run() {
-				try {
-					sengMsgToDevice(MsgUtil.closeMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.anmoMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.openMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.setIntensity(ptStatus.getStatusAnMoIntensity()));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();;
-	}
-	private void openLiLiao(){
-		new Thread(){
-			@Override
-			public void run() {
-				try {
-					sengMsgToDevice(MsgUtil.closeMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.liliaoMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.openMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.setIntensity(ptStatus.getStatusLiLiaoIntensity()));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();;
-	}
-	private void openYueLiao(){
-		new Thread(){
-			@Override
-			public void run() {
-				try {
-					sengMsgToDevice(MsgUtil.closeMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.yueliaoMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.openMode());
-					sleep(500);
-					sengMsgToDevice(MsgUtil.setIntensity(ptStatus.getStatusYueLiaoIntensity()));
-					sleep(500);
-					sengMsgToDevice(MsgUtil.setFrequency(ptStatus.getStatusYueLiaoFrequency()));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();
-	}
-
 
 	@Override
 	public void onDestroy() {
@@ -2026,10 +1483,35 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 			liliaoIsRun = false;
 		}
 
-		sengMsgToDevice(MsgUtil.closeMode());
+		//关闭当前正在运行的模式
+		closeOtherMode(0);
 		Logger.e("close");
 		dataUtil.stopData();
 
 		super.onDestroy();
 	}
+
+	private void closeOtherMode(int t){
+		if (ptStatus.isStatusZhenJiuIsOpen()){
+			if (t != TYPE_ZHENJIU){
+				sengMsgToDevice(MsgUtil.closeWork("1",1));
+			}
+		}
+		if (ptStatus.isStatusAnMoIsOpen()){
+			if (t != TYPE_ANMO){
+				sengMsgToDevice(MsgUtil.closeWork("2",2));
+			}
+		}
+		if (ptStatus.isStatusLiLiaoIsOpen()){
+			if (t != TYPE_LILIAO){
+				sengMsgToDevice(MsgUtil.closeWork("3",3));
+			}
+		}
+		if (ptStatus.isStatusYueLiaoIsOpen()){
+			if (t != TYPE_YUELIAO){
+				sengMsgToDevice(MsgUtil.closeWork("4",4));
+			}
+		}
+	}
+
 }

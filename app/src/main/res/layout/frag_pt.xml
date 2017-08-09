@@ -83,7 +83,6 @@
                         android:layout_weight="1"
                         android:orientation="horizontal"
                         android:gravity="center"
-                        android:padding="16dp"
                         >
                         <LinearLayout
                             android:id="@+id/ll_s1"
@@ -91,7 +90,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
+                            android:gravity="center|bottom"
                             >
                             <ImageButton
                                 android:id="@+id/ib_s1"
@@ -99,21 +98,12 @@
                                 android:layout_height="wrap_content"
                                 android:background="@mipmap/g1"
                                 />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_s2"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_s2"
+                            <TextView
+                                android:text="1"
+                                android:textSize="10sp"
+                                android:paddingTop="4dp"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g2"
-                                />
+                                android:layout_height="20dp" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/ll_s3"
@@ -121,7 +111,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
+                            android:gravity="center|bottom"
                             >
                             <ImageButton
                                 android:id="@+id/ib_s3"
@@ -129,21 +119,12 @@
                                 android:layout_height="wrap_content"
                                 android:background="@mipmap/g3"
                                 />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_s4"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_s4"
+                            <TextView
+                                android:text="2"
+                                android:textSize="10sp"
+                                android:paddingTop="4dp"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g4"
-                                />
+                                android:layout_height="20dp" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/ll_s5"
@@ -151,7 +132,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
+                            android:gravity="center|bottom"
                             >
                             <ImageButton
                                 android:id="@+id/ib_s5"
@@ -159,21 +140,12 @@
                                 android:layout_height="wrap_content"
                                 android:background="@mipmap/g5"
                                 />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_s6"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_s6"
+                            <TextView
+                                android:text="3"
+                                android:textSize="10sp"
+                                android:paddingTop="4dp"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g6"
-                                />
+                                android:layout_height="20dp" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/ll_s7"
@@ -181,7 +153,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
+                            android:gravity="center|bottom"
                             >
                             <ImageButton
                                 android:id="@+id/ib_s7"
@@ -189,21 +161,12 @@
                                 android:layout_height="wrap_content"
                                 android:background="@mipmap/g7"
                                 />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_s8"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_s8"
+                            <TextView
+                                android:text="4"
+                                android:textSize="10sp"
+                                android:paddingTop="4dp"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g8"
-                                />
+                                android:layout_height="20dp" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/ll_s9"
@@ -211,7 +174,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
+                            android:gravity="center|bottom"
                             >
                             <ImageButton
                                 android:id="@+id/ib_s9"
@@ -219,21 +182,12 @@
                                 android:layout_height="wrap_content"
                                 android:background="@mipmap/g9"
                                 />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_s10"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_s10"
+                            <TextView
+                                android:text="5"
+                                android:textSize="10sp"
+                                android:paddingTop="4dp"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g10"
-                                />
+                                android:layout_height="20dp" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/ll_s11"
@@ -241,7 +195,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
+                            android:gravity="center|bottom"
                             >
                             <ImageButton
                                 android:id="@+id/ib_s11"
@@ -249,243 +203,20 @@
                                 android:layout_height="wrap_content"
                                 android:background="@mipmap/g11"
                                 />
+                            <TextView
+                                android:text="6"
+                                android:textSize="10sp"
+                                android:paddingTop="4dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp" />
                         </LinearLayout>
-
                     </LinearLayout>
+
                     <ImageButton
                         android:id="@+id/ib_plus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@mipmap/btn_jia_nomal"
-                        android:background="@color/white"
-                        />
-                </LinearLayout>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/divider_gray"></LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_frequency"
-                android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:background="@color/white"
-                android:visibility="gone"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        style="@style/TxtCaption"
-                        android:text="@string/frequency"
-                        />
-                    <TextView
-                        android:id="@+id/tv_frequency"
-                        android:textSize="16sp"
-                        android:textColor="@color/orange"
-                        style="@style/TxtCaption"
-                        android:layout_alignParentRight="true"
-                        />
-                </RelativeLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    >
-                    <ImageButton
-                        android:id="@+id/ib_subtract_f"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/btn_jian_checked"
-                        android:background="@color/white"
-                        />
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:padding="16dp"
-                        >
-                        <LinearLayout
-                            android:id="@+id/ll_p1"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g1"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_p2"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g2"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_p3"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g3"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_p4"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g4"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_p5"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g5"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_p6"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g6"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_p7"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p7"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g7"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_p8"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p8"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g8"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_p9"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p9"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g9"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_p10"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p10"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g10"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/ll_p11"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical|bottom"
-                            >
-                            <ImageButton
-                                android:id="@+id/ib_p11"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/g11"
-                                />
-                        </LinearLayout>
-
-                    </LinearLayout>
-                    <ImageButton
-                        android:id="@+id/ib_plus_f"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/btn_jia_checked"
                         android:background="@color/white"
                         />
                 </LinearLayout>
@@ -556,7 +287,7 @@
         android:background="@color/divider_gray"></LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:orientation="horizontal"
         android:background="@color/white"
         >

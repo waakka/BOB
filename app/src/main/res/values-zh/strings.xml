@@ -40,17 +40,17 @@
     <string name="is_connect_failed">连接失败，请保持设备在有效范围后重新连接</string>
     
     <!-- FragPt -->
-    <string name="unit_zhenjiu">针灸单元</string>
-    <string name="unit_anmo">按摩单元</string>
-    <string name="unit_liliao">理疗单元</string>
-    <string name="unit_yueliao">乐疗单元</string>
+    <string name="unit_zhenjiu">搓揉单元</string>
+    <string name="unit_anmo">推压单元</string>
+    <string name="unit_liliao">叩击单元</string>
+    <string name="unit_yueliao">自动单元</string>
     <string name="intensity">强度设置</string>
     <string name="frequency">频率设置</string>
     <string name="clock">定时设置</string>
-    <string name="rb_zhenjiu">推压</string>
-    <string name="rb_anmo">叩击</string>
-    <string name="rb_liliao">自动</string>
-    <string name="rb_yueliao">搓揉</string>
+    <string name="rb_zhenjiu">搓揉</string>
+    <string name="rb_anmo">推压</string>
+    <string name="rb_liliao">叩击</string>
+    <string name="rb_yueliao">自动</string>
     <string name="intensity_max">已经是最高强度了</string>
     <string name="intensity_min">已经是最低强度了</string>
     <string name="hz_max">已经是最高频率了</string>

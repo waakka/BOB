@@ -54,7 +54,7 @@
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@drawable/txt_white2gray_sel</item>
-        <item name="android:textSize">@dimen/txt_caption</item>
+        <item name="android:textSize">@dimen/txt_caption_l</item>
         <item name="android:drawableTop">@drawable/icon_search_sel</item>
 
         <item name="android:background">@color/bg_bottom</item>

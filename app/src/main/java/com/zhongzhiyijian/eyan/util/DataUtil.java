@@ -78,7 +78,8 @@ public class DataUtil implements Constants{
         curUserData.setSid(curSid);
         curUserData.setEquipment_id(curEid);
         curUserData.setStart_time(System.currentTimeMillis());
-        Logger.e("开始模式:" + curUserData.getPattern() + ",强度：" + curUserData.getStrength());
+        Logger.e("开始使用记录，模式:" + curUserData.getPattern()
+                + ",强度：" + curUserData.getStrength());
         Logger.e(curUserData.toString());
         myThread = null;
         myThread = new MyThread();
