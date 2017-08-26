@@ -1,8 +1,6 @@
 package com.zhongzhiyijian.eyan.activity;
 
 import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -30,17 +28,14 @@ import android.widget.Toast;
 
 import com.actions.ibluz.factory.BluzDeviceFactory;
 import com.actions.ibluz.factory.IBluzDevice;
-import com.actions.ibluz.manager.BluzManager;
 import com.orhanobut.logger.Logger;
 import com.zhongzhiyijian.eyan.R;
 import com.zhongzhiyijian.eyan.base.BaseActivity;
 import com.zhongzhiyijian.eyan.base.Constants;
 import com.zhongzhiyijian.eyan.entity.MyDevice;
 import com.zhongzhiyijian.eyan.fragment.FragBOB;
-import com.zhongzhiyijian.eyan.fragment.FragBOB2;
 import com.zhongzhiyijian.eyan.fragment.FragSearch;
 import com.zhongzhiyijian.eyan.fragment.FragUser;
-import com.zhongzhiyijian.eyan.service.PlayMusicService;
 import com.zhongzhiyijian.eyan.util.DataUtil;
 import com.zhongzhiyijian.eyan.util.LogUtil;
 import com.zhongzhiyijian.eyan.util.ToastUtil;
@@ -68,7 +63,7 @@ public class MainActivity extends BaseActivity implements OnCheckedChangeListene
 	private RadioButton rbSetting;
 	private FragmentManager fm;
 	private FragSearch fragSearch;
-	private FragBOB2 fragBOB;
+	private FragBOB fragBOB;
 	private FragUser fragUser;
 
 	private int openType;
@@ -291,7 +286,7 @@ public class MainActivity extends BaseActivity implements OnCheckedChangeListene
 				break;
 			case 1:
 				if (fragBOB == null) {
-					fragBOB = new FragBOB2();
+					fragBOB = new FragBOB();
 					ft.add(R.id.fl_content, fragBOB);
 				} else {
 					ft.show(fragBOB);
