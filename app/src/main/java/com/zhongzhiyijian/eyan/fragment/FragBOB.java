@@ -1,13 +1,10 @@
 package com.zhongzhiyijian.eyan.fragment;
 
-import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,117 +23,119 @@ import com.zhongzhiyijian.eyan.activity.MainActivity;
 import com.zhongzhiyijian.eyan.adapter.BOBAdapter;
 import com.zhongzhiyijian.eyan.base.BaseFragment;
 import com.zhongzhiyijian.eyan.entity.MyDevice;
+import com.zhongzhiyijian.eyan.entity.SettingStatus;
+import com.zhongzhiyijian.eyan.entity.SettingStatusUtil;
+import com.zhongzhiyijian.eyan.service.PlayMusicService;
+import com.zhongzhiyijian.eyan.util.DataUtil;
 import com.zhongzhiyijian.eyan.util.XUtil;
 
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 
-	private View view;
-	private MainActivity mainActivity;
-
 	private List<MyDevice> devices;
-	private ListView mListView;
 	private BOBAdapter mAdapter;
-
+	private IBluzDevice btConnector;
+	private ListView mListView;
+	private MainActivity mainActivity;
 	private LinearLayout noDevice;
+	private View view;
 
-	private IBluzDevice mBluzDevice;
+    private SettingStatus status;
+    private SettingStatusUtil statusUtil;
 
-    private final static int MAX_RETRY_TIMES = 5;
-    private int mConnectRetryTimes;
+    private DataUtil dataUtil;
 
 
-	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.frag_bob, null);
-		mainActivity = (MainActivity) getActivity();
-		dbUtils = x.getDb(XUtil.getDaoConfig());
+		this.view = inflater.inflate(R.layout.frag_bob, null);
 
-		mBluzDevice = app.getBluzConnector();
-		
+		mainActivity = (MainActivity)getActivity();
+		dbUtils = x.getDb(XUtil.getDaoConfig());
+		btConnector = app.getBluzConnector();
+
+        statusUtil = SettingStatusUtil.getInstance();
+        status = statusUtil.getSettingStatus(mContext);
+        dataUtil = DataUtil.getInstance();
 
 		initViews();
 		initList();
 		initEvent();
-
 		return view;
 	}
 
 	private void initEvent() {
-		mBluzDevice.setOnDiscoveryListener(discoveryListener);
-		mBluzDevice.setOnConnectionListener(connectionListener);
 
 
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-				MyDevice md = devices.get(position);
-				final BluetoothDevice btDevice = btAdapter.getRemoteDevice(md.getDeviceAddress());
-				BluetoothDevice connectedDevice = mBluzDevice.getConnectedDevice();
-
-				if (connectedDevice == null){
-					Logger.e("当前无设备连接，开始连接设备");
-					mBluzDevice.connect(btDevice);
-				}else{
-					if(connectedDevice.getAddress().equals(btDevice.getAddress())){
-						Logger.e("已有连接设备，进入详情");
-						md.setState(ConnectionState.SPP_CONNECTED);
+				if(!btConnector.isEnabled()){
+					btConnector.enable();
+					showToast("蓝牙未启动，请先打开蓝牙。");
+					return;
+				}
+				MyDevice device = devices.get(position);
+				final BluetoothDevice btDevice = btAdapter.getRemoteDevice(device.getDeviceAddress());
+				BluetoothDevice connectedDevice = btConnector.getConnectedDevice();
+				if (connectedDevice != null){
+					if (connectedDevice.getAddress().equals(btDevice.getAddress())){
+						device.setState(ConnectionState.SPP_CONNECTED);
 						mAdapter.notifyDataSetChanged();
 						Intent it = new Intent(mContext,DeviceDetailActivity.class);
 						mContext.startActivity(it);
 					}else{
-						Logger.e("点击设备地址-->" + btDevice.getAddress() + ",正在连接的设备地址-->" + btDevice.getAddress());
-						mBluzDevice.disconnect(connectedDevice);
-						mBluzDevice.connect(btDevice);
+						btConnector.connect(btDevice);
 					}
+				}else{
+					btConnector.connect(btDevice);
 				}
 			}
 		});
 
 	}
 
-	private IBluzDevice.OnConnectionListener connectionListener = new IBluzDevice.OnConnectionListener() {
-		@Override
-		public void onConnected(BluetoothDevice bluetoothDevice) {
-			Logger.e("OnConnectionListener:当前蓝牙设备" + bluetoothDevice.getName() + "的连接状态为：已连接");
-		}
-
-		@Override
-		public void onDisconnected(BluetoothDevice bluetoothDevice) {
-			Logger.e("OnConnectionListener:当前蓝牙设备" + bluetoothDevice.getName() + "的连接状态为：未连接");
-		}
-	};
-
 	private IBluzDevice.OnDiscoveryListener discoveryListener  = new IBluzDevice.OnDiscoveryListener() {
 		@Override
 		public void onConnectionStateChanged(BluetoothDevice device, int state) {
-			Logger.e("OnDiscoveryListener:当前蓝牙设备" + device.getName() + "的连接状态为：" + state);
-			if (device != null){
-				MyDevice myDevice = findDevice(device);
-
-				if (state == ConnectionState.A2DP_FAILURE) {
-					state = ConnectionState.A2DP_DISCONNECTED;
-					if (!retry(device)) {
-						showToast("蓝牙连接失败，请重试");
+            Logger.e(device.getAddress() + " state = " + state);
+			if (device != null) {
+				MyDevice entry = findDevice(device);
+				if (entry == null) {
+					entry = new MyDevice(device.getName(),device.getAddress(), state);
+					devices.add(entry);
+					try {
+						if (dbUtils != null){
+							dbUtils.close();
+							dbUtils = null;
+						}
+						dbUtils = x.getDb(XUtil.getDaoConfig());
+						dbUtils.saveOrUpdate(entry);
+						if (dbUtils != null){
+							dbUtils.close();
+							dbUtils = null;
+						}
+					} catch (DbException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-				} else if (state == ConnectionState.SPP_FAILURE) {
-					state = ConnectionState.A2DP_CONNECTED;
-					if (!retry(device)) {
-						showToast("蓝牙数据连接失败，请检查设备");
-					}
+				}else{
+					entry.setState(state);
 				}
-				if (myDevice != null){
-					myDevice.setState(state);
-					mAdapter.notifyDataSetChanged();
-				}
+				entry.setState(state);
+				mAdapter.notifyDataSetChanged();
+                if (state == ConnectionState.SPP_CONNECTED){
+                    Intent it = new Intent(mContext,DeviceDetailActivity.class);
+                    mContext.startActivity(it);
+                }
 			}
 		}
 		@Override
@@ -150,30 +149,13 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 		}
 	};
 
-	private boolean retry(BluetoothDevice device) {
-		if (Build.MODEL.contains("Lenovo S939") || Build.MODEL.contains("Lenovo S898t+")) {
-			mBluzDevice.disconnect(device);
-			return true;
-		}
-		if (mConnectRetryTimes < MAX_RETRY_TIMES) {
-			Logger.e("retry:" + mConnectRetryTimes);
-			mBluzDevice.retry(device);
-			mConnectRetryTimes++;
-			return true;
-		} else {
-			mConnectRetryTimes = 0;
-			return false;
-		}
-	}
 
 
 	@Override
 	public void onResume() {
 		super.onResume();
-        mConnectRetryTimes = 0;
 		reSetData();
-		mBluzDevice.setOnDiscoveryListener(discoveryListener);
-		mBluzDevice.setOnConnectionListener(connectionListener);
+		btConnector.setOnDiscoveryListener(discoveryListener);
 	}
 	
 	@Override
@@ -187,8 +169,7 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 	
 	@Override
 	public void onPause() {
-		mBluzDevice.setOnDiscoveryListener(null);
-		mBluzDevice.setOnConnectionListener(null);
+		btConnector.setOnConnectionListener(null);
 		super.onPause();
 	}
 
@@ -200,10 +181,9 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 	}
 
 	private void initList() {
-		devices = new ArrayList<MyDevice>();
+		devices = new ArrayList<>();
 		mAdapter = new BOBAdapter(mContext, devices,this);
 		mListView.setAdapter(mAdapter);
-
 	}
 
 
@@ -220,37 +200,63 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 	}
 
 	private void reSetData(){
-//		Logger.e("刷新bob界面");
 		devices.clear();
 
-        BluetoothDevice connectedDevice = mBluzDevice.getConnectedA2dpDevice();
-        BluetoothDevice connectedDevice1 = mBluzDevice.getConnectedDevice();
+        BluetoothDevice connectedDevice = btConnector.getConnectedA2dpDevice();
+        BluetoothDevice connectedDevice1 = btConnector.getConnectedDevice();
+
+        BluetoothDevice btd = btConnector.getConnectedDevice();
 
         try {
+			if (dbUtils != null){
+				dbUtils.close();
+				dbUtils = null;
+			}
+			dbUtils = x.getDb(XUtil.getDaoConfig());
 			List<MyDevice> all = dbUtils.findAll(MyDevice.class);
 			if (all != null){
 				for (MyDevice d : all){
                     if (connectedDevice1 != null && !TextUtils.isEmpty(connectedDevice1.getAddress())){
                         if (d.getDeviceAddress().equals(connectedDevice1.getAddress())){
                             d.setState(ConnectionState.SPP_CONNECTED);
-                            mBluzDevice.retry(connectedDevice);
                         }
                     }else if (connectedDevice != null && !TextUtils.isEmpty(connectedDevice.getAddress())){
 						if (d.getDeviceAddress().equals(connectedDevice.getAddress())){
 							d.setState(ConnectionState.A2DP_CONNECTED);
-							mBluzDevice.retry(connectedDevice);
+                            if (status.isAutoConnect()){
+                                btConnector.retry(connectedDevice);
+                            }
 						}
 					}else {
                         d.setState(ConnectionState.SPP_FAILURE);
                     }
 					devices.add(d);
-					Logger.e("reSetBOB  " + d.toString());
+ 					Logger.e("重置BOB  " + d.toString());
 				}
 			}
-
+			if (dbUtils != null){
+				dbUtils.close();
+				dbUtils = null;
+			}
 		} catch (DbException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+		//判断是否有已连接设备未添加到列表
+		if (btd!= null){
+            boolean has = false;
+            for(MyDevice d : devices){
+                if(d.getDeviceAddress().equals(btd.getAddress())){
+                    has = true;
+                }
+            }
+            if (!has){
+                devices.add(new MyDevice(btd.getName(),btd.getAddress(),BluzDeviceFactory.ConnectionState.SPP_CONNECTED));
+            }
+        }
+
 		mAdapter.notifyDataSetChanged();
 
 		if (devices.size() > 0){
@@ -266,29 +272,36 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 
 
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		mBluzDevice.setOnDiscoveryListener(null);
-	}
-
-
-	@Override
 	public void deleteDevice(int deviceId) {
 		//删除设备
 
 		try {
+			if (dbUtils != null){
+				dbUtils.close();
+				dbUtils = null;
+			}
+			dbUtils = x.getDb(XUtil.getDaoConfig());
 			MyDevice byId = dbUtils.findById(MyDevice.class, deviceId);
 			if (byId != null){
-				if (byId.getState() == ConnectionState.A2DP_CONNECTED||byId.getState() == ConnectionState.SPP_CONNECTED){
+                BluetoothDevice connectedDevice = btConnector.getConnectedDevice();
+                if (connectedDevice != null && connectedDevice.getAddress().equals(byId.getDeviceAddress())){
 					//如果是连接状态则断开连接
+                    dataUtil.stopData();
+                    mainActivity.stopService(new Intent(mContext, PlayMusicService.class));
 					BluetoothDevice remoteDevice = btAdapter.getRemoteDevice(byId.getDeviceAddress());
-					mBluzDevice.disconnect(remoteDevice);
+					btConnector.disconnect(remoteDevice);
 					Intent it = new Intent("finish");
 					mContext.sendBroadcast(it);
 				}
 				dbUtils.delete(byId);
 			}
+			if (dbUtils != null){
+				dbUtils.close();
+				dbUtils = null;
+			}
 		} catch (DbException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
