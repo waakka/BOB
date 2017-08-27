@@ -36,6 +36,7 @@ import com.zhongzhiyijian.eyan.entity.MyDevice;
 import com.zhongzhiyijian.eyan.fragment.FragBOB;
 import com.zhongzhiyijian.eyan.fragment.FragSearch;
 import com.zhongzhiyijian.eyan.fragment.FragUser;
+import com.zhongzhiyijian.eyan.service.TimeService;
 import com.zhongzhiyijian.eyan.util.DataUtil;
 import com.zhongzhiyijian.eyan.util.LogUtil;
 import com.zhongzhiyijian.eyan.util.ToastUtil;
@@ -77,6 +78,8 @@ public class MainActivity extends BaseActivity implements OnCheckedChangeListene
 
 
 	private DataUtil dataUtil;
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +127,7 @@ public class MainActivity extends BaseActivity implements OnCheckedChangeListene
 		dataUtil = DataUtil.getInstance();
 		dataUtil.FindAndUpLoad();
 
+		startService(new Intent(MainActivity.this,TimeService.class));
 	}
 
 
@@ -245,6 +249,7 @@ public class MainActivity extends BaseActivity implements OnCheckedChangeListene
 
 	@Override
 	protected void onDestroy() {
+		stopService(new Intent(MainActivity.this,TimeService.class));
 		if (btConnector != null) {
 			btConnector.setOnConnectionListener(null);
 			btConnector.setOnDiscoveryListener(null);
@@ -406,6 +411,7 @@ public class MainActivity extends BaseActivity implements OnCheckedChangeListene
 			isExit = false;
 		}
 	};
+
 
 
 

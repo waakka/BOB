@@ -23,8 +23,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.actions.ibluz.factory.IBluzDevice;
-import com.actions.ibluz.manager.BluzManager;
-import com.actions.ibluz.manager.BluzManagerData;
 import com.zhongzhiyijian.eyan.R;
 import com.zhongzhiyijian.eyan.activity.DeviceDetailActivity;
 import com.zhongzhiyijian.eyan.activity.MusicDetailActivity;
@@ -72,7 +70,6 @@ public class FragMusic extends BaseFragment implements Constants {
 
 
 	private IBluzDevice iBluzDevice;
-	private BluzManager bluzManager;
 
 
 	@Override
@@ -93,7 +90,6 @@ public class FragMusic extends BaseFragment implements Constants {
 		setMusicBar();
 
 		DeviceDetailActivity mActivity = (DeviceDetailActivity)getActivity();
-		bluzManager = mActivity.getBluzManager();
 
 		initManager();
 
@@ -101,33 +97,33 @@ public class FragMusic extends BaseFragment implements Constants {
 	}
 
 	private void initManager() {
-
-		bluzManager.setOnGlobalUIChangedListener(new BluzManagerData.OnGlobalUIChangedListener() {
-			@Override
-			public void onEQChanged(int i) {
-//						showToast("EQ改变" + i);
-			}
-
-			@Override
-			public void onBatteryChanged(int battery, boolean incharge) {
-				//电量改变
-				showLog("电池电量" + battery);
-				app.devicePower = battery;
-				app.incharge = incharge;
-			}
-
-			@Override
-			public void onVolumeChanged(int i, boolean b) {
-				//音量改变
-				showLog("当前音量改变为" + i);
-				seekBar.setProgress(i);
-			}
-
-			@Override
-			public void onModeChanged(int i) {
-//						showToast("模式改变" + i);
-			}
-		});
+		//TODO 广播实现音量相关
+//		bluzManager.setOnGlobalUIChangedListener(new BluzManagerData.OnGlobalUIChangedListener() {
+//			@Override
+//			public void onEQChanged(int i) {
+////						showToast("EQ改变" + i);
+//			}
+//
+//			@Override
+//			public void onBatteryChanged(int battery, boolean incharge) {
+//				//电量改变
+//				showLog("电池电量" + battery);
+//				app.devicePower = battery;
+//				app.incharge = incharge;
+//			}
+//
+//			@Override
+//			public void onVolumeChanged(int i, boolean b) {
+//				//音量改变
+//				showLog("当前音量改变为" + i);
+//				seekBar.setProgress(i);
+//			}
+//
+//			@Override
+//			public void onModeChanged(int i) {
+////						showToast("模式改变" + i);
+//			}
+//		});
 	}
 
 
@@ -235,7 +231,8 @@ public class FragMusic extends BaseFragment implements Constants {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				showToast(progress+"");
-				bluzManager.setVolume(progress);
+				//TODO 广播实现音量相关
+//				bluzManager.setVolume(progress);
 			}
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {

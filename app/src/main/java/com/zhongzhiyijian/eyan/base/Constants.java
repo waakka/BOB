@@ -309,6 +309,21 @@ public interface Constants {
 	String VOLUME_UP = "volumeUp";
 	String VOLUME_DOWN = "volumeDown";
 
+	/**
+	 * 心跳反馈：当前工作状态
+	 */
+	int WORK_STATUS_DIANJI_OFF_GAOYA_OFF = 0;
+	int WORK_STATUS_DIANJI_ON_GAOYA_OFF = 1;
+	int WORK_STATUS_DIANJI_OFF_GAOYA_ON = 2;
+	int WORK_STATUS_DIANJI_ON_GAOYA_ON = 3;
 
+	/**
+	 * 心跳service广播
+	 */
+	String SEND_MSG_TO_DEVICE = "SEND_MSG_TO_DEVICE";
+
+	String XINTIAO_DISCONNECTED = "XINTIAO_DISCONNECTED";
+
+	String WORK_TYPE_CHANGED = "WORK_TYPE_CHANGED";
 
 }

@@ -10,6 +10,6 @@ public class LogUtil implements Constants {
 		if(!isShowLog){
 			return;
 		}
-		Log.d("TAG", msg);
+		Log.e("TAG", msg);
 	}
 }

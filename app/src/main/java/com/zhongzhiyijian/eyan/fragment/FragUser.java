@@ -14,9 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.actions.ibluz.factory.IBluzDevice;
-import com.actions.ibluz.manager.BluzManager;
-import com.actions.ibluz.manager.BluzManagerData;
 import com.orhanobut.logger.Logger;
 import com.zhongzhiyijian.eyan.R;
 import com.zhongzhiyijian.eyan.activity.AboutActivity;

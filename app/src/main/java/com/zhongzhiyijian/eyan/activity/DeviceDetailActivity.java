@@ -3,13 +3,11 @@ package com.zhongzhiyijian.eyan.activity;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,16 +22,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.actions.ibluz.factory.IBluzDevice;
-import com.actions.ibluz.manager.BluzManager;
-import com.actions.ibluz.manager.BluzManagerData;
-import com.orhanobut.logger.Logger;
 import com.zhongzhiyijian.eyan.R;
 import com.zhongzhiyijian.eyan.base.BaseActivity;
 import com.zhongzhiyijian.eyan.base.Constants;
 import com.zhongzhiyijian.eyan.fragment.FragMusic;
 import com.zhongzhiyijian.eyan.fragment.FragPt;
+import com.zhongzhiyijian.eyan.fragment.FragPtNew;
 import com.zhongzhiyijian.eyan.service.PlayMusicService;
-import com.zhongzhiyijian.eyan.util.BluetoothBoxControl;
 import com.zhongzhiyijian.eyan.util.ToastUtil;
 
 public class DeviceDetailActivity extends BaseActivity implements OnClickListener,Constants {
@@ -43,7 +38,7 @@ public class DeviceDetailActivity extends BaseActivity implements OnClickListene
 	private static final int SHOW_FRAG_MUSIC = 102;
 
 	private FragmentManager fm;
-	private FragPt fragPt;
+	private FragPtNew fragPt;
 	private FragMusic fragMusic;
 
 	private LinearLayout back;
@@ -60,12 +55,8 @@ public class DeviceDetailActivity extends BaseActivity implements OnClickListene
 
 	protected SharedPreferences sp;
 
-	private BluzManager bluzManager;
 
 	private IBluzDevice btConnector;
-
-	private int keySend;
-	private int keyAnswer;
 
 
 	@Override
@@ -108,12 +99,12 @@ public class DeviceDetailActivity extends BaseActivity implements OnClickListene
 					finish();
 				}
 			});
-			initManager();
 		}
 
 		IntentFilter filter = new IntentFilter();
 
 		filter.addAction("finish");
+		filter.addAction(XINTIAO_DISCONNECTED);
 
 		registerReceiver(mFinishReceiver, filter);
 
@@ -121,74 +112,9 @@ public class DeviceDetailActivity extends BaseActivity implements OnClickListene
 
 	}
 
-	public BluzManager getBluzManager(){
-		return bluzManager;
-	};
 
-	private void initManager() {
-		//用户自定义命令; 以查询类命令为例, id和参数可根据实际情况配置A
-		keySend = BluzManager.buildKey(BluzManagerData.CommandType.QUE, 0x81);
-		keyAnswer = BluzManager.buildKey(BluzManagerData.CommandType.ANS, 0x81);
 
-		btConnector = app.getBluzConnector();
-		bluzManager = new BluzManager(mContext, btConnector, new BluzManagerData.OnManagerReadyListener() {
-			@Override
-			public void onReady() {
 
-//				bluzManager.setVolume(curBluzVolume);
-
-				bluzManager.setOnCustomCommandListener(new BluzManagerData.OnCustomCommandListener() {
-					@Override
-					public void onReady(int what, int arg1, int arg2, byte[] arg3) {
-						if (what == keyAnswer){
-							String result = printHexString(arg3);
-
-							showToast("收到蓝牙反馈>>> what = "+ what +" arg1 = " + arg1 + " arg2 = " + arg2 + " arg3 = " + result);
-							Logger.e("收到蓝牙反馈>>> what = "+ what +" arg1 = " + arg1 + " arg2 = " + arg2 + " arg3 = " + result);
-							//收到电量后存储到app并通知设置界面更改数据
-						}
-					}
-				});
-				bluzManager.setOnGlobalUIChangedListener(new BluzManagerData.OnGlobalUIChangedListener() {
-					@Override
-					public void onEQChanged(int i) {
-//						showToast("EQ改变" + i);
-					}
-
-					@Override
-					public void onBatteryChanged(int battery, boolean incharge) {
-						//电量改变
-						showLog("电池电量" + battery);
-						app.devicePower = battery;
-						app.incharge = incharge;
-					}
-
-					@Override
-					public void onVolumeChanged(int i, boolean b) {
-						//音量改变
-					}
-
-					@Override
-					public void onModeChanged(int i) {
-//						showToast("模式改变" + i);
-					}
-				});
-			}
-		});
-
-	}
-
-	public String printHexString( byte[] b) {
-		String result = "";
-		for (int i = 0; i < b.length; i++) {
-			String hex = Integer.toHexString(b[i] & 0xFF);
-			if (hex.length() == 1) {
-				hex = '0' + hex;
-			}
-			result += hex.toUpperCase()+" ";
-		}
-		return result;
-	}
 
 
 
@@ -204,23 +130,20 @@ public class DeviceDetailActivity extends BaseActivity implements OnClickListene
 	protected void onDestroy() {
 		unregisterReceiver(mFinishReceiver);
 		stopService(new Intent(mContext, PlayMusicService.class));
-		if (bluzManager != null){
-			bluzManager.setOnCustomCommandListener(null);
-			bluzManager.setOnGlobalUIChangedListener(null);
-			bluzManager.release();
-			bluzManager = null;
-		}
 		super.onDestroy();
 	}
 
 	private BroadcastReceiver mFinishReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if("finish".equals(intent.getAction())) {
+			String action = intent.getAction();
+			if("finish".equals(action)) {
 				Log.e("#########", "I am " + getLocalClassName()
 						+ ",now finishing myself...");
 				finish();
-			}
+			}else if(XINTIAO_DISCONNECTED.equals(action)){
+                finish();
+            }
 		}
 	};
 
@@ -241,7 +164,7 @@ public class DeviceDetailActivity extends BaseActivity implements OnClickListene
 		switch (position) {
 			case SHOW_FRAG_PT:
 				if(fragPt == null){
-					fragPt = new FragPt();
+					fragPt = new FragPtNew();
 					ft.add(R.id.fl_content, fragPt);
 				}else{
 					ft.show(fragPt);
@@ -334,6 +257,9 @@ public class DeviceDetailActivity extends BaseActivity implements OnClickListene
 		Intent intent = new Intent(mContext,MainActivity.class);
 		startActivity(intent);
 	}
+
+
+
 
 
 }

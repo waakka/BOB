@@ -1,13 +1,11 @@
 package com.zhongzhiyijian.eyan.activity;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,9 +17,6 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.actions.ibluz.factory.IBluzDevice;
-import com.actions.ibluz.manager.BluzManager;
-import com.actions.ibluz.manager.BluzManagerData;
 import com.orhanobut.logger.Logger;
 import com.zhongzhiyijian.eyan.R;
 import com.zhongzhiyijian.eyan.base.BaseActivity;
@@ -70,16 +65,7 @@ public class MusicDetailActivity extends BaseActivity implements OnClickListener
 	private int playMode;
 
 
-	private IBluzDevice iBluzDevice;
-	private BluzManager bluzManager;
 
-	private AudioManager audioManager;
-	private ComponentName name;
-	private int maxVolume;
-	private int curVolume;
-	private final int maxBluzVolume = 31;
-	private int curBluzVolume;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -119,25 +105,6 @@ public class MusicDetailActivity extends BaseActivity implements OnClickListener
 			ibPlayMode.setImageResource(R.mipmap.play_model_randem);
 		}
 
-//		iBluzDevice = app.getBluzConnector();
-//		if (iBluzDevice != null){
-//			iBluzDevice.setOnConnectionListener(new IBluzDevice.OnConnectionListener() {
-//				@Override
-//				public void onConnected(BluetoothDevice bluetoothDevice) {
-//				}
-//				@Override
-//				public void onDisconnected(BluetoothDevice bluetoothDevice) {
-//					app.isDeviceConnection = false;
-//					ToastUtil.showToast(mContext,"当前设备断开连接！");
-//					finish();
-//				}
-//			});
-//			audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-//			maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-//			curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-//			curBluzVolume = curVolume*maxBluzVolume/maxVolume;
-//			initManager();
-//		}
 		IntentFilter it = new IntentFilter();
 		it.addAction(Constants.MusicPlayControl.SERVICECMD);
 		it.addAction(Constants.MusicPlayControl.TOGGLEPAUSE_ACTION);
@@ -147,37 +114,6 @@ public class MusicDetailActivity extends BaseActivity implements OnClickListener
 		registerReceiver(BlueToothReceiver, it);
 	}
 
-	private void initManager() {
-
-		bluzManager = new BluzManager(mContext, iBluzDevice, new BluzManagerData.OnManagerReadyListener() {
-			@Override
-			public void onReady() {
-				bluzManager.setOnGlobalUIChangedListener(new BluzManagerData.OnGlobalUIChangedListener() {
-					@Override
-					public void onEQChanged(int i) {
-					}
-					@Override
-					public void onBatteryChanged(int battery, boolean incharge) {
-						//电量改变
-						showLog("电池电量" + battery);
-						app.devicePower = battery;
-						app.incharge = incharge;
-					}
-					@Override
-					public void onVolumeChanged(int i, boolean b) {
-						//音量改变
-						curBluzVolume = i;
-						curVolume = curBluzVolume*maxVolume/maxBluzVolume;
-						audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,curVolume,AudioManager.FLAG_SHOW_UI);
-						showToast("音量改变" + i);
-					}
-					@Override
-					public void onModeChanged(int i) {
-					}
-				});
-			}
-		});
-	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -306,6 +242,7 @@ public class MusicDetailActivity extends BaseActivity implements OnClickListener
 		filter.addAction(SERVICE_PLAYER_PLAY);
 		filter.addAction(SERVICE_PLAYER_PAUSE);
 		filter.addAction(SERVICE_UPDATE_PROGRESS);
+		filter.addAction(XINTIAO_DISCONNECTED);
 		// 注册广播接收者
 		registerReceiver(musicReceiver, filter);
 	}
@@ -353,7 +290,10 @@ public class MusicDetailActivity extends BaseActivity implements OnClickListener
 				tvCurTime2.setText(curTime);
 				tvTolTime2.setText(totleTime);
 				sbProgress2.setProgress(progress);
-			}
+			}else if(XINTIAO_DISCONNECTED.equals(action)){
+                //心跳3次无返回值，按摩板断开连接，结束工作界面
+                finish();
+            }
 		}
 		
 	}

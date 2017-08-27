@@ -2,6 +2,10 @@ package com.zhongzhiyijian.eyan.fragment;
 
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,8 +21,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.actions.ibluz.manager.BluzManager;
-import com.actions.ibluz.manager.BluzManagerData;
 import com.orhanobut.logger.Logger;
 import com.zhongzhiyijian.eyan.R;
 import com.zhongzhiyijian.eyan.activity.DeviceDetailActivity;
@@ -30,10 +32,6 @@ import com.zhongzhiyijian.eyan.util.DataUtil;
 import com.zhongzhiyijian.eyan.util.MsgUtil;
 import com.zhongzhiyijian.eyan.util.TimeUtil;
 import com.zhongzhiyijian.eyan.widget.KnobView;
-
-import java.util.Arrays;
-
-import static com.baidu.location.h.a.i;
 
 
 public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnClickListener{
@@ -51,10 +49,6 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 	 * 当前选中的type
 	 */
 	private int curType;
-	/**
-	 * 当前正在工作的type
-	 */
-	private int curOnType = 0;
 
 	private RadioGroup rgBottom;
 	private RadioButton rbZhenjiu;
@@ -104,9 +98,6 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 
 
 
-	private BluzManager bluzManager;
-	private int keySend;
-	private int keyAnswer;
 
 	private DataUtil dataUtil;
 
@@ -116,6 +107,10 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 
 
 	private ProgressDialog pd;
+
+
+    private InnerReceiver receiver;
+    private IntentFilter filter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,90 +123,129 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		Logger.e("ptStatus = " + ptStatus.toString());
 		initView();
 		initEvent();
-		DeviceDetailActivity mActivity = (DeviceDetailActivity)getActivity();
-		bluzManager = mActivity.getBluzManager();
-		keySend = BluzManager.buildKey(BluzManagerData.CommandType.QUE, 0x81);
-		keyAnswer = BluzManager.buildKey(BluzManagerData.CommandType.ANS, 0x81);
 
 		zhenjiuThread = new ZhenjiuThread();
 		anmoThread = new AnmoThread();
 		liliaoThread = new LiliaoThread();
 		yueliaoThread = new YueliaoThread();
 
-		getHistory();
-
 		dataUtil = DataUtil.getInstance();
+
+
+        initReceiver();
 
 		return view;
 	}
 
+    private void initReceiver() {
+        receiver = new InnerReceiver();
+        filter = new IntentFilter();
+        filter.addAction(WORK_TYPE_CHANGED);
+        getActivity().registerReceiver(receiver,filter);
+    }
 
-	private void getHistory(){
-		pd = new ProgressDialog(mContext);
-		pd.setMessage("loading");
-		pd.show();
-		Logger.e("show pd");
-		new Thread(){
-			@Override
-			public void run() {
-				try {
-					sleep(500);
-					firstHandler.sendEmptyMessage(0);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();
+
+    private class InnerReceiver extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(WORK_TYPE_CHANGED.equals(action)){
+                //工作状态改变
+                resetData();
+                String type = intent.getStringExtra("type");
+                int qiangdu = intent.getIntExtra("qiangdu", 0);
+                int time = intent.getIntExtra("time", 0);
+                if ("1".equals(type)){
+                    //工作界面：搓揉  工作状态：关闭
+                    curType = TYPE_ZHENJIU;
+                    ptStatus.setStatusZhenJiuIsOpen(true);
+                    ptStatus.setStatusZhenJiuClockTime(time);
+                    ptStatus.setStatusZhenJiuIntensity(qiangdu);
+                    ptStatus.setStatusZhenJiuIsClock(false);
+                    rbZhenjiu.performClick();
+                }else if("f1".equals(type)){
+                    //工作界面：搓揉  工作状态：打开
+                    curType = TYPE_ZHENJIU;
+                    ptStatus.setStatusZhenJiuIsOpen(true);
+                    ptStatus.setStatusZhenJiuClockTime(time);
+                    ptStatus.setStatusZhenJiuIntensity(qiangdu);
+                    ptStatus.setStatusZhenJiuIsClock(true);
+                    rbZhenjiu.performClick();
+                }else if ("2".equals(type)){
+                    //工作界面：推压  工作状态：关闭
+                    curType = TYPE_ANMO;
+                    ptStatus.setStatusAnMoIsOpen(true);
+                    ptStatus.setStatusAnMoClockTime(time);
+                    ptStatus.setStatusAnMoIntensity(qiangdu);
+                    ptStatus.setStatusAnMoIsClock(false);
+                    rbAnmo.performClick();
+                }else if("f2".equals(type)){
+                    //工作界面：推压  工作状态：打开
+                    curType = TYPE_ANMO;
+                    ptStatus.setStatusAnMoIsOpen(true);
+                    ptStatus.setStatusAnMoClockTime(time);
+                    ptStatus.setStatusAnMoIntensity(qiangdu);
+                    ptStatus.setStatusAnMoIsClock(true);
+                    rbAnmo.performClick();
+                }else if ("3".equals(type)){
+                    //工作界面：叩击  工作状态：关闭
+                    curType = TYPE_LILIAO;
+                    ptStatus.setStatusLiLiaoIsOpen(true);
+                    ptStatus.setStatusLiLiaoClockTime(time);
+                    ptStatus.setStatusLiLiaoIntensity(qiangdu);
+                    ptStatus.setStatusLiLiaoIsClock(false);
+                    rbLiliao.performClick();
+                }else if("f3".equals(type)){
+                    //工作界面：叩击  工作状态：打开
+                    curType = TYPE_LILIAO;
+                    ptStatus.setStatusLiLiaoIsOpen(true);
+                    ptStatus.setStatusLiLiaoClockTime(time);
+                    ptStatus.setStatusLiLiaoIntensity(qiangdu);
+                    ptStatus.setStatusLiLiaoIsClock(true);
+                    rbLiliao.performClick();
+                }else if ("4".equals(type)){
+                    //工作界面：自动  工作状态：关闭
+                    curType = TYPE_YUELIAO;
+                    ptStatus.setStatusYueLiaoIsOpen(true);
+                    ptStatus.setStatusYueLiaoClockTime(time);
+                    ptStatus.setStatusYueLiaoIntensity(qiangdu);
+                    ptStatus.setStatusYueLiaoIsClock(false);
+                    rbYueliao.performClick();
+                }else if("f4".equals(type)){
+                    //工作界面：自动  工作状态：打开
+                    curType = TYPE_YUELIAO;
+                    ptStatus.setStatusYueLiaoIsOpen(true);
+                    ptStatus.setStatusYueLiaoClockTime(time);
+                    ptStatus.setStatusYueLiaoIntensity(qiangdu);
+                    ptStatus.setStatusYueLiaoIsClock(true);
+                    rbYueliao.performClick();
+                }
+                statusUtil.setPTStatus(mContext,ptStatus);
+                //更新界面
+                reSetLayout(curType);
+            }
+        }
 	}
 
-	private Handler firstHandler = new Handler(){
-		@Override
-		public void handleMessage(Message msg) {
-//			byte[] bytes = MsgUtil.zhenjiuMode();
-			curType = TYPE_ZHENJIU;
-			if (ptStatus.isStatusZhenJiuIsOpen()){
-				curType = TYPE_ZHENJIU;
-//				bytes = MsgUtil.zhenjiuMode();
-				rbZhenjiu.performClick();
-			}
-			if (ptStatus.isStatusAnMoIsOpen()){
-				curType = TYPE_ANMO;
-//				bytes = MsgUtil.anmoMode();
-				rbAnmo.performClick();
-			}
-			if (ptStatus.isStatusLiLiaoIsOpen()){
-				curType = TYPE_LILIAO;
-//				bytes = MsgUtil.liliaoMode();
-				rbLiliao.performClick();
-			}
-			if (ptStatus.isStatusYueLiaoIsOpen()){
-				curType = TYPE_YUELIAO;
-//				bytes = MsgUtil.yueliaoMode();
-				rbYueliao.performClick();
-			}
-			ptStatus.setStatusZhenJiuIsOpen(false);
-			ptStatus.setStatusAnMoIsOpen(false);
-			ptStatus.setStatusLiLiaoIsOpen(false);
-			ptStatus.setStatusYueLiaoIsOpen(false);
-
-			ptStatus.setStatusZhenJiuIsClock(false);
-			ptStatus.setStatusAnMoIsClock(false);
-			ptStatus.setStatusLiLiaoIsClock(false);
-			ptStatus.setStatusYueLiaoIsClock(false);
-
-			reSetLayout(curType);
-
-			//TODO 获取设备ID
-			sengMsgToDevice(MsgUtil.getId());
 
 
-			if(pd.isShowing()){
-				pd.dismiss();
-			}
-		}
-	};
+    /**
+     * 所有状态及计时归零
+     */
+    private void resetData() {
+        ptStatus.setStatusZhenJiuIsOpen(false);
+        ptStatus.setStatusAnMoIsOpen(false);
+        ptStatus.setStatusLiLiaoIsOpen(false);
+        ptStatus.setStatusYueLiaoIsOpen(false);
 
-	@Override
+        ptStatus.setStatusZhenJiuIsClock(false);
+        ptStatus.setStatusAnMoIsClock(false);
+        ptStatus.setStatusLiLiaoIsClock(false);
+        ptStatus.setStatusYueLiaoIsClock(false);
+    }
+
+    @Override
 	public void onResume() {
 		super.onResume();
 		userPersist = UserPersist.getInstance();
@@ -223,8 +257,15 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		rbAnmo.setText(getString(R.string.rb_anmo));
 		rbLiliao.setText(getString(R.string.rb_liliao));
 		rbYueliao.setText(getString(R.string.rb_yueliao));
-		//刷新当前界面
-//		reSetLayout(curType);
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //查询当前工作状态
+        sengMsgToDevice(MsgUtil.getCurWorkType());
 
 	}
 
@@ -283,7 +324,7 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		knobView.setProgressChangeListener(new KnobView.OnProgressChangeListener() {
 			@Override
 			public void onProgressChanged(boolean fromUser, int progress) {
-				tvTime.setText(progress/60 + getString(R.string.min));
+				tvTime.setText(TimeUtil.getStrFromInt(mContext,progress));
 			}
 			@Override
 			public void onStartTrackingTouch(KnobView view, int progress) {
@@ -291,8 +332,7 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 			@Override
 			public void onStopTrackingTouch(KnobView view, int progress) {
 				time = progress;
-//				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
-				tvTime.setText(time/60 + getString(R.string.min));
+				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
 				switch (curType){
 					case TYPE_ZHENJIU:
 						ptStatus.setStatusZhenJiuClockTime(time);
@@ -345,18 +385,12 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 					knobView.setTouchable(false);
 					btnClock.setClickable(false);
+                    btnClock.setText("关闭");
 				}
 				time = ptStatus.getStatusZhenJiuClockTime();
-//				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
-				tvTime.setText(time/60 + getString(R.string.min));
+				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+//				tvTime.setText(time/60 + getString(R.string.min));
 				knobView.setProgress(time);
-				if(ptStatus.isStatusZhenJiuIsClock()){
-					btnClock.setText(getString(R.string.btn_close));
-//					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
-				}else{
-					btnClock.setText(getString(R.string.btn_open));
-//					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
-				}
 				switch (ptStatus.getStatusZhenJiuIntensity()) {
 					case 1:
 						if(ptStatus.isStatusZhenJiuIsOpen()){
@@ -406,10 +440,6 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				}
 				break;
 			case TYPE_ANMO:
-//				showToast("当前状态：按摩" + (ptStatus.isStatusAnMoIsOpen() ?
-//						("打开 强度为：" + ptStatus.getStatusAnMoIntensity()):"关闭"));
-//				showLog("当前状态：按摩" + (ptStatus.isStatusAnMoIsOpen() ?
-//						("打开 强度为：" + ptStatus.getStatusAnMoIntensity()):"关闭"));
 				tvType.setText(getString(R.string.unit_anmo));
 				tvIntensity.setText(ptStatus.getStatusAnMoIntensity()+"  级");
 				if(ptStatus.isStatusAnMoIsOpen()){
@@ -426,18 +456,12 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 					knobView.setTouchable(false);
 					btnClock.setClickable(false);
+                    btnClock.setText("关闭");
 				}
 				time = ptStatus.getStatusAnMoClockTime();
-//				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
-				tvTime.setText(time/60 + getString(R.string.min));
+				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+//				tvTime.setText(time/60 + getString(R.string.min));
 				knobView.setProgress(time);
-				if(ptStatus.isStatusAnMoIsClock()){
-					btnClock.setText(getString(R.string.btn_close));
-//					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
-				}else{
-					btnClock.setText(getString(R.string.btn_open));
-//					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
-				}
 				switch (ptStatus.getStatusAnMoIntensity()) {
 					case 1:
 						if(ptStatus.isStatusAnMoIsOpen()){
@@ -487,10 +511,6 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				}
 				break;
 			case TYPE_LILIAO:
-//				showToast("当前状态：理疗" + (ptStatus.isStatusLiLiaoIsOpen() ?
-//						("打开 强度为：" + ptStatus.getStatusLiLiaoIntensity()):"关闭"));
-//				showLog("当前状态：理疗" + (ptStatus.isStatusLiLiaoIsOpen() ?
-//						("打开 强度为：" + ptStatus.getStatusLiLiaoIntensity()):"关闭"));
 				tvType.setText(getString(R.string.unit_liliao));
 				tvIntensity.setText(ptStatus.getStatusLiLiaoIntensity()+"  级");
 				if(ptStatus.isStatusLiLiaoIsOpen()){
@@ -507,18 +527,12 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 					knobView.setTouchable(false);
 					btnClock.setClickable(false);
+                    btnClock.setText("关闭");
 				}
 				time = ptStatus.getStatusLiLiaoClockTime();
-//				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
-				tvTime.setText(time/60 + getString(R.string.min));
+				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+//				tvTime.setText(time/60 + getString(R.string.min));
 				knobView.setProgress(time);
-				if(ptStatus.isStatusLiLiaoIsClock()){
-					btnClock.setText(getString(R.string.btn_close));
-//					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
-				}else{
-					btnClock.setText(getString(R.string.btn_open));
-//					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
-				}
 				switch (ptStatus.getStatusLiLiaoIntensity()) {
 					case 1:
 						if(ptStatus.isStatusLiLiaoIsOpen()){
@@ -568,10 +582,6 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				}
 				break;
 			case TYPE_YUELIAO:
-//				showToast("当前状态：乐疗" + (ptStatus.isStatusYueLiaoIsOpen() ?
-//						("打开 强度为：" + ptStatus.getStatusYueLiaoIntensity() + "频率为：" + ptStatus.getStatusYueLiaoFrequency()):"关闭"));
-//				showLog("当前状态：乐疗" + (ptStatus.isStatusYueLiaoIsOpen() ?
-//						("打开 强度为：" + ptStatus.getStatusYueLiaoIntensity() + "频率为：" + ptStatus.getStatusYueLiaoFrequency()):"关闭"));
 				tvType.setText(getString(R.string.unit_yueliao));
 				tvIntensity.setText(ptStatus.getStatusYueLiaoIntensity()+"  级");
 				if(ptStatus.isStatusYueLiaoIsOpen()){
@@ -588,18 +598,12 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
 					knobView.setTouchable(false);
 					btnClock.setClickable(false);
+                    btnClock.setText("关闭");
 				}
 				time = ptStatus.getStatusYueLiaoClockTime();
-//				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
-				tvTime.setText(time/60 + getString(R.string.min));
+				tvTime.setText(TimeUtil.getStrFromInt(mContext,time));
+//				tvTime.setText(time/60 + getString(R.string.min));
 				knobView.setProgress(time);
-				if(ptStatus.isStatusYueLiaoIsClock()){
-					btnClock.setText(getString(R.string.btn_close));
-//					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
-				}else{
-					btnClock.setText(getString(R.string.btn_open));
-//					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
-				}
 				//判断强度并高亮当前频率
 				switch (ptStatus.getStatusYueLiaoIntensity()) {
 					case 1:
@@ -746,29 +750,31 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		switch (curType){
 			case TYPE_ZHENJIU:
 				if (ptStatus.isStatusZhenJiuIsClock()){
-					showToast(getString(R.string.closeclock));
-					ptStatus.setStatusZhenJiuIsClock(false);
-					btnClock.setText(getString(R.string.btn_open));
-					btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
-					if (!zhenjiuThread.isInterrupted()){
-						zhenjiuIsRun = false;
-					}
-					sengMsgToDevice(MsgUtil.closeWork("01",1));
-					Logger.e("close clock");
+                    sengMsgToDevice(MsgUtil.closeWork("01",1));
+
+                    showToast(getString(R.string.closeclock));
+                    ptStatus.setStatusZhenJiuIsClock(false);
+                    btnClock.setText(getString(R.string.btn_open));
+                    btnClock.setBackgroundResource(R.drawable.btn_gray_shape);
+                    if (!zhenjiuThread.isInterrupted()){
+                        zhenjiuIsRun = false;
+                    }
+//					Logger.e("close clock");
 					dataUtil.stopData();
 					knobView.setTouchable(true);
 				}else{
-					btnClock.setText(getString(R.string.btn_close));
-					btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
-					ptStatus.setStatusZhenJiuIsClock(true);
-					ptStatus.setStatusZhenJiuClockTime(time);
-						showToast(getString(R.string.startclock)+getString(R.string.rb_zhenjiu) + TimeUtil.getStrFromInt(mContext,time) + getString(R.string.clockend));
-					zhenjiuIsRun = true;
-					zhenjiuThread = new ZhenjiuThread();
-					zhenjiuThread.start();
-					zhenjiuTime = time+1;
-					sengMsgToDevice(MsgUtil.openWork(
-							"01",ptStatus.getStatusZhenJiuIntensity(),time,MsgUtil.TYPE_ZHENJIU));
+                    sengMsgToDevice(MsgUtil.openWork(
+                            "01",ptStatus.getStatusZhenJiuIntensity(),time,MsgUtil.TYPE_ZHENJIU));
+
+                    btnClock.setText(getString(R.string.btn_close));
+                    btnClock.setBackgroundResource(R.drawable.btn_orange_shape);
+                    ptStatus.setStatusZhenJiuIsClock(true);
+                    ptStatus.setStatusZhenJiuClockTime(time);
+                    showToast(getString(R.string.startclock)+getString(R.string.rb_zhenjiu) + TimeUtil.getStrFromInt(mContext,time) + getString(R.string.clockend));
+                    zhenjiuIsRun = true;
+                    zhenjiuThread = new ZhenjiuThread();
+                    zhenjiuThread.start();
+                    zhenjiuTime = time+1;
 					knobView.setTouchable(false);
 					//开始本地数据库记录数据
 					dataUtil.startData("1",ptStatus.getStatusZhenJiuIntensity(),user.getToken(),user.getSid(),"-1");
@@ -784,7 +790,7 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						anmoIsRun = false;
 					}
 					sengMsgToDevice(MsgUtil.closeWork("02",2));
-					Logger.e("close clock");
+//					Logger.e("close clock");
 					dataUtil.stopData();
 					knobView.setTouchable(true);
 				}else{
@@ -814,7 +820,7 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						liliaoIsRun = false;
 					}
 					sengMsgToDevice(MsgUtil.closeWork("03",3));
-					Logger.e("close clock");
+//					Logger.e("close clock");
 					dataUtil.stopData();
 					knobView.setTouchable(true);
 				}else{
@@ -844,7 +850,7 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						yueliaoIsRun = false;
 					}
 					sengMsgToDevice(MsgUtil.closeWork("04",4));
-					Logger.e("close clock");
+//					Logger.e("close clock");
 					dataUtil.stopData();
 					knobView.setTouchable(true);
 				}else{
@@ -880,8 +886,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				if(ptStatus.isStatusZhenJiuIsOpen()){
 					ptStatus.setStatusZhenJiuIntensity(intensity);
 					statusUtil.setPTStatus(mContext, ptStatus);
-					if (ptStatus.isStatusZhenJiuIsClock()){
-						sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+                    sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+                    if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 						dataUtil.changeStrength(intensity);
 					}
 					reSetLayout(TYPE_ZHENJIU);
@@ -891,8 +897,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				if(ptStatus.isStatusAnMoIsOpen()){
 					ptStatus.setStatusAnMoIntensity(intensity);
 					statusUtil.setPTStatus(mContext, ptStatus);
-					if (ptStatus.isStatusAnMoIsClock()){
-						sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+                    sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+                    if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 						dataUtil.changeStrength(intensity);
 					}
 					reSetLayout(TYPE_ANMO);
@@ -902,8 +908,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				if(ptStatus.isStatusLiLiaoIsOpen()){
 					ptStatus.setStatusLiLiaoIntensity(intensity);
 					statusUtil.setPTStatus(mContext, ptStatus);
-					if (ptStatus.isStatusLiLiaoIsClock()){
-						sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+                    sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+                    if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 						dataUtil.changeStrength(intensity);
 					}
 					reSetLayout(TYPE_LILIAO);
@@ -913,8 +919,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 				if(ptStatus.isStatusYueLiaoIsOpen()){
 					ptStatus.setStatusYueLiaoIntensity(intensity);
 					statusUtil.setPTStatus(mContext, ptStatus);
-					if (ptStatus.isStatusYueLiaoIsClock()){
-						sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+                    sengMsgToDevice(MsgUtil.setIntensity("F5" , intensity));
+                    if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 						dataUtil.changeStrength(intensity);
 					}
 					reSetLayout(TYPE_YUELIAO);
@@ -942,8 +948,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						i -= 1;
 						ptStatus.setStatusZhenJiuIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						if (ptStatus.isStatusZhenJiuIsClock()){
-							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 							dataUtil.changeStrength(i);
 						}
 					}
@@ -959,8 +965,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						i -= 1;
 						ptStatus.setStatusAnMoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						if (ptStatus.isStatusAnMoIsClock()){
-							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 							dataUtil.changeStrength(i);
 						}
 					}
@@ -976,8 +982,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						i -= 1;
 						ptStatus.setStatusLiLiaoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						if (ptStatus.isStatusLiLiaoIsClock()){
-							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 							dataUtil.changeStrength(i);
 						}
 					}
@@ -993,8 +999,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						i -= 1;
 						ptStatus.setStatusYueLiaoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						if (ptStatus.isStatusYueLiaoIsClock()){
-							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 							dataUtil.changeStrength(i);
 						}
 					}
@@ -1024,8 +1030,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						i += 1;
 						ptStatus.setStatusZhenJiuIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						if (ptStatus.isStatusZhenJiuIsClock()){
-							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 							dataUtil.changeStrength(i);
 						}
 					}
@@ -1041,8 +1047,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						i += 1;
 						ptStatus.setStatusAnMoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						if (ptStatus.isStatusAnMoIsClock()){
-							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 							dataUtil.changeStrength(i);
 						}
 					}
@@ -1058,8 +1064,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						i += 1;
 						ptStatus.setStatusLiLiaoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						if (ptStatus.isStatusLiLiaoIsClock()){
-							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 							dataUtil.changeStrength(i);
 						}
 					}
@@ -1075,8 +1081,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 						i += 1;
 						ptStatus.setStatusYueLiaoIntensity(i);
 						statusUtil.setPTStatus(mContext, ptStatus);
-						if (ptStatus.isStatusYueLiaoIsClock()){
-							sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        sengMsgToDevice(MsgUtil.setIntensity("F5" , i));
+                        if (app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON){
 							dataUtil.changeStrength(i);
 						}
 					}
@@ -1462,9 +1468,7 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		}
 	};
 
-	private void sengMsgToDevice(byte[] bs){
-		bluzManager.sendCustomCommand(keySend, 0, 0, bs);
-	}
+
 
 	@Override
 	public void onDestroy() {
@@ -1487,6 +1491,8 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 		closeOtherMode(0);
 		Logger.e("close");
 		dataUtil.stopData();
+
+        getActivity().unregisterReceiver(receiver);
 
 		super.onDestroy();
 	}
@@ -1513,5 +1519,16 @@ public class FragPt extends BaseFragment implements OnCheckedChangeListener,OnCl
 			}
 		}
 	}
+
+
+	private void sengMsgToDevice(byte[] bs){
+//		bluzManager.sendCustomCommand(keySend, 0, 0, bs);
+		Intent intent = new Intent();
+		intent.setAction(SEND_MSG_TO_DEVICE);
+		intent.putExtra("byte",bs);
+		getActivity().sendBroadcast(intent);
+	}
+
+
 
 }

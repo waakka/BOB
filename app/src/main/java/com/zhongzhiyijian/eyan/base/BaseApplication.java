@@ -6,7 +6,6 @@ import android.os.Vibrator;
 
 import com.actions.ibluz.factory.BluzDeviceFactory;
 import com.actions.ibluz.factory.IBluzDevice;
-import com.actions.ibluz.manager.BluzManager;
 import com.igexin.sdk.PushManager;
 import com.zhongzhiyijian.eyan.entity.Music;
 import com.zhongzhiyijian.eyan.service.LocationService;
@@ -57,7 +56,6 @@ public class BaseApplication extends Application {
     public boolean isSizeLock = true;
 
     public IBluzDevice btConnector;
-    public BluzManager bluzManager;
 
 
     @Override
@@ -165,5 +163,9 @@ public class BaseApplication extends Application {
     }
 
 
+
+    public boolean isConnect = false;
+
+    public int workStatus = 0;
 
 }

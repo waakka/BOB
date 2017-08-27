@@ -112,6 +112,9 @@
         <activity android:name=".activity.msg.MsgActivity" />
         <activity android:name=".activity.msg.MsgDetailActivity" />
 
+        <service android:name=".service.TimeService"/>
+
+
         <receiver android:name=".util.BluetoothBoxControl">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON"/>
@@ -193,6 +196,7 @@
         <service
             android:name="com.igexin.download.DownloadService"
             android:process=":pushservice" />
+        <service android:name=".service.TimerThreadService" />
 
         <provider
             android:name="com.igexin.download.DownloadProvider"

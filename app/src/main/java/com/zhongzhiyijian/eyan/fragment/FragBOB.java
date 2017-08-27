@@ -16,7 +16,6 @@ import android.widget.ListView;
 import com.actions.ibluz.factory.BluzDeviceFactory;
 import com.actions.ibluz.factory.BluzDeviceFactory.ConnectionState;
 import com.actions.ibluz.factory.IBluzDevice;
-import com.orhanobut.logger.Logger;
 import com.zhongzhiyijian.eyan.R;
 import com.zhongzhiyijian.eyan.activity.DeviceDetailActivity;
 import com.zhongzhiyijian.eyan.activity.MainActivity;
@@ -89,8 +88,12 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 					if (connectedDevice.getAddress().equals(btDevice.getAddress())){
 						device.setState(ConnectionState.SPP_CONNECTED);
 						mAdapter.notifyDataSetChanged();
-						Intent it = new Intent(mContext,DeviceDetailActivity.class);
-						mContext.startActivity(it);
+						if(app.isConnect){
+							Intent it = new Intent(mContext,DeviceDetailActivity.class);
+							mContext.startActivity(it);
+						}else{
+							showToast("按摩板未连接");
+						}
 					}else{
 						btConnector.connect(btDevice);
 					}
@@ -102,10 +105,12 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 
 	}
 
+
+
 	private IBluzDevice.OnDiscoveryListener discoveryListener  = new IBluzDevice.OnDiscoveryListener() {
 		@Override
 		public void onConnectionStateChanged(BluetoothDevice device, int state) {
-            Logger.e(device.getAddress() + " state = " + state);
+//            Logger.e(device.getAddress() + " state = " + state);
 			if (device != null) {
 				MyDevice entry = findDevice(device);
 				if (entry == null) {
@@ -133,8 +138,13 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 				entry.setState(state);
 				mAdapter.notifyDataSetChanged();
                 if (state == ConnectionState.SPP_CONNECTED){
-                    Intent it = new Intent(mContext,DeviceDetailActivity.class);
-                    mContext.startActivity(it);
+
+//					if(app.isConnect){
+//						Intent it = new Intent(mContext,DeviceDetailActivity.class);
+//						mContext.startActivity(it);
+//					}else{
+//						showToast("按摩板未连接");
+//					}
                 }
 			}
 		}
@@ -231,7 +241,7 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
                         d.setState(ConnectionState.SPP_FAILURE);
                     }
 					devices.add(d);
- 					Logger.e("重置BOB  " + d.toString());
+// 					Logger.e("重置BOB  " + d.toString());
 				}
 			}
 			if (dbUtils != null){
