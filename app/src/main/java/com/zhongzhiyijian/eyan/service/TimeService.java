@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.actions.ibluz.factory.IBluzDevice;
 import com.actions.ibluz.manager.BluzManager;
@@ -191,6 +190,10 @@ public class TimeService extends Service implements Constants{
             sendBroadcast(it);
         }else if(code == 4){
             Logger.e("电压查询返回值==>");
+            Intent it = new Intent();
+            it.setAction(BATTERY_CHANGED);
+            it.putExtra("result",arg3);
+            sendBroadcast(it);
         }
     }
 
@@ -274,14 +277,16 @@ public class TimeService extends Service implements Constants{
         @Override
         public void run() {
             while (isServiceAlive){
-                if(xinCount >= 3){
-                   app.isConnect = false;
-                    Logger.e("3次未有心跳反馈，按摩板连接异常，退出操作界面");
-                    Intent it = new Intent();
-                    it.setAction(XINTIAO_DISCONNECTED);
-                    sendBroadcast(it);
-                }else{
-                    app.isConnect = true;
+                if(null != mBluzManager){
+                    if(xinCount >= 3){
+                        app.isConnect = false;
+                        Logger.e("3次未有心跳反馈，按摩板连接异常，退出操作界面");
+                        Intent it = new Intent();
+                        it.setAction(XINTIAO_DISCONNECTED);
+                        sendBroadcast(it);
+                    }else{
+                        app.isConnect = true;
+                    }
                 }
                 try {
                     sleep(1000);

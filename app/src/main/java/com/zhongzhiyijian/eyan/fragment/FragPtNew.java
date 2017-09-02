@@ -1,7 +1,6 @@
 package com.zhongzhiyijian.eyan.fragment;
 
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -339,6 +338,8 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 						break;
 				}
 				statusUtil.setPTStatus(mContext,ptStatus);
+				//TODO 发送广播，发送消息变更时间
+//				sengMsgToDevice(MsgUtil.getBytesWorkType());
 			}
 		});
 

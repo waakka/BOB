@@ -82,6 +82,7 @@
         <service android:name=".service.PlayMusicService" />
 
         <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.PowerActivity" />
         <activity android:name=".activity.menu.RoleActivity" />
         <activity android:name=".activity.FeedActivity" />
         <activity android:name=".activity.friend.ShareRoleActivity" />
@@ -196,7 +197,6 @@
         <service
             android:name="com.igexin.download.DownloadService"
             android:process=":pushservice" />
-        <service android:name=".service.TimerThreadService" />
 
         <provider
             android:name="com.igexin.download.DownloadProvider"

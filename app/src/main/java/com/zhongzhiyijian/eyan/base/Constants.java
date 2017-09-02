@@ -326,4 +326,6 @@ public interface Constants {
 
 	String WORK_TYPE_CHANGED = "WORK_TYPE_CHANGED";
 
+	String BATTERY_CHANGED = "BATTERY_CHANGED";
+
 }

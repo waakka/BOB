@@ -19,6 +19,7 @@ import com.zhongzhiyijian.eyan.R;
 import com.zhongzhiyijian.eyan.activity.AboutActivity;
 import com.zhongzhiyijian.eyan.activity.LoginActivity;
 import com.zhongzhiyijian.eyan.activity.MainActivity;
+import com.zhongzhiyijian.eyan.activity.PowerActivity;
 import com.zhongzhiyijian.eyan.activity.RecordActivity;
 import com.zhongzhiyijian.eyan.activity.RegistActivity;
 import com.zhongzhiyijian.eyan.activity.SafeActivity;
@@ -364,6 +365,7 @@ public class FragUser extends BaseFragment implements View.OnClickListener{
                 }
                 break;
             case R.id.rl_powor:
+                intent2Activity(PowerActivity.class);
                 break;
             case R.id.rl_about:
                 intent2Activity(AboutActivity.class);
