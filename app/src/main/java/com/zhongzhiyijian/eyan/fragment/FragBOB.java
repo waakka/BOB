@@ -1,5 +1,7 @@
 package com.zhongzhiyijian.eyan.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.widget.ListView;
 import com.actions.ibluz.factory.BluzDeviceFactory;
 import com.actions.ibluz.factory.BluzDeviceFactory.ConnectionState;
 import com.actions.ibluz.factory.IBluzDevice;
+import com.orhanobut.logger.Logger;
 import com.zhongzhiyijian.eyan.R;
 import com.zhongzhiyijian.eyan.activity.DeviceDetailActivity;
 import com.zhongzhiyijian.eyan.activity.MainActivity;
@@ -77,7 +80,7 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if(!btConnector.isEnabled()){
-					btConnector.enable();
+//					btConnector.enable();
 					showToast("蓝牙未启动，请先打开蓝牙。");
 					return;
 				}
@@ -110,7 +113,7 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 	private IBluzDevice.OnDiscoveryListener discoveryListener  = new IBluzDevice.OnDiscoveryListener() {
 		@Override
 		public void onConnectionStateChanged(BluetoothDevice device, int state) {
-//            Logger.e(device.getAddress() + " state = " + state);
+            showLog(device.getAddress() + " state = " + state);
 			if (device != null) {
 				MyDevice entry = findDevice(device);
 				if (entry == null) {
@@ -135,6 +138,9 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 				}else{
 					entry.setState(state);
 				}
+				if(!btConnector.isEnabled()){
+
+				}
 				entry.setState(state);
 				mAdapter.notifyDataSetChanged();
                 if (state == ConnectionState.SPP_CONNECTED){
@@ -150,9 +156,11 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 		}
 		@Override
 		public void onDiscoveryStarted() {
+			Logger.e("bob开始搜索");
 		}
 		@Override
 		public void onDiscoveryFinished() {
+			Logger.e("bob结束搜索");
 		}
 		@Override
 		public void onFound(BluetoothDevice bluetoothDevice) {
@@ -179,7 +187,7 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 	
 	@Override
 	public void onPause() {
-		btConnector.setOnConnectionListener(null);
+		btConnector.setOnDiscoveryListener(null);
 		super.onPause();
 	}
 

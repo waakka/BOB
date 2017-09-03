@@ -1,6 +1,8 @@
 package com.zhongzhiyijian.eyan.fragment;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +25,7 @@ import com.zhongzhiyijian.eyan.activity.MainActivity;
 import com.zhongzhiyijian.eyan.adapter.SearchAdapter;
 import com.zhongzhiyijian.eyan.base.BaseFragment;
 import com.zhongzhiyijian.eyan.entity.MyDevice;
+import com.zhongzhiyijian.eyan.util.LogUtil;
 import com.zhongzhiyijian.eyan.util.XUtil;
 
 import org.xutils.ex.DbException;
@@ -136,12 +139,21 @@ public class FragSearch extends BaseFragment {
 
 
 				MyDevice md = devices.get(curPosition);
-				BluetoothDevice btDevice = btAdapter.getRemoteDevice(md.getDeviceAddress());
-				if (md.getState() == BluzDeviceFactory.ConnectionState.SPP_CONNECTED
-                        || md.getState() == BluzDeviceFactory.ConnectionState.A2DP_CONNECTED){
-					Intent it = new Intent(mContext,DeviceDetailActivity.class);
-//					it.putExtra("device",btDevice);
-					mContext.startActivity(it);
+				final BluetoothDevice btDevice = btAdapter.getRemoteDevice(md.getDeviceAddress());
+				if (md.getState() == BluzDeviceFactory.ConnectionState.SPP_CONNECTED){
+//					Intent it = new Intent(mContext,DeviceDetailActivity.class);
+//					mContext.startActivity(it);
+					new AlertDialog.Builder(mContext)
+//							.setTitle("")
+							.setMessage("是否要断开当前蓝牙连接？")
+							.setPositiveButton(mContext.getResources().getString(R.string.dialog_done_device_delete), new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									//断开设备
+									mBluzConnector.disconnect(btDevice);
+								}
+							})
+							.setNegativeButton(mContext.getResources().getString(R.string.dialog_cancle_device_delete), null).show();
 				}else{
 					mBluzConnector.connect(btDevice);
 				}
@@ -156,7 +168,7 @@ public class FragSearch extends BaseFragment {
 			if (device != null){
 
 				MyDevice myDevice = findDevice(device);
-				if (myDevice == null){
+				if (myDevice == null&&state == BluzDeviceFactory.ConnectionState.SPP_CONNECTED){
 					myDevice = new MyDevice(device.getName(),device.getAddress(),state);
 					devices.add(myDevice);
 					try {
@@ -175,7 +187,6 @@ public class FragSearch extends BaseFragment {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					Logger.e("添加新设备到数据库  " + myDevice.toString());
 				}else{
 					for (MyDevice d : devices){
 						if (d.getDeviceAddress().equals(device.getAddress())){
@@ -184,10 +195,10 @@ public class FragSearch extends BaseFragment {
 					}
 				}
 				mAdapter.notifyDataSetChanged();
-				if (state == BluzDeviceFactory.ConnectionState.SPP_CONNECTED){
-					Intent it = new Intent(mContext,DeviceDetailActivity.class);
-					mContext.startActivity(it);
-				}
+//				if (state == BluzDeviceFactory.ConnectionState.SPP_CONNECTED){
+//					Intent it = new Intent(mContext,DeviceDetailActivity.class);
+//					mContext.startActivity(it);
+//				}
 			}
 		}
 
@@ -229,7 +240,8 @@ public class FragSearch extends BaseFragment {
 				if (findDevice(device) == null){
 					String name = device.getName();
 					name = name.toLowerCase();
-					if(!name.contains("BLE")){
+					if(!name.contains("ble")){
+//					if(!name.contains("ble")&&name.contains("bob_mass")){
 						MyDevice myDevice = new MyDevice(device.getName(),device.getAddress(), BluzDeviceFactory.ConnectionState.A2DP_DISCONNECTED);
 						devices.add(myDevice);
 						mAdapter.notifyDataSetChanged();
@@ -274,16 +286,31 @@ public class FragSearch extends BaseFragment {
 
 	@Override
 	public void onResume() {
-		super.onResume();
+		showLog("search onResume");
         mBluzConnector.setOnDiscoveryListener(discoveryListener);
         BluetoothDevice a2dpDevice = mBluzConnector.getConnectedA2dpDevice();
-        if(null != a2dpDevice){
-            if(null == findDevice(a2dpDevice)){
+		if(null != a2dpDevice){
+			showLog("search " + a2dpDevice.getAddress());
+			if(null == findDevice(a2dpDevice)){
                 MyDevice myDevice = new MyDevice(a2dpDevice.getName(),a2dpDevice.getAddress(), BluzDeviceFactory.ConnectionState.A2DP_CONNECTED);
                 devices.add(myDevice);
-                mAdapter.notifyDataSetChanged();
+            }else{
+                for (MyDevice d : devices){
+                    if (d.getDeviceAddress().equals(a2dpDevice.getAddress())){
+                        d.setState(BluzDeviceFactory.ConnectionState.SPP_CONNECTED);
+						showLog("已存在，设置状态已连接");
+                        break;
+                    }
+                }
             }
-        }
+            mAdapter.notifyDataSetChanged();
+        }else{
+			showLog("无已连接设备，更新状态");
+			for (MyDevice d : devices){
+				d.setState(BluzDeviceFactory.ConnectionState.A2DP_DISCONNECTED);
+			}
+			mAdapter.notifyDataSetChanged();
+		}
         if (devices.size()==0){
             llEmpty.setVisibility(View.VISIBLE);
             lvDevice.setVisibility(View.GONE);
@@ -291,6 +318,7 @@ public class FragSearch extends BaseFragment {
             llEmpty.setVisibility(View.GONE);
             lvDevice.setVisibility(View.VISIBLE);
         }
+		super.onResume();
     }
 
 
@@ -307,7 +335,13 @@ public class FragSearch extends BaseFragment {
 
 	@Override
 	public void onPause() {
-		mBluzConnector.setOnDiscoveryListener(null);
+//		mBluzConnector.setOnDiscoveryListener(null);
 		super.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+		mBluzConnector.setOnDiscoveryListener(null);
+		super.onDestroy();
 	}
 }

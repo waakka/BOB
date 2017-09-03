@@ -316,6 +316,7 @@ public interface Constants {
 	int WORK_STATUS_DIANJI_ON_GAOYA_OFF = 1;
 	int WORK_STATUS_DIANJI_OFF_GAOYA_ON = 2;
 	int WORK_STATUS_DIANJI_ON_GAOYA_ON = 3;
+	int WORK_STATUS_UNXINTIAO = 10;
 
 	/**
 	 * 心跳service广播
@@ -327,5 +328,7 @@ public interface Constants {
 	String WORK_TYPE_CHANGED = "WORK_TYPE_CHANGED";
 
 	String BATTERY_CHANGED = "BATTERY_CHANGED";
+
+	String BATTERY_CHANGED_BL = "BATTERY_CHANGED_BL";
 
 }

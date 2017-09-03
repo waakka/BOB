@@ -99,6 +99,9 @@ public class BOBAdapter extends BaseAdapter{
 			case BluzDeviceFactory.ConnectionState.A2DP_CONNECTING:
 				holder.tvStatus.setText(R.string.connecting);
 				break;
+			case BluzDeviceFactory.ConnectionState.A2DP_FAILURE:
+				holder.tvStatus.setText("连接失败");
+				break;
 
 			case BluzDeviceFactory.ConnectionState.A2DP_CONNECTED:
 				holder.tvStatus.setText(R.string.connecting);

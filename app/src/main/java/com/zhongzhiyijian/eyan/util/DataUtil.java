@@ -142,7 +142,9 @@ public class DataUtil implements Constants{
 //        myThread = new MyThread();
 //        myThread.start();
         curStrength = strength;
-        curUserData.setStrength(curStrength);
+        if(curUserData != null){
+            curUserData.setStrength(curStrength);
+        }
         Logger.e("改变当前模式的强度为" + curStrength);
     }
 
@@ -173,7 +175,7 @@ public class DataUtil implements Constants{
                             }
                             dbUtils.saveOrUpdate(curUserData);
 //                            Logger.e("当前模式:" + curUserData.getPattern() +"-" + curUserData.getId() + ",强度：" + curUserData.getStrength() + ",终止时间:" + sdf.format(new Date()));
-                            sleep(1000);
+                            sleep(20000);
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();

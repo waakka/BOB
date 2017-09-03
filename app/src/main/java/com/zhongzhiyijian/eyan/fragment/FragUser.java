@@ -1,6 +1,9 @@
 package com.zhongzhiyijian.eyan.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -93,6 +96,9 @@ public class FragUser extends BaseFragment implements View.OnClickListener{
     private int integral;
     private int coupon;
 
+    private InnerReceiver receiver;
+    private IntentFilter filter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -106,7 +112,29 @@ public class FragUser extends BaseFragment implements View.OnClickListener{
         initEvent();
 
         llQiandao.setClickable(false);
+
+        initReceiver();
         return view;
+    }
+
+    private void initReceiver() {
+        receiver = new InnerReceiver();
+        filter = new IntentFilter();
+        filter.addAction(BATTERY_CHANGED);
+        filter.addAction(XINTIAO_DISCONNECTED);
+        filter.addAction(BATTERY_CHANGED_BL);
+        getActivity().registerReceiver(receiver,filter);
+    }
+
+    private class InnerReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+             if(BATTERY_CHANGED_BL.equals(action)){
+                 setBattery();
+             }
+        }
     }
 
     @Override
@@ -130,8 +158,12 @@ public class FragUser extends BaseFragment implements View.OnClickListener{
             isLogin = false;
         }
         setData();
+    }
 
-
+    @Override
+    public void onDestroy() {
+        getActivity().unregisterReceiver(receiver);
+        super.onDestroy();
     }
 
     /**
@@ -237,11 +269,15 @@ public class FragUser extends BaseFragment implements View.OnClickListener{
             ivAvatar.setBackgroundResource(R.mipmap.avatar_defoult);
             ivAvatar.setImageResource(R.mipmap.avatar_defoult);
         }
+        setBattery();
+    }
+
+    private void setBattery() {
         if (app.isDeviceConnection){
-            showLog("设备已经连接，显示电量");
             tvPower.setVisibility(View.GONE);
             ivPower.setVisibility(View.VISIBLE);
             if (app.incharge){
+                Logger.e("正在充电");
                 ivPower.setImageResource(R.mipmap.ioc_batteryincharge_0);
             }else{
                 switch (app.devicePower){
@@ -268,7 +304,6 @@ public class FragUser extends BaseFragment implements View.OnClickListener{
             ivPower.setVisibility(View.GONE);
         }
     }
-
 
 
     private void initView() {
@@ -365,7 +400,11 @@ public class FragUser extends BaseFragment implements View.OnClickListener{
                 }
                 break;
             case R.id.rl_powor:
-                intent2Activity(PowerActivity.class);
+                if(app.isConnect){
+                    intent2Activity(PowerActivity.class);
+                }else{
+                    showToast("按摩板未连接");
+                }
                 break;
             case R.id.rl_about:
                 intent2Activity(AboutActivity.class);

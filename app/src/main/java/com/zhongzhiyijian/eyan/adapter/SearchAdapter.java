@@ -84,7 +84,7 @@ public class SearchAdapter extends BaseAdapter{
 				break;
 
 			case ConnectionState.A2DP_CONNECTED:
-				holder.tvState.setText(R.string.connected);
+				holder.tvState.setText(R.string.connecting);
 				break;
 
 			case ConnectionState.A2DP_DISCONNECTED:

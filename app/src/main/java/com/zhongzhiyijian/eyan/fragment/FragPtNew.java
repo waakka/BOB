@@ -104,6 +104,8 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 	private InnerReceiver receiver;
 	private IntentFilter filter;
 
+	private boolean isUpClose = false;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -149,7 +151,12 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				if ("1".equals(type)){
 					//工作界面：搓揉  工作状态：关闭
 					curType = TYPE_ZHENJIU;
-					ptStatus.setStatusZhenJiuIsOpen(false);
+					if(isUpClose){
+						isUpClose = false;
+						ptStatus.setStatusZhenJiuIsOpen(false);
+					}else{
+						ptStatus.setStatusZhenJiuIsOpen(true);
+					}
 					ptStatus.setStatusZhenJiuClockTime(time);
 					ptStatus.setStatusZhenJiuIntensity(qiangdu);
 					ptStatus.setStatusZhenJiuIsClock(false);
@@ -165,7 +172,12 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				}else if ("2".equals(type)){
 					//工作界面：推压  工作状态：关闭
 					curType = TYPE_ANMO;
-					ptStatus.setStatusAnMoIsOpen(false);
+					if(isUpClose){
+						isUpClose = false;
+						ptStatus.setStatusAnMoIsOpen(false);
+					}else{
+						ptStatus.setStatusAnMoIsOpen(true);
+					}
 					ptStatus.setStatusAnMoClockTime(time);
 					ptStatus.setStatusAnMoIntensity(qiangdu);
 					ptStatus.setStatusAnMoIsClock(false);
@@ -181,7 +193,12 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				}else if ("3".equals(type)){
 					//工作界面：叩击  工作状态：关闭
 					curType = TYPE_LILIAO;
-					ptStatus.setStatusLiLiaoIsOpen(false);
+					if(isUpClose){
+						isUpClose = false;
+						ptStatus.setStatusLiLiaoIsOpen(false);
+					}else{
+						ptStatus.setStatusLiLiaoIsOpen(true);
+					}
 					ptStatus.setStatusLiLiaoClockTime(time);
 					ptStatus.setStatusLiLiaoIntensity(qiangdu);
 					ptStatus.setStatusLiLiaoIsClock(false);
@@ -197,7 +214,12 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				}else if ("4".equals(type)){
 					//工作界面：自动  工作状态：关闭
 					curType = TYPE_YUELIAO;
-					ptStatus.setStatusYueLiaoIsOpen(false);
+					if(isUpClose){
+						isUpClose = false;
+						ptStatus.setStatusYueLiaoIsOpen(false);
+					}else{
+						ptStatus.setStatusYueLiaoIsOpen(true);
+					}
 					ptStatus.setStatusYueLiaoClockTime(time);
 					ptStatus.setStatusYueLiaoIntensity(qiangdu);
 					ptStatus.setStatusYueLiaoIsClock(false);
@@ -339,7 +361,7 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				}
 				statusUtil.setPTStatus(mContext,ptStatus);
 				//TODO 发送广播，发送消息变更时间
-//				sengMsgToDevice(MsgUtil.getBytesWorkType());
+				sengMsgToDevice(MsgUtil.setTime("8",time));
 			}
 		});
 
@@ -359,15 +381,17 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 		switch (curType) {
 			case TYPE_ZHENJIU:
 				tvType.setText(getString(R.string.unit_zhenjiu));
-				tvIntensity.setText(ptStatus.getStatusZhenJiuIntensity()+"  级");
 				if(ptStatus.isStatusZhenJiuIsOpen()){
-					workTypeOpenBG();
-					setIntensityBG(ptStatus.getStatusZhenJiuIntensity());
-				}else{
-					workTypeCloseBG();
-				}
-				time = ptStatus.getStatusZhenJiuClockTime();
-				setTimeAndProgress();
+                    workTypeOpenBG();
+                    tvIntensity.setText(ptStatus.getStatusZhenJiuIntensity()+"  级");
+                    setIntensityBG(ptStatus.getStatusZhenJiuIntensity());
+                    time = ptStatus.getStatusZhenJiuClockTime();
+                }else{
+                    workTypeCloseBG();
+                    tvIntensity.setText("0  级");
+                    time = 0;
+                }
+                setTimeAndProgress();
 				break;
 			case TYPE_ANMO:
 				tvType.setText(getString(R.string.unit_anmo));
@@ -375,10 +399,12 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				if(ptStatus.isStatusAnMoIsOpen()){
 					workTypeOpenBG();
 					setIntensityBG(ptStatus.getStatusAnMoIntensity());
-				}else{
-					workTypeCloseBG();
-				}
-				time = ptStatus.getStatusAnMoClockTime();
+                    time = ptStatus.getStatusAnMoClockTime();
+                }else{
+                    workTypeCloseBG();
+                    tvIntensity.setText("0  级");
+                    time = 0;
+                }
 				setTimeAndProgress();
 				break;
 			case TYPE_LILIAO:
@@ -387,10 +413,12 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				if(ptStatus.isStatusLiLiaoIsOpen()){
 					workTypeOpenBG();
 					setIntensityBG(ptStatus.getStatusLiLiaoIntensity());
-				}else{
-					workTypeCloseBG();
-				}
-				time = ptStatus.getStatusLiLiaoClockTime();
+                    time = ptStatus.getStatusLiLiaoClockTime();
+                }else{
+                    workTypeCloseBG();
+                    tvIntensity.setText("0  级");
+                    time = 0;
+                }
 				setTimeAndProgress();
 				break;
 			case TYPE_YUELIAO:
@@ -399,10 +427,12 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				if(ptStatus.isStatusYueLiaoIsOpen()){
 					workTypeOpenBG();
 					setIntensityBG(ptStatus.getStatusYueLiaoIntensity());
+					time = ptStatus.getStatusYueLiaoClockTime();
 				}else{
 					workTypeCloseBG();
+					tvIntensity.setText("0  级");
+					time = 0;
 				}
-				time = ptStatus.getStatusYueLiaoClockTime();
 				setTimeAndProgress();
 				break;
 
@@ -840,6 +870,7 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 			case TYPE_ZHENJIU:
 				if(ptStatus.isStatusZhenJiuIsOpen()){
 					//发送指令关闭当前单元
+					isUpClose = true;
 					sengMsgToDevice(MsgUtil.closeWork("01",1));
 					dataUtil.stopData();
 				}else{
@@ -849,6 +880,7 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				break;
 			case TYPE_ANMO:
 				if(ptStatus.isStatusAnMoIsOpen()){
+					isUpClose = true;
 					sengMsgToDevice(MsgUtil.closeWork("02",2));
 					dataUtil.stopData();
 				}else{
@@ -858,6 +890,7 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				break;
 			case TYPE_LILIAO:
 				if(ptStatus.isStatusLiLiaoIsOpen()){
+					isUpClose = true;
 					sengMsgToDevice(MsgUtil.closeWork("03",3));
 					dataUtil.stopData();
 				}else{
@@ -867,6 +900,7 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 				break;
 			case TYPE_YUELIAO:
 				if(ptStatus.isStatusYueLiaoIsOpen()){
+					isUpClose = true;
 					sengMsgToDevice(MsgUtil.closeWork("04",4));
 					dataUtil.stopData();
 				}else{
@@ -901,190 +935,206 @@ public class FragPtNew extends BaseFragment implements OnCheckedChangeListener,O
 		@Override
 		public void handleMessage(Message msg) {
 
-				//工作状态
-				switch (curType){
-					case TYPE_ZHENJIU:
-						if(ptStatus.isStatusZhenJiuIsClock()){
-							//当前模式已打开
-							if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON || app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_ON){
-								startWork = true;
-								if(startWork&&endWork){
-									Logger.e("开始记录设备使用情况");
-									startWork = false;
-									endWork = false;
-									dataUtil.startData("1",ptStatus.getStatusZhenJiuIntensity(),user.getToken(),user.getSid(),"-1");
-									sengMsgToDevice(MsgUtil.getCurWorkType());
-								}
-								if(time -1 <= 0){
-									sengMsgToDevice(MsgUtil.closeWork("1",1));
-									dataUtil.stopData();
-								}else{
-									ptStatus.setStatusZhenJiuClockTime(time - 1);
-									statusUtil.setPTStatus(mContext,ptStatus);
-								}
-								reSetLayout();
-								//工作状态，点击按钮关闭
-								btnClock.setText("关闭");
-								knobView.setTouchable(false);
-							}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
-								//就绪状态，点击按钮不响应
-								btnClock.setText("已准备");
-								knobView.setTouchable(true);
-								endWork = true;
-							}
-						}else{
-							endWork = true;
-							if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_OFF){
-								//当前模式未打开，设备已穿戴，点击执行打开命令，直接开始
-								btnClock.setText("开始");
-							}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
-								//当前模式未打开,设备未穿戴，点击执行打开命令，进入准备状态
-								btnClock.setText("准备");
-							}
-							if (ptStatus.isStatusZhenJiuIsOpen()){
-								knobView.setTouchable(true);
+			//工作状态
+			switch (curType){
+				case TYPE_ZHENJIU:
+					if(ptStatus.isStatusZhenJiuIsClock()){
+						//当前模式已打开
+						if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON || app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_ON){
+
+							if(time -1 <= 0){
+								sengMsgToDevice(MsgUtil.closeWork("1",1));
+								dataUtil.stopData();
 							}else{
-								knobView.setTouchable(false);
-								btnClock.setText("关闭");
+								time -= 1;
+								ptStatus.setStatusZhenJiuClockTime(time);
+								statusUtil.setPTStatus(mContext,ptStatus);
+								setTimeAndProgress();
 							}
-						}
-						break;
-					case TYPE_ANMO:
-						if(ptStatus.isStatusAnMoIsClock()){
-							//当前模式已打开
-							if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON || app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_ON){
-								startWork = true;
-								if(startWork&&endWork){
-									startWork = false;
-									endWork = false;
-									dataUtil.startData("2",ptStatus.getStatusAnMoIntensity(),user.getToken(),user.getSid(),"-1");
-									sengMsgToDevice(MsgUtil.getCurWorkType());
-								}
-								if(time -1 <= 0){
-									sengMsgToDevice(MsgUtil.closeWork("1",1));
-									dataUtil.stopData();
-								}else{
-									ptStatus.setStatusAnMoClockTime(time - 1);
-									statusUtil.setPTStatus(mContext,ptStatus);
-								}
-								reSetLayout();
-								//工作状态，点击按钮关闭
-								btnClock.setText("关闭");
-								knobView.setTouchable(false);
-							}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
-								//就绪状态，点击按钮不响应
-								btnClock.setText("已准备");
-								knobView.setTouchable(true);
-								endWork = true;
+							startWork = true;
+							if(startWork&&endWork){
+								Logger.e("开始记录设备使用情况");
+								startWork = false;
+								endWork = false;
+								dataUtil.startData("1",ptStatus.getStatusZhenJiuIntensity(),user.getToken(),user.getSid(),"-1");
+								sengMsgToDevice(MsgUtil.getCurWorkType());
 							}
-						}else{
+//							reSetLayout();
+							//工作状态，点击按钮关闭
+							btnClock.setText("关闭");
+							knobView.setTouchable(false);
+						}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
+							//就绪状态，点击按钮不响应
+							btnClock.setText("已准备");
+							knobView.setTouchable(true);
 							endWork = true;
-							if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_OFF){
-								//当前模式未打开，设备已穿戴，点击执行打开命令，直接开始
-								btnClock.setText("开始");
-							}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
-								//当前模式未打开,设备未穿戴，点击执行打开命令，进入准备状态
-								btnClock.setText("准备");
-							}
-							if (ptStatus.isStatusAnMoIsOpen()){
-								knobView.setTouchable(true);
-							}else{
-								knobView.setTouchable(false);
-								btnClock.setText("关闭");
-							}
+							dataUtil.stopData();
 						}
-						break;
-					case TYPE_LILIAO:
-						if(ptStatus.isStatusLiLiaoIsClock()){
-							//当前模式已打开
-							if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON || app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_ON){
-								startWork = true;
-								if(startWork&&endWork){
-									startWork = false;
-									endWork = false;
-									dataUtil.startData("3",ptStatus.getStatusLiLiaoIntensity(),user.getToken(),user.getSid(),"-1");
-									sengMsgToDevice(MsgUtil.getCurWorkType());
-								}
-								if(time -1 <= 0){
-									sengMsgToDevice(MsgUtil.closeWork("1",1));
-									dataUtil.stopData();
-								}else{
-									ptStatus.setStatusLiLiaoClockTime(time - 1);
-									statusUtil.setPTStatus(mContext,ptStatus);
-								}
-								reSetLayout();
-								//工作状态，点击按钮关闭
-								btnClock.setText("关闭");
-								knobView.setTouchable(false);
-							}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
-								//就绪状态，点击按钮不响应
-								btnClock.setText("已准备");
-								knobView.setTouchable(true);
-								endWork = true;
-							}
+					}else{
+						endWork = true;
+						if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_OFF){
+							//当前模式未打开，设备已穿戴，点击执行打开命令，直接开始
+							btnClock.setText("开始");
+						}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
+							//当前模式未打开,设备未穿戴，点击执行打开命令，进入准备状态
+							btnClock.setText("准备");
+						}
+						if (ptStatus.isStatusZhenJiuIsOpen()){
+							knobView.setTouchable(true);
 						}else{
-							endWork = true;
-							if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_OFF){
-								//当前模式未打开，设备已穿戴，点击执行打开命令，直接开始
-								btnClock.setText("开始");
-							}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
-								//当前模式未打开,设备未穿戴，点击执行打开命令，进入准备状态
-								btnClock.setText("准备");
-							}
-							if (ptStatus.isStatusLiLiaoIsOpen()){
-								knobView.setTouchable(true);
-							}else{
-								knobView.setTouchable(false);
-								btnClock.setText("关闭");
-							}
+							knobView.setTouchable(false);
+							btnClock.setText("关闭");
 						}
-						break;
-					case TYPE_YUELIAO:
-						if(ptStatus.isStatusYueLiaoIsClock()){
-							//当前模式已打开
-							if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON || app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_ON){
-								startWork = true;
-								if(startWork&&endWork){
-									startWork = false;
-									endWork = false;
-									dataUtil.startData("2",ptStatus.getStatusYueLiaoIntensity(),user.getToken(),user.getSid(),"-1");
-									sengMsgToDevice(MsgUtil.getCurWorkType());
-								}
-								if(time -1 <= 0){
-									sengMsgToDevice(MsgUtil.closeWork("1",1));
-									dataUtil.stopData();
-								}else{
-									ptStatus.setStatusYueLiaoClockTime(time - 1);
-									statusUtil.setPTStatus(mContext,ptStatus);
-								}
-								reSetLayout();
-								//工作状态，点击按钮关闭
-								btnClock.setText("关闭");
-								knobView.setTouchable(false);
-							}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
-								//就绪状态，点击按钮不响应
-								btnClock.setText("已准备");
-								knobView.setTouchable(true);
-								endWork = true;
+					}
+					break;
+				case TYPE_ANMO:
+					if(ptStatus.isStatusAnMoIsClock()){
+						//当前模式已打开
+						if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON || app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_ON){
+
+							if(time -1 <= 0){
+								sengMsgToDevice(MsgUtil.closeWork("1",1));
+								dataUtil.stopData();
+							}else{
+								time -= 1;
+								ptStatus.setStatusAnMoClockTime(time);
+								statusUtil.setPTStatus(mContext,ptStatus);
+								setTimeAndProgress();
 							}
+							startWork = true;
+							if(startWork&&endWork){
+								startWork = false;
+								endWork = false;
+								dataUtil.startData("2",ptStatus.getStatusAnMoIntensity(),user.getToken(),user.getSid(),"-1");
+								sengMsgToDevice(MsgUtil.getCurWorkType());
+							}
+//							reSetLayout();
+							//工作状态，点击按钮关闭
+							btnClock.setText("关闭");
+							knobView.setTouchable(false);
+						}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
+							//就绪状态，点击按钮不响应
+							btnClock.setText("已准备");
+							knobView.setTouchable(true);
+							endWork = true;
+							dataUtil.stopData();
+						}
+					}else{
+						endWork = true;
+						if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_OFF){
+							//当前模式未打开，设备已穿戴，点击执行打开命令，直接开始
+							btnClock.setText("开始");
+						}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
+							//当前模式未打开,设备未穿戴，点击执行打开命令，进入准备状态
+							btnClock.setText("准备");
+						}
+						if (ptStatus.isStatusAnMoIsOpen()){
+							knobView.setTouchable(true);
 						}else{
-							endWork = true;
-							if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_OFF){
-								//当前模式未打开，设备已穿戴，点击执行打开命令，直接开始
-								btnClock.setText("开始");
-							}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
-								//当前模式未打开,设备未穿戴，点击执行打开命令，进入准备状态
-								btnClock.setText("准备");
-							}
-							if (ptStatus.isStatusYueLiaoIsOpen()){
-								knobView.setTouchable(true);
-							}else{
-								knobView.setTouchable(false);
-								btnClock.setText("关闭");
-							}
+							knobView.setTouchable(false);
+							btnClock.setText("关闭");
 						}
-						break;
-				}
+					}
+					break;
+				case TYPE_LILIAO:
+					if(ptStatus.isStatusLiLiaoIsClock()){
+						//当前模式已打开
+						if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON || app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_ON){
+
+							if(time -1 <= 0){
+								sengMsgToDevice(MsgUtil.closeWork("1",1));
+								dataUtil.stopData();
+							}else{
+								time -= 1;
+								ptStatus.setStatusLiLiaoClockTime(time);
+								statusUtil.setPTStatus(mContext,ptStatus);
+								setTimeAndProgress();
+							}
+							startWork = true;
+							if(startWork&&endWork){
+								startWork = false;
+								endWork = false;
+								dataUtil.startData("3",ptStatus.getStatusLiLiaoIntensity(),user.getToken(),user.getSid(),"-1");
+								sengMsgToDevice(MsgUtil.getCurWorkType());
+							}
+//							reSetLayout();
+							//工作状态，点击按钮关闭
+							btnClock.setText("关闭");
+							knobView.setTouchable(false);
+						}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
+							//就绪状态，点击按钮不响应
+							btnClock.setText("已准备");
+							knobView.setTouchable(true);
+							endWork = true;
+							dataUtil.stopData();
+						}
+					}else{
+						endWork = true;
+						if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_OFF){
+							//当前模式未打开，设备已穿戴，点击执行打开命令，直接开始
+							btnClock.setText("开始");
+						}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
+							//当前模式未打开,设备未穿戴，点击执行打开命令，进入准备状态
+							btnClock.setText("准备");
+						}
+						if (ptStatus.isStatusLiLiaoIsOpen()){
+							knobView.setTouchable(true);
+						}else{
+							knobView.setTouchable(false);
+							btnClock.setText("关闭");
+						}
+					}
+					break;
+				case TYPE_YUELIAO:
+					if(ptStatus.isStatusYueLiaoIsClock()){
+						//当前模式已打开
+						if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_ON || app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_ON){
+							startWork = true;
+
+							if(time -1 <= 0){
+								sengMsgToDevice(MsgUtil.closeWork("1",1));
+								dataUtil.stopData();
+							}else{
+								time -= 1;
+								ptStatus.setStatusYueLiaoClockTime(time);
+								statusUtil.setPTStatus(mContext,ptStatus);
+								setTimeAndProgress();
+							}
+							if(startWork&&endWork){
+								startWork = false;
+								endWork = false;
+								dataUtil.startData("2",ptStatus.getStatusYueLiaoIntensity(),user.getToken(),user.getSid(),"-1");
+								sengMsgToDevice(MsgUtil.getCurWorkType());
+							}
+//							reSetLayout();
+							//工作状态，点击按钮关闭
+							btnClock.setText("关闭");
+							knobView.setTouchable(false);
+						}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
+							//就绪状态，点击按钮不响应
+							btnClock.setText("已准备");
+							knobView.setTouchable(true);
+							endWork = true;
+							dataUtil.stopData();
+						}
+					}else{
+						endWork = true;
+						if(app.workStatus == WORK_STATUS_DIANJI_ON_GAOYA_OFF){
+							//当前模式未打开，设备已穿戴，点击执行打开命令，直接开始
+							btnClock.setText("开始");
+						}else if(app.workStatus == WORK_STATUS_DIANJI_OFF_GAOYA_OFF){
+							//当前模式未打开,设备未穿戴，点击执行打开命令，进入准备状态
+							btnClock.setText("准备");
+						}
+						if (ptStatus.isStatusYueLiaoIsOpen()){
+							knobView.setTouchable(true);
+						}else{
+							knobView.setTouchable(false);
+							btnClock.setText("关闭");
+						}
+					}
+					break;
+			}
 		}
 	};
 

@@ -22,6 +22,10 @@ public class TimeUtil {
         }else{
             str = min + context.getString(R.string.min) + sen + context.getString(R.string.s);
         }
+        if(time == 0){
+            str = "0" + context.getString(R.string.s);
+
+        }
         return str;
     }
 

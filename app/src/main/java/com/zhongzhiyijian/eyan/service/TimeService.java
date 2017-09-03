@@ -1,6 +1,7 @@
 package com.zhongzhiyijian.eyan.service;
 
 import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -53,12 +54,16 @@ public class TimeService extends Service implements Constants{
 
     private boolean isFirstXinTiao;
 
+    private Listener listener;
+
     @Override
     public void onCreate() {
         app = (BaseApplication) getApplication();
         mContext = getApplicationContext();
         mBluzDevice = app.getBluzConnector();
-        mBluzDevice.setOnConnectionListener(mOnConnectionListener);
+        listener = new Listener();
+//        mBluzDevice.setOnConnectionListener(mOnConnectionListener);
+        mBluzDevice.setOnConnectionListener(listener);
         isFirstXinTiao = true;
 
         timerThread = new TimerThread();
@@ -76,11 +81,15 @@ public class TimeService extends Service implements Constants{
         resultCode = new byte[]{ba,bb,bc,bd,be};
 
         initReceiver();
+
+
     }
 
     private void initReceiver() {
         receiver = new InnerReceiver();
         filter = new IntentFilter();
+        filter.addAction(SEND_MSG_TO_DEVICE);
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(SEND_MSG_TO_DEVICE);
         registerReceiver(receiver,filter);
     }
@@ -108,10 +117,12 @@ public class TimeService extends Service implements Constants{
         unregisterReceiver(receiver);
     }
 
-    private IBluzDevice.OnConnectionListener mOnConnectionListener = new IBluzDevice.OnConnectionListener() {
+    class Listener implements IBluzDevice.OnConnectionListener {
+
         @Override
-        public void onConnected(BluetoothDevice device) {
+        public void onConnected(BluetoothDevice bluetoothDevice) {
             Logger.e("设备连接成功，创建BluzManager对象并开启心跳");
+            app.isDeviceConnection = true;
             keySend = BluzManager.buildKey(BluzManagerData.CommandType.QUE, 0x81);
             keyAnswer = BluzManager.buildKey(BluzManagerData.CommandType.ANS, 0x81);
             mBluzManager = new BluzManager(mContext, mBluzDevice, new BluzManagerData.OnManagerReadyListener() {
@@ -124,7 +135,7 @@ public class TimeService extends Service implements Constants{
                             if (what == keyAnswer){
                                 String result = printHexString(arg3);
 
-//                                Logger.e("收到蓝牙反馈>>> result = " + result);
+                                Logger.e("收到蓝牙反馈>>> result = " + result);
 
                                 if(arg3[4] == resultCode[0]){
                                     checkQuaryResult(arg3);
@@ -143,18 +154,48 @@ public class TimeService extends Service implements Constants{
                             }
                         }
                     });
+
+                    mBluzManager.setOnGlobalUIChangedListener(new BluzManagerData.OnGlobalUIChangedListener() {
+                        @Override
+                        public void onEQChanged(int i) {
+//						showToast("EQ改变" + i);
+                        }
+
+                        @Override
+                        public void onBatteryChanged(int battery, boolean incharge) {
+                            //电量改变
+                            Logger.e("电池电量" + battery);
+                            app.devicePower = battery;
+                            app.incharge = incharge;
+                            Intent it = new Intent();
+                            it.setAction(BATTERY_CHANGED_BL);
+                            sendBroadcast(it);
+                        }
+
+                        @Override
+                        public void onVolumeChanged(int i, boolean b) {
+                            //音量改变
+                        }
+
+                        @Override
+                        public void onModeChanged(int i) {
+//						showToast("模式改变" + i);
+                        }
+                    });
+
                 }
             });
-
         }
-
 
         @Override
         public void onDisconnected(BluetoothDevice device) {
+            Logger.e("设备断开连接 === " + device.getAddress());
+            app.isDeviceConnection = false;
             mBluzManager.release();
             mBluzManager = null;
         }
-    };
+    }
+
 
     /**
      * 查询命令反馈处理
@@ -165,7 +206,7 @@ public class TimeService extends Service implements Constants{
         if(code == 1){
             Logger.e("设备ID返回值==>");
         }else if(code == 2){
-            Logger.e("工作模式查询返回值==>"+printHexString(arg3));
+//            Logger.e("工作模式查询返回值==>"+printHexString(arg3));
             String type = Integer.toHexString(arg3[6] & 0xFF);
 
             String qiangduStr = Integer.toHexString(arg3[7] & 0xFF);
@@ -180,7 +221,7 @@ public class TimeService extends Service implements Constants{
             int time2 = Integer.parseInt(time2Str);
 
             int time = time1*256+time2;
-            Logger.e("物理切换工作状态===>状态=" + type + "强度=" + qiangdu + "time=" + time);
+            Logger.e("工作模式查询返回值===>状态=" + type + "强度=" + qiangdu + "time=" + time);
 
             Intent it = new Intent();
             it.setAction(WORK_TYPE_CHANGED);
@@ -189,7 +230,6 @@ public class TimeService extends Service implements Constants{
             it.putExtra("time",time);
             sendBroadcast(it);
         }else if(code == 4){
-            Logger.e("电压查询返回值==>");
             Intent it = new Intent();
             it.setAction(BATTERY_CHANGED);
             it.putExtra("result",arg3);
@@ -230,7 +270,9 @@ public class TimeService extends Service implements Constants{
         if(isFirstXinTiao){
             isFirstXinTiao = false;
             //连接成功后发送复位命令
-            mBluzManager.sendCustomCommand(keySend, 0, 0, MsgUtil.getResetByte());
+            if(app.workStatus != WORK_STATUS_DIANJI_ON_GAOYA_ON){
+                mBluzManager.sendCustomCommand(keySend, 0, 0, MsgUtil.getResetByte());
+            }
         }
     }
 
@@ -246,7 +288,7 @@ public class TimeService extends Service implements Constants{
             Logger.e("错误代码===>" + code);
         }else if(result[5] == 2){
             //工作状态改变
-            Logger.e("物理切换工作状态===>" + printHexString(result));
+//            Logger.e("物理切换工作状态===>" + printHexString(result));
             String type = Integer.toHexString(result[6] & 0xFF);
 
             String qiangduStr = Integer.toHexString(result[7] & 0xFF);
@@ -280,7 +322,7 @@ public class TimeService extends Service implements Constants{
                 if(null != mBluzManager){
                     if(xinCount >= 3){
                         app.isConnect = false;
-                        Logger.e("3次未有心跳反馈，按摩板连接异常，退出操作界面");
+//                        Logger.e("3次未有心跳反馈，按摩板连接异常，退出操作界面");
                         Intent it = new Intent();
                         it.setAction(XINTIAO_DISCONNECTED);
                         sendBroadcast(it);
@@ -322,15 +364,31 @@ public class TimeService extends Service implements Constants{
             String action = intent.getAction();
             if(action.equals(SEND_MSG_TO_DEVICE)){
                 byte[] bs = intent.getByteArrayExtra("byte");
-                Logger.e("收到广播，发送蓝牙命令"+printHexString(bs));
+//                Logger.e("收到广播，发送蓝牙命令"+printHexString(bs));
                 if(mBluzManager != null){
                     mBluzManager.sendCustomCommand(keySend, 0, 0, bs);
                     try {
-                        Thread.sleep(300);
+                        Thread.sleep(500);
                         mBluzManager.sendCustomCommand(keySend, 0, 0, MsgUtil.getCurWorkType());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                }
+            }else if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)){
+                int blueState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
+                switch(blueState){
+                    case BluetoothAdapter.STATE_TURNING_ON:
+                        listener = new Listener();
+                        mBluzDevice.setOnConnectionListener(listener);
+                        break;
+                    case BluetoothAdapter.STATE_ON:
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        break;
+                    case BluetoothAdapter.STATE_OFF:
+                        mBluzDevice.setOnConnectionListener(null);
+                        listener = null;
+                        break;
                 }
             }
         }

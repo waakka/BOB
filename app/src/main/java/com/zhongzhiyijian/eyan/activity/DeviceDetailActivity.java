@@ -142,6 +142,7 @@ public class DeviceDetailActivity extends BaseActivity implements OnClickListene
 						+ ",now finishing myself...");
 				finish();
 			}else if(XINTIAO_DISCONNECTED.equals(action)){
+				showToast("按摩板已断开连接");
                 finish();
             }
 		}

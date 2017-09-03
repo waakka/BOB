@@ -24,8 +24,6 @@ public class MsgUtil {
         if(result.length() >2){
             result = result.substring(result.length()-2, result.length());
         }
-        System.out.println(f);
-        System.out.println(result);
         byte ba = (byte) Integer.parseInt("A5", 16);
         byte bb = (byte) Integer.parseInt("5A", 16);
         byte bc = (byte) Integer.parseInt("04", 16);
@@ -134,6 +132,23 @@ public class MsgUtil {
         }
         return getBytesWorkType(num,"00",intensity,"00" ,"00");
     }
+    public static byte[] setTime(String num,int time){
+        int highTime = time / 256;
+        int lowTime = time % 256;
+
+        String time1 = Integer.toHexString(highTime);
+        String time2 = Integer.toHexString(lowTime);
+        if(time1.length() >2){
+            time1 = time1.substring(time1.length()-2, time1.length());
+        }else if(time1.length() == 1){
+            time1 = "0" + time1;
+        } if(time2.length() >2){
+            time2 = time2.substring(time2.length()-2, time2.length());
+        }else if(time2.length() == 1){
+            time2 = "0" + time2;
+        }
+        return getBytesWorkType(num,"00","00",time1,time2);
+    }
 
 
     public static byte[] openWork(String num,int qiangdu,int time,String type){
@@ -158,7 +173,8 @@ public class MsgUtil {
         }else if(time2.length() == 1){
             time2 = "0" + time2;
         }
-        return getBytesWorkType(num,type,intensity,time1,time2);
+//        return getBytesWorkType(num,type,intensity,time1,time2);
+        return getBytesWorkType(num,type,"00","00","00");
     }
 
 
@@ -217,8 +233,6 @@ public class MsgUtil {
         if(result.length() >2){
             result = result.substring(result.length()-2, result.length());
         }
-        System.out.println(f);
-        System.out.println(result);
         byte ba = (byte) Integer.parseInt("A5", 16);
         byte bb = (byte) Integer.parseInt("5A", 16);
         byte bc = (byte) Integer.parseInt("03", 16);
