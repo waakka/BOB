@@ -56,6 +56,7 @@ public class TimeService extends Service implements Constants{
 
     private Listener listener;
 
+
     @Override
     public void onCreate() {
         app = (BaseApplication) getApplication();
@@ -223,6 +224,9 @@ public class TimeService extends Service implements Constants{
             int time = time1*256+time2;
             Logger.e("工作模式查询返回值===>状态=" + type + "强度=" + qiangdu + "time=" + time);
 
+            //记录工作状态到app
+            app.workType = type;
+
             Intent it = new Intent();
             it.setAction(WORK_TYPE_CHANGED);
             it.putExtra("type",type);
@@ -236,6 +240,7 @@ public class TimeService extends Service implements Constants{
             sendBroadcast(it);
         }
     }
+
 
     /**
      * 检测复位是否成功
@@ -272,6 +277,12 @@ public class TimeService extends Service implements Constants{
             //连接成功后发送复位命令
             if(app.workStatus != WORK_STATUS_DIANJI_ON_GAOYA_ON){
                 mBluzManager.sendCustomCommand(keySend, 0, 0, MsgUtil.getResetByte());
+            }
+            try {
+                Thread.sleep(500);
+                mBluzManager.sendCustomCommand(keySend, 0, 0, MsgUtil.getCurWorkType());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -318,7 +329,7 @@ public class TimeService extends Service implements Constants{
     class TimerThread extends Thread {
         @Override
         public void run() {
-            while (isServiceAlive){
+            while (isServiceAlive && app != null){
                 if(null != mBluzManager){
                     if(xinCount >= 3){
                         app.isConnect = false;

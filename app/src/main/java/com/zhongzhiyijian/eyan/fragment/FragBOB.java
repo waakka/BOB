@@ -1,9 +1,10 @@
 package com.zhongzhiyijian.eyan.fragment;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -53,6 +54,9 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 
     private DataUtil dataUtil;
 
+	private InnerReceiver receiver;
+	private IntentFilter filter;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -70,7 +74,26 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 		initViews();
 		initList();
 		initEvent();
+		initReceiver();
 		return view;
+	}
+
+	private void initReceiver() {
+		receiver = new InnerReceiver();
+		filter = new IntentFilter();
+		filter.addAction(WORK_TYPE_CHANGED);
+		getActivity().registerReceiver(receiver,filter);
+	}
+
+	private class InnerReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if(WORK_TYPE_CHANGED.equals(action)){
+				mAdapter.notifyDataSetChanged();
+			}
+		}
 	}
 
 	private void initEvent() {
@@ -191,7 +214,11 @@ public class FragBOB extends BaseFragment implements BOBAdapter.BobCallBack {
 		super.onPause();
 	}
 
-
+	@Override
+	public void onDestroy() {
+		getActivity().unregisterReceiver(receiver);
+		super.onDestroy();
+	}
 
 	private void initViews() {
 		mListView = (ListView) view.findViewById(R.id.lv_device);

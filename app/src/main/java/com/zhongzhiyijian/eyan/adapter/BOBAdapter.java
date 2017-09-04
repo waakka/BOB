@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import com.actions.ibluz.factory.BluzDeviceFactory;
 import com.zhongzhiyijian.eyan.R;
+import com.zhongzhiyijian.eyan.base.BaseApplication;
+import com.zhongzhiyijian.eyan.base.Constants;
 import com.zhongzhiyijian.eyan.entity.MyDevice;
 import com.zhongzhiyijian.eyan.util.LogUtil;
 
@@ -25,12 +28,14 @@ public class BOBAdapter extends BaseAdapter{
 	private Context mContext;
 	private List<MyDevice> devices;
 	private BobCallBack callBack;
+	private BaseApplication app;
 	
 	
 	public BOBAdapter(Context mContext, List<MyDevice> devices,BobCallBack callBack) {
 		this.mContext = mContext;
 		this.devices = devices;
 		this.callBack = callBack;
+		app = (BaseApplication) mContext.getApplicationContext();
 	}
 
 	public interface BobCallBack{
@@ -85,7 +90,7 @@ public class BOBAdapter extends BaseAdapter{
 		switch (device.getState()) {
 			case BluzDeviceFactory.ConnectionState.SPP_CONNECTED:
 //				holder.tvStatus.setText(R.string.connected);
-				holder.tvStatus.setText(R.string.connected);
+				holder.tvStatus.setText(getText());
 				break;
 
 			case BluzDeviceFactory.ConnectionState.SPP_CONNECTING:
@@ -139,6 +144,78 @@ public class BOBAdapter extends BaseAdapter{
 		});
 		
 		return convertView;
+	}
+
+	private String getText(){
+		String str = "";
+		if(app.isConnect){
+			if(app.workStatus == Constants.WORK_STATUS_DIANJI_ON_GAOYA_ON || app.workStatus == Constants.WORK_STATUS_DIANJI_OFF_GAOYA_ON){
+				//正在工作
+				if(!TextUtils.isEmpty(app.workType)){
+					if ("1".equals(app.workType)){
+						//工作界面：搓揉  工作状态：关闭
+						str = "搓揉关闭";
+					}else if("f1".equals(app.workType)){
+						//工作界面：搓揉  工作状态：打开
+						str = "搓揉工作";
+					}else if ("2".equals(app.workType)){
+						//工作界面：推压  工作状态：关闭
+						str = "推压关闭";
+					}else if("f2".equals(app.workType)){
+						//工作界面：推压  工作状态：打开
+						str = "推压工作";
+					}else if ("3".equals(app.workType)){
+						//工作界面：叩击  工作状态：关闭
+						str = "叩击关闭";
+					}else if("f3".equals(app.workType)){
+						//工作界面：叩击  工作状态：打开
+						str = "叩击工作";
+					}else if ("4".equals(app.workType)){
+						//工作界面：自动  工作状态：关闭
+						str = "自动关闭";
+					}else if("f4".equals(app.workType)){
+						//工作界面：自动  工作状态：打开
+						str = "自动工作";
+					}
+				}else{
+					str = "已连接";
+				}
+			}else{
+				//待机
+				if(!TextUtils.isEmpty(app.workType)){
+					if ("1".equals(app.workType)){
+						//工作界面：搓揉  工作状态：关闭
+						str = "搓揉关闭";
+					}else if("f1".equals(app.workType)){
+						//工作界面：搓揉  工作状态：打开
+						str = "搓揉待机";
+					}else if ("2".equals(app.workType)){
+						//工作界面：推压  工作状态：关闭
+						str = "推压关闭";
+					}else if("f2".equals(app.workType)){
+						//工作界面：推压  工作状态：打开
+						str = "推压待机";
+					}else if ("3".equals(app.workType)){
+						//工作界面：叩击  工作状态：关闭
+						str = "叩击关闭";
+					}else if("f3".equals(app.workType)){
+						//工作界面：叩击  工作状态：打开
+						str = "叩击待机";
+					}else if ("4".equals(app.workType)){
+						//工作界面：自动  工作状态：关闭
+						str = "自动关闭";
+					}else if("f4".equals(app.workType)){
+						//工作界面：自动  工作状态：打开
+						str = "自动待机";
+					}
+				}else{
+					str = "已连接";
+				}
+			}
+		}else{
+			str = "按摩板未连接";
+		}
+		return str;
 	}
 
 }

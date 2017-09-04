@@ -163,9 +163,20 @@ public class BaseApplication extends Application {
     }
 
 
-
+    /**
+     * 按摩板是否连接
+     */
     public boolean isConnect = false;
 
+    /**
+     * 工作状态 ：心跳
+     */
     public int workStatus = 0;
+
+    /**
+     * 工作模式
+     */
+    public String workType = "";
+
 
 }
